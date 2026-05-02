@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>يقين | YQ STATE — كوليكشن البناطيل</title>
-
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        /* تعريف الخط المخصص مع fallback جيد */
+        /* ==============================================================
+           1.  تعريف الخط المخصص (Another Danger)
+           يجب وضع ملف Another Danger Slanted - Demo.otf في نفس مجلد HTML
+        ============================================================== */
         @font-face {
             font-family: 'Another Danger';
             src: url('Another Danger Slanted - Demo.otf') format('opentype');
@@ -22,12 +21,18 @@
             font-display: swap;
         }
 
+        /* ==============================================================
+           2.  إعادة تعيين الإعدادات الافتراضية
+        ============================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ==============================================================
+           3.  المتغيرات العامة (الثيم الوردي)
+        ============================================================== */
         :root {
             --black: #0d0d0d;
             --dark: #1a1a1a;
@@ -38,6 +43,9 @@
             --pink-light: #ff99cc;
         }
 
+        /* ==============================================================
+           4.  إعدادات الجسم الرئيسي
+        ============================================================== */
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--black);
@@ -45,6 +53,9 @@
             overflow-x: hidden;
         }
 
+        /* ==============================================================
+           5.  نظام الصفحات المتعددة (كل صفحة تظهر بالـ .active)
+        ============================================================== */
         .page {
             position: fixed;
             top: 0;
@@ -57,14 +68,15 @@
             transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
             transform: translateX(20px);
         }
-
         .page.active {
             opacity: 1;
             visibility: visible;
             transform: translateX(0);
         }
 
-        /* شريط التنقل */
+        /* ==============================================================
+           6.  شريط التنقل العلوي (ثابت)
+        ============================================================== */
         nav {
             position: fixed;
             top: 0;
@@ -86,12 +98,11 @@
             color: var(--white);
             text-decoration: none;
         }
-
         .logo span {
             color: var(--pink);
         }
 
-        /* القائمة العادية */
+        /* القائمة للشاشات الكبيرة */
         .nav-links {
             display: flex;
             gap: 28px;
@@ -102,7 +113,6 @@
             border-radius: 50px;
             border: 1px solid rgba(255, 105, 180, 0.25);
         }
-
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
@@ -112,12 +122,11 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .nav-links a:hover {
             color: var(--pink);
         }
 
-        /* أيقونة الهامبرغر للجوال */
+        /* أيقونة الهامبرغر للموبايل */
         .menu-icon {
             display: none;
             font-size: 28px;
@@ -125,6 +134,7 @@
             color: var(--pink);
         }
 
+        /* القائمة المنسدلة للموبايل */
         .mobile-nav {
             position: fixed;
             top: 70px;
@@ -137,11 +147,9 @@
             transition: transform 0.3s ease;
             border-bottom: 1px solid rgba(255, 105, 180, 0.3);
         }
-
         .mobile-nav.open {
             transform: translateY(0);
         }
-
         .mobile-nav .nav-links-mobile {
             display: flex;
             flex-direction: column;
@@ -150,7 +158,6 @@
             gap: 20px;
             list-style: none;
         }
-
         .mobile-nav .nav-links-mobile a {
             color: #e0e0e0;
             text-decoration: none;
@@ -158,11 +165,11 @@
             font-weight: 500;
             text-transform: uppercase;
         }
-
         .mobile-nav .nav-links-mobile a:hover {
             color: var(--pink);
         }
 
+        /* أيقونة السلة */
         .cart-icon {
             position: relative;
             cursor: pointer;
@@ -175,12 +182,10 @@
             border-radius: 50%;
             transition: 0.2s;
         }
-
         .cart-icon:hover {
             background: var(--light-gray);
             transform: scale(1.02);
         }
-
         .cart-count {
             position: absolute;
             top: -5px;
@@ -197,14 +202,15 @@
             justify-content: center;
         }
 
-        /* Hero Section */
+        /* ==============================================================
+           7.  الصفحة الرئيسية (Hero Section)
+        ============================================================== */
         .hero-page {
             position: relative;
             background-image: url('https://images.unsplash.com/photo-1551232864-3f0890e580d9?w=1400&auto=format');
             background-size: cover;
             background-position: center 30%;
         }
-
         .hero-page::before {
             content: '';
             position: absolute;
@@ -215,7 +221,6 @@
             background: rgba(0, 0, 0, 0.68);
             z-index: 0;
         }
-
         .hero {
             min-height: 100vh;
             display: flex;
@@ -225,7 +230,6 @@
             z-index: 2;
             padding: 0 20px;
         }
-
         .hero-content {
             text-align: center;
             max-width: 750px;
@@ -236,7 +240,6 @@
             backdrop-filter: blur(4px);
             animation: fadeUp 0.7s ease-out;
         }
-
         @keyframes fadeUp {
             from {
                 opacity: 0;
@@ -247,14 +250,12 @@
                 transform: translateY(0);
             }
         }
-
         .hero-subtitle {
-            font-family: 'Space Grotesk', monospace;
+            font-family: 'Space Grotesk';
             font-size: 12px;
             letter-spacing: 8px;
             color: var(--pink);
         }
-
         .hero-title .yq {
             font-family: 'Another Danger', 'Space Grotesk', sans-serif;
             font-size: 110px;
@@ -263,7 +264,6 @@
             line-height: 1;
             text-shadow: 0 0 18px rgba(255, 105, 180, 0.6);
         }
-
         .hero-title .state {
             font-family: 'Another Danger', 'Space Grotesk', sans-serif;
             font-size: 70px;
@@ -271,13 +271,11 @@
             color: var(--pink);
             text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
         }
-
         .hero-tagline {
             color: var(--pink-light);
             margin-top: 12px;
             font-weight: 500;
         }
-
         .hero-btn {
             display: inline-block;
             margin-top: 34px;
@@ -290,7 +288,6 @@
             font-weight: 700;
             transition: 0.25s;
         }
-
         .hero-btn:hover {
             background: var(--pink);
             color: black;
@@ -298,37 +295,34 @@
             box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
         }
 
-        /* Collections */
+        /* ==============================================================
+           8.  قسم عرض الكوليكشنز (بطاقات كبيرة)
+        ============================================================== */
         .collections-section {
             padding: 100px 5% 80px;
             background: var(--dark);
         }
-
         .section-header {
             text-align: center;
             margin-bottom: 50px;
         }
-
         .section-title {
             font-family: 'Space Grotesk';
             font-size: 12px;
             letter-spacing: 6px;
             color: var(--pink);
         }
-
         .section-main {
             font-size: 44px;
             font-weight: 800;
             margin-top: 8px;
         }
-
         .collections-grid {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 32px;
         }
-
         .collection-card {
             width: 280px;
             height: 400px;
@@ -339,23 +333,19 @@
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
             transition: transform 0.35s ease, box-shadow 0.2s;
         }
-
         .collection-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
         }
-
         .collection-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: 0.5s;
         }
-
         .collection-card:hover img {
             transform: scale(1.05);
         }
-
         .collection-overlay {
             position: absolute;
             bottom: 0;
@@ -364,14 +354,15 @@
             padding: 24px 20px;
             background: linear-gradient(to top, #000000cc, transparent);
         }
-
         .collection-overlay h3 {
             color: var(--pink);
             margin-bottom: 6px;
             font-size: 22px;
         }
 
-        /* Products grid */
+        /* ==============================================================
+           9.  شبكة المنتجات (بطاقات فردية)
+        ============================================================== */
         .products-grid {
             display: flex;
             flex-wrap: wrap;
@@ -381,7 +372,6 @@
             margin: 40px auto;
             padding: 0 20px;
         }
-
         .product-card {
             flex: 0 0 280px;
             background: var(--gray);
@@ -391,25 +381,22 @@
             border: 1px solid #3a3a3a;
             text-align: center;
         }
-
         .product-card:hover {
             transform: translateY(-6px);
             border-color: var(--pink);
             box-shadow: 0 16px 28px rgba(0, 0, 0, 0.4);
         }
-
         .product-card img {
             width: 100%;
             height: 260px;
             object-fit: cover;
+            transition: 0.3s;
         }
-
         .product-card h3 {
             padding: 14px 12px 6px;
             font-size: 19px;
             font-weight: 700;
         }
-
         .product-price {
             padding: 4px 12px;
             font-size: 22px;
@@ -417,7 +404,7 @@
             color: var(--pink);
             display: inline-block;
         }
-
+        /* خيارات المقاسات */
         .size-options {
             display: flex;
             justify-content: center;
@@ -425,7 +412,6 @@
             padding: 10px 12px 0;
             flex-wrap: wrap;
         }
-
         .size-option {
             width: 48px;
             height: 48px;
@@ -437,20 +423,18 @@
             cursor: pointer;
             font-weight: 600;
             transition: 0.2s;
+            font-size: 14px;
         }
-
         .size-option.one-size {
             width: auto;
             padding: 0 18px;
         }
-
         .size-option.selected,
         .size-option:hover {
             background: var(--pink);
             color: black;
             transform: scale(0.96);
         }
-
         .custom-size {
             width: 82%;
             margin: 12px auto 6px;
@@ -462,12 +446,10 @@
             text-align: center;
             display: block;
         }
-
         .custom-size:focus {
             outline: none;
             border-color: var(--pink);
         }
-
         .add-btn {
             width: 85%;
             margin: 12px auto 20px;
@@ -482,17 +464,17 @@
             display: block;
             text-align: center;
         }
-
         .add-btn:hover {
             background: var(--pink-light);
             transform: scale(0.97);
         }
 
-        /* Cart page */
+        /* ==============================================================
+           10.  صفحة سلة التسوق (بدون أي أثر للكوبونات)
+        ============================================================== */
         .cart-page {
             background: var(--dark);
         }
-
         .cart-container {
             max-width: 1200px;
             margin: 110px auto 60px;
@@ -501,13 +483,11 @@
             grid-template-columns: 1fr 380px;
             gap: 35px;
         }
-
         .cart-items-list {
             background: var(--gray);
             border-radius: 24px;
             padding: 28px;
         }
-
         .cart-item {
             display: flex;
             gap: 20px;
@@ -516,19 +496,16 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
         .cart-item img {
             width: 85px;
             height: 85px;
             object-fit: cover;
             border-radius: 16px;
         }
-
         .cart-item-details {
             flex: 1;
             text-align: right;
         }
-
         .cart-item-remove {
             background: none;
             border: 1px solid #ff8888;
@@ -539,11 +516,9 @@
             font-weight: 500;
             transition: 0.2s;
         }
-
         .cart-item-remove:hover {
             background: #ff888822;
         }
-
         .cart-summary {
             background: var(--gray);
             border-radius: 24px;
@@ -551,69 +526,27 @@
             position: sticky;
             top: 100px;
         }
-
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin: 18px 0;
         }
-
-        .coupon-area {
-            background: var(--light-gray);
-            border-radius: 60px;
-            padding: 5px;
-            display: flex;
-            margin: 20px 0;
-        }
-
-        .coupon-area input {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 12px 20px;
-            color: white;
-            border-radius: 40px;
-        }
-
-        .coupon-area button {
-            background: var(--pink);
-            border: none;
-            padding: 0 22px;
-            border-radius: 50px;
-            color: black;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .remove-coupon-btn {
-            background: none;
-            border: 1px solid #ff8888;
-            color: #ff8888;
-            padding: 6px 16px;
-            border-radius: 40px;
-            margin-right: 12px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
+        /* خيارات التوصيل الاختيارية */
         .delivery-options {
             margin: 24px 0 12px;
             background: #404040;
             padding: 12px;
             border-radius: 16px;
         }
-
         .delivery-option {
             display: flex;
             align-items: center;
             gap: 12px;
             margin: 12px 0;
         }
-
         .payment-methods {
             margin: 24px 0 12px;
         }
-
         .payment-method {
             display: flex;
             align-items: center;
@@ -621,13 +554,11 @@
             margin: 14px 0;
             flex-wrap: wrap;
         }
-
         .payment-method span.details {
             font-size: 13px;
             color: var(--pink-light);
             margin-right: 8px;
         }
-
         .checkout-btn {
             width: 100%;
             background: var(--pink);
@@ -641,7 +572,6 @@
             color: black;
             transition: 0.2s;
         }
-
         footer {
             text-align: center;
             padding: 40px 20px;
@@ -650,6 +580,9 @@
             margin-top: 40px;
         }
 
+        /* ==============================================================
+           11.  رسالة منبثقة (Toast)
+        ============================================================== */
         #toast {
             position: fixed;
             bottom: 30px;
@@ -667,6 +600,9 @@
             pointer-events: none;
         }
 
+        /* ==============================================================
+           12.  استعلامات الوسائط (لشاشات الموبايل)
+        ============================================================== */
         @media (max-width: 800px) {
             .cart-container {
                 grid-template-columns: 1fr;
@@ -692,6 +628,7 @@
             }
         }
 
+        /* أنماط إضافية لصفحات المحتوى */
         .philosophy-card,
         .about-card {
             background: var(--gray);
@@ -703,7 +640,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <nav>
@@ -734,7 +670,7 @@
         </ul>
     </div>
 
-    <!-- Hero page -->
+    <!-- =================  الصفحة الرئيسية (الـ Hero)  ================= -->
     <div class="page hero-page active" id="hero">
         <div class="hero">
             <div class="hero-content">
@@ -750,7 +686,7 @@
         <footer>© 2026 يقين — جميع الحقوق محفوظة</footer>
     </div>
 
-    <!-- صفحة القواعد -->
+    <!-- =================  صفحة القواعد والسياسات  ================= -->
     <div class="page" id="philosophy">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px;">
             <div class="philosophy-card">
@@ -772,7 +708,7 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- صفحة الكوليكشنز الرئيسية -->
+    <!-- =================  صفحة الكوليكشنز الرئيسية (الـ 4 أقسام)  ================= -->
     <div class="page" id="collections">
         <div class="collections-section">
             <div class="section-header">
@@ -801,7 +737,7 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- صفحات الكوليكشنز الفرعية -->
+    <!-- =================  صفحات الكوليكشنز الفرعية (عرض المنتجات)  ================= -->
     <div class="page" id="streetwear-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -814,6 +750,7 @@
         </div>
         <footer>© 2026 يقين</footer>
     </div>
+
     <div class="page" id="essentials-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -826,6 +763,7 @@
         </div>
         <footer>© 2026 يقين</footer>
     </div>
+
     <div class="page" id="signature-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -838,6 +776,7 @@
         </div>
         <footer>© 2026 يقين</footer>
     </div>
+
     <div class="page" id="pants-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -851,7 +790,7 @@
         <footer>© 2026 يقين — تشكيلة البناطيل عالية الجودة</footer>
     </div>
 
-    <!-- سلة التسوق -->
+    <!-- =================  صفحة سلة التسوق (بدون كوبونات)  ================= -->
     <div class="page cart-page" id="cart-page">
         <div class="cart-container">
             <div class="cart-items-list">
@@ -863,15 +802,7 @@
                     <span>المجموع الفرعي</span>
                     <span id="cartSubtotal">0 ج.م</span>
                 </div>
-                <div class="coupon-area">
-                    <input type="text" id="couponCode" placeholder="كود الخصم (YAQEEN15, FIRST20)">
-                    <button onclick="applyCoupon()">تطبيق</button>
-                </div>
-                <div id="couponMessage"></div>
-                <div id="discountDisplay" class="summary-row" style="display: none;">
-                    <span>الخصم (<span id="discountName"></span>)</span>
-                    <span>- <span id="discountAmount">0</span> ج.م</span>
-                </div>
+                <!-- لا يوجد أي حقل كوبونات أو خصم هنا -->
                 <div class="delivery-options">
                     <div class="delivery-option">
                         <input type="radio" name="delivery" value="delivery" id="deliveryHome" checked>
@@ -914,7 +845,7 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- عن البراند -->
+    <!-- =================  صفحة عن البراند  ================= -->
     <div class="page" id="about">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
             <div class="about-card">
@@ -925,7 +856,7 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- تواصل معنا -->
+    <!-- =================  صفحة تواصل معنا (روابط شغالة)  ================= -->
     <div class="page" id="contact">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
             <div style="text-align: center;">
@@ -949,7 +880,9 @@
     <div id="toast"></div>
 
     <script>
-        // بيانات المنتجات (نفس الكود السابق)
+        /* ==============================================================
+            بيانات المنتجات (مع تحديد المقاسات لكل منتج)
+        ============================================================== */
         const productsData = {
             streetwear: [
                 { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L', 'XL', 'XXL'] },
@@ -986,6 +919,9 @@
             ]
         };
 
+        /* ==============================================================
+            دالة عرض المنتجات في أي حاوية (containerId)
+        ============================================================== */
         function renderProducts(containerId, products) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -1016,19 +952,25 @@
             attachSizeEvents();
         }
 
+        /* ==============================================================
+            ربط أحداث النقر على خيارات المقاسات والمقاس الخاص
+        ============================================================== */
         function attachSizeEvents() {
-            document.querySelectorAll('.size-option').forEach(opt => {
+            const sizeOptions = document.querySelectorAll('.size-option');
+            for (let opt of sizeOptions) {
                 opt.removeEventListener('click', sizeClickHandler);
                 opt.addEventListener('click', sizeClickHandler);
-            });
-            document.querySelectorAll('.custom-size').forEach(inp => {
+            }
+            const customInputs = document.querySelectorAll('.custom-size');
+            for (let inp of customInputs) {
                 inp.removeEventListener('change', customSizeHandler);
                 inp.addEventListener('change', customSizeHandler);
-            });
+            }
         }
 
         function sizeClickHandler() {
-            this.parentNode.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+            const parent = this.parentNode;
+            for (let opt of parent.querySelectorAll('.size-option')) opt.classList.remove('selected');
             this.classList.add('selected');
             const card = this.closest('.product-card');
             card.dataset.selectedSize = this.getAttribute('data-size');
@@ -1040,18 +982,21 @@
             const card = this.closest('.product-card');
             if (this.value.trim()) {
                 card.dataset.selectedSize = this.value.trim();
-                card.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                for (let opt of card.querySelectorAll('.size-option')) opt.classList.remove('selected');
             } else {
                 delete card.dataset.selectedSize;
             }
         }
 
+        // عرض جميع المنتجات
         renderProducts('streetwearProducts', productsData.streetwear);
         renderProducts('essentialsProducts', productsData.essentials);
         renderProducts('signatureProducts', productsData.signature);
         renderProducts('pantsProducts', productsData.pants);
 
-        // سلة التسوق
+        /* ==============================================================
+            إدارة سلة التسوق والكوبونات (الكوبونات موجودة ولكن غير ظاهرة)
+        ============================================================== */
         let cart = [];
         let total = 0;
         let appliedCoupon = null;
@@ -1071,7 +1016,7 @@
             }
             cart.push({ name, price, img, size });
             total += price;
-            if (appliedCoupon) updateCouponDisplay();
+            if (appliedCoupon) updateTotals();
             updateCartCount();
             showToast('✅ تمت الإضافة إلى السلة');
         };
@@ -1079,7 +1024,7 @@
         window.removeFromCart = function(idx) {
             total -= cart[idx].price;
             cart.splice(idx, 1);
-            if (appliedCoupon) updateCouponDisplay();
+            if (appliedCoupon) updateTotals();
             updateCartCount();
             if (document.getElementById('cart-page').classList.contains('active')) renderCartPage();
         };
@@ -1095,59 +1040,21 @@
         }
 
         function getShippingAmount() {
-            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
-            for (let r of deliveryRadios) {
-                if (r.checked) return r.value === 'delivery' ? 60 : 0;
-            }
-            return 60;
+            const r = document.querySelector('input[name="delivery"]:checked');
+            return r && r.value === 'delivery' ? 60 : 0;
         }
 
         function getFinalTotal() {
             return total + getShippingAmount() - calculateDiscount();
         }
 
-        function updateTotalAndShipping() {
+        function updateTotals() {
+            document.getElementById('cartSubtotal').innerText = total + ' ج.م';
             const shipping = getShippingAmount();
             document.getElementById('shippingAmount').innerText = shipping + ' ج.م';
-            document.getElementById('cartTotalPage').innerText = getFinalTotal().toFixed(0) + ' ج.م';
-            updateCouponDisplay();
+            const finalTotal = getFinalTotal();
+            document.getElementById('cartTotalPage').innerText = finalTotal.toFixed(0) + ' ج.م';
         }
-
-        function updateCouponDisplay() {
-            const discount = calculateDiscount();
-            document.getElementById('cartSubtotal').innerText = total + ' ج.م';
-            const discDiv = document.getElementById('discountDisplay');
-            if (appliedCoupon) {
-                discDiv.style.display = 'flex';
-                document.getElementById('discountName').innerText = appliedCoupon.name;
-                document.getElementById('discountAmount').innerText = discount.toFixed(0);
-            } else {
-                discDiv.style.display = 'none';
-            }
-            document.getElementById('cartTotalPage').innerText = getFinalTotal().toFixed(0) + ' ج.م';
-        }
-
-        window.applyCoupon = function() {
-            const code = document.getElementById('couponCode').value.trim().toUpperCase();
-            const msgDiv = document.getElementById('couponMessage');
-            if (!code) { msgDiv.innerHTML = '<span style="color:#ff8888;">أدخل كود</span>'; return; }
-            if (appliedCoupon && appliedCoupon.code === code) { msgDiv.innerHTML = '<span style="color:#ff8888;">مطبق بالفعل</span>'; return; }
-            const coupon = validCoupons[code];
-            if (!coupon) { msgDiv.innerHTML = '<span style="color:#ff8888;">كود غير صالح</span>'; return; }
-            appliedCoupon = { code, ...coupon };
-            msgDiv.innerHTML = `<span style="color:var(--pink);">✅ تم تطبيق ${coupon.name}</span>`;
-            updateCouponDisplay();
-            renderCartPage();
-        };
-
-        window.removeCoupon = function() {
-            appliedCoupon = null;
-            document.getElementById('couponMessage').innerHTML = '';
-            document.getElementById('couponCode').value = '';
-            updateCouponDisplay();
-            renderCartPage();
-            showToast('تم إلغاء الخصم');
-        };
 
         function renderCartPage() {
             const container = document.getElementById('cartItemsContainer');
@@ -1156,7 +1063,7 @@
                 container.innerHTML = '<p style="text-align:center; padding:40px;">🛒 السلة فارغة</p>';
                 summary.style.display = 'none';
                 appliedCoupon = null;
-                updateCouponDisplay();
+                updateTotals();
             } else {
                 summary.style.display = 'block';
                 let itemsHtml = '';
@@ -1176,23 +1083,18 @@
                 }
                 container.innerHTML = itemsHtml;
                 document.getElementById('cartSubtotal').innerText = total + ' ج.م';
-                updateTotalAndShipping();
-                const existingRemove = document.querySelector('.remove-coupon-btn');
-                if (appliedCoupon && !existingRemove) {
-                    const btn = document.createElement('button');
-                    btn.innerText = 'إلغاء الخصم';
-                    btn.className = 'remove-coupon-btn';
-                    btn.onclick = () => removeCoupon();
-                    document.querySelector('.coupon-area').appendChild(btn);
-                } else if (!appliedCoupon && existingRemove) existingRemove.remove();
+                updateTotals();
+                const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+                for (let r of deliveryRadios) {
+                    r.removeEventListener('change', updateTotals);
+                    r.addEventListener('change', updateTotals);
+                }
             }
-            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
-            deliveryRadios.forEach(r => {
-                r.removeEventListener('change', updateTotalAndShipping);
-                r.addEventListener('change', updateTotalAndShipping);
-            });
         }
 
+        /* ==============================================================
+            إرسال الطلب عبر واتساب مباشرة إلى رقمك
+        ============================================================== */
         window.sendOrderWhatsApp = function() {
             if (cart.length === 0) {
                 alert('السلة فارغة');
@@ -1200,31 +1102,21 @@
             }
             const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
             let payText = payment === 'cash' ? 'الدفع عند الاستلام' : (payment === 'vodafone' ? 'فودافون كاش' : 'إنستا باي');
-            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
-            let deliveryMethod = 'توصيل للمنزل';
-            let shippingCost = 60;
-            for (let r of deliveryRadios) {
-                if (r.checked) {
-                    deliveryMethod = r.value === 'delivery' ? 'توصيل للمنزل' : 'استلام من المكان المحدد';
-                    shippingCost = r.value === 'delivery' ? 60 : 0;
-                    break;
-                }
-            }
+            const deliveryRadio = document.querySelector('input[name="delivery"]:checked');
+            const deliveryMethod = deliveryRadio && deliveryRadio.value === 'delivery' ? 'توصيل للمنزل (60 ج.م)' : 'استلام من المكان المحدد (مجاني)';
             const discount = calculateDiscount();
-            const finalTotal = total + shippingCost - discount;
-            let message = '🛍️ *طلب جديد من YQ STATE*%0a%0a';
-            message += '📦 *المنتجات:*%0a';
-            cart.forEach((item, i) => {
+            const shipping = getShippingAmount();
+            const finalTotal = total + shipping - discount;
+            let message = '🛍️ *طلب جديد من YQ STATE*%0a%0a📦 *المنتجات:*%0a';
+            for (let i = 0; i < cart.length; i++) {
+                const item = cart[i];
                 message += `${i+1} - ${item.name} (مقاس: ${item.size}) - ${item.price} ج.م%0a`;
-            });
+            }
             message += `%0a💰 *المجموع الفرعي:* ${total} ج.م%0a`;
             if (discount > 0) message += `🎉 *الخصم:* -${discount.toFixed(0)} ج.م%0a`;
-            message += `🚚 *طريقة التوصيل:* ${deliveryMethod}${shippingCost > 0 ? ' (60 ج.م)' : ' (مجاني)'}%0a`;
-            message += `💵 *الإجمالي النهائي:* ${finalTotal.toFixed(0)} ج.م%0a`;
-            message += `💳 *طريقة الدفع:* ${payText}%0a`;
-            message += `%0a📲 *يرجى تأكيد الطلب*`;
-            const phoneNumber = '201027515725';
-            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+            message += `🚚 *طريقة التوصيل:* ${deliveryMethod}%0a💵 *الإجمالي النهائي:* ${finalTotal.toFixed(0)} ج.م%0a💳 *طريقة الدفع:* ${payText}%0a%0a📲 *يرجى تأكيد الطلب*`;
+            window.open(`https://wa.me/201027515725?text=${message}`, '_blank');
+            // تفريغ السلة بعد التوجيه
             cart = [];
             total = 0;
             appliedCoupon = null;
@@ -1238,9 +1130,12 @@
             const toast = document.getElementById('toast');
             toast.innerText = msg;
             toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 2600);
+            setTimeout(() => { toast.style.opacity = '0'; }, 2600);
         }
 
+        /* ==============================================================
+            التنقل بين الصفحات
+        ============================================================== */
         window.showPage = function(id) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(id);
@@ -1252,6 +1147,9 @@
             closeMobileMenu();
         };
 
+        /* ==============================================================
+            دوال القائمة المنسدلة للجوال
+        ============================================================== */
         function toggleMobileMenu() {
             document.getElementById('mobileNav').classList.toggle('open');
         }
@@ -1260,7 +1158,31 @@
         }
         window.toggleMobileMenu = toggleMobileMenu;
         window.closeMobileMenu = closeMobileMenu;
+
+        /* ==============================================================
+            دوال الكوبونات المخفية (للاستخدام الداخلي عبر Console)
+            يمكن استدعاؤها يدوياً لتطبيق خصم على سلة العميل
+            مثال: applyCouponHidden('YAQEEN15')
+        ============================================================== */
+        window.applyCouponHidden = function(code) {
+            const coupon = validCoupons[code];
+            if (coupon) {
+                appliedCoupon = { code, ...coupon };
+                updateTotals();
+                renderCartPage();
+                showToast('✅ تم تطبيق الخصم');
+                return true;
+            } else {
+                showToast('❌ كود غير صالح');
+                return false;
+            }
+        };
+        window.removeCouponHidden = function() {
+            appliedCoupon = null;
+            updateTotals();
+            renderCartPage();
+            showToast('تم إلغاء الخصم');
+        };
     </script>
 </body>
-
 </html>
