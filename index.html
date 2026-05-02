@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>يقين | YQ STATE — كوليكشن البناطيل</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome 6 (الأيقونات) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ---------------------------------------------------------------
+           1.  تعريف الخط التجاري المخصص (Another Danger)
+           يجب وضع ملف الخط في نفس مجلد ملف HTML
+        --------------------------------------------------------------- */
+        @font-face {
+            font-family: 'Another Danger';
+            src: url('Another Danger Slanted - Demo.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ---------------------------------------------------------------
+           2.  إعادة تعيين الإعدادات الافتراضية للمتصفح
+        --------------------------------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ---------------------------------------------------------------
+           3.  المتغيرات العامة (الثيم الوردي)
+        --------------------------------------------------------------- */
+        :root {
+            --black: #0d0d0d;
+            --dark: #1a1a1a;
+            --gray: #2d2d2d;
+            --light-gray: #404040;
+            --white: #f5f5f5;
+            --pink: #ff69b4;
+            --pink-light: #ff99cc;
+        }
+
+        /* ---------------------------------------------------------------
+           4.  إعدادات الجسم الرئيسي
+        --------------------------------------------------------------- */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* ---------------------------------------------------------------
+           5.  نظام الصفحات المتعددة (كل صفحة "page" تظهر بالـ active)
+        --------------------------------------------------------------- */
+        .page {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100vh;
+            opacity: 0;
+            visibility: hidden;
+            overflow-y: auto;
+            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transform: translateX(20px);
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        /* ---------------------------------------------------------------
+           6.  شريط التنقل العلوي (ثابت)
+        --------------------------------------------------------------- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 14px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(13, 13, 13, 0.92);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 105, 180, 0.4);
+        }
+
+        .logo {
+            font-family: 'Another Danger', 'Space Grotesk', sans-serif;
+            font-size: 28px;
+            letter-spacing: 2px;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--pink);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
+            padding: 5px 24px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 105, 180, 0.25);
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink);
+        }
+
+        /* أيقونة السلة */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            background: var(--gray);
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .cart-icon:hover {
+            background: var(--light-gray);
+            transform: scale(1.02);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--pink);
+            color: black;
+            font-size: 11px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ---------------------------------------------------------------
+           7.  الصفحة الرئيسية (Hero Section)
+        --------------------------------------------------------------- */
+        .hero-page {
+            position: relative;
+            background-image: url('https://i.postimg.cc/c4brqmLB/Final-Logo.png');
+            background-size: cover;
+            background-position: center 30%;
+        }
+
+        .hero-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.68);
+            z-index: 0;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 750px;
+            padding: 40px 45px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 70px;
+            border: 1px solid rgba(255, 105, 180, 0.5);
+            backdrop-filter: blur(4px);
+            animation: fadeUp 0.7s ease-out;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-subtitle {
+            font-family: 'Space Grotesk';
+            font-size: 12px;
+            letter-spacing: 8px;
+            color: var(--pink);
+        }
+
+        .hero-title .yq {
+            font-family: 'Another Danger', 'Space Grotesk', sans-serif;
+            font-size: 110px;
+            letter-spacing: 4px;
+            color: var(--pink);
+            line-height: 1;
+            text-shadow: 0 0 18px rgba(255, 105, 180, 0.6);
+        }
+
+        .hero-title .state {
+            font-family: 'Another Danger', 'Space Grotesk', sans-serif;
+            font-size: 70px;
+            letter-spacing: 6px;
+            color: var(--pink);
+            text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
+        }
+
+        .hero-tagline {
+            color: var(--pink-light);
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            margin-top: 34px;
+            padding: 12px 40px;
+            background: transparent;
+            border: 1.5px solid var(--pink);
+            color: var(--pink);
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.25s;
+        }
+
+        .hero-btn:hover {
+            background: var(--pink);
+            color: black;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+        }
+
+        /* ---------------------------------------------------------------
+           8.  قسم عرض الكوليكشنز (بطاقات كبيرة)
+        --------------------------------------------------------------- */
+        .collections-section {
+            padding: 100px 5% 80px;
+            background: var(--dark);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk';
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: var(--pink);
+        }
+
+        .section-main {
+            font-size: 44px;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+
+        .collections-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+        }
+
+        .collection-card {
+            width: 280px;
+            height: 400px;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+            transition: transform 0.35s ease, box-shadow 0.2s;
+        }
+
+        .collection-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .collection-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .collection-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .collection-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 24px 20px;
+            background: linear-gradient(to top, #000000cc, transparent);
+        }
+
+        .collection-overlay h3 {
+            color: var(--pink);
+            margin-bottom: 6px;
+            font-size: 22px;
+        }
+
+        /* ---------------------------------------------------------------
+           9.  شبكة المنتجات (بطاقات فردية)
+        --------------------------------------------------------------- */
+        .products-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 32px;
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .product-card {
+            flex: 0 0 280px;
+            background: var(--gray);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.25s ease;
+            border: 1px solid #3a3a3a;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--pink);
+            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.4);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            transition: 0.3s;
+        }
+
+        .product-card h3 {
+            padding: 14px 12px 6px;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .product-price {
+            padding: 4px 12px;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--pink);
+            display: inline-block;
+        }
+
+        /* خيارات المقاسات - تصميم مرن */
+        .size-options {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            padding: 10px 12px 0;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            width: 48px;
+            height: 48px;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        /* لـ "One Size" نعرضه بشكل مميز */
+        .size-option.one-size {
+            width: auto;
+            padding: 0 18px;
+        }
+
+        .size-option.selected,
+        .size-option:hover {
+            background: var(--pink);
+            color: black;
+            transform: scale(0.96);
+        }
+
+        /* مقاس خاص (إدخال نصي) */
+        .custom-size {
+            width: 82%;
+            margin: 12px auto 6px;
+            padding: 10px 12px;
+            background: var(--light-gray);
+            border: 1px solid #5a5a5a;
+            border-radius: 40px;
+            color: white;
+            text-align: center;
+            display: block;
+        }
+
+        .custom-size:focus {
+            outline: none;
+            border-color: var(--pink);
+        }
+
+        /* زر إضافة للسلة */
+        .add-btn {
+            width: 85%;
+            margin: 12px auto 20px;
+            padding: 12px 0;
+            background: var(--pink);
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            color: black;
+            display: block;
+            text-align: center;
+        }
+
+        .add-btn:hover {
+            background: var(--pink-light);
+            transform: scale(0.97);
+        }
+
+        /* ---------------------------------------------------------------
+           10.  صفحة سلة التسوق (نفس السابق)
+        --------------------------------------------------------------- */
+        .cart-page {
+            background: var(--dark);
+        }
+
+        .cart-container {
+            max-width: 1200px;
+            margin: 110px auto 60px;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 35px;
+        }
+
+        .cart-items-list {
+            background: var(--gray);
+            border-radius: 24px;
+            padding: 28px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #555;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cart-item img {
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .cart-item-details {
+            flex: 1;
+            text-align: right;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: 1px solid #ff8888;
+            color: #ff8888;
+            padding: 8px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .cart-item-remove:hover {
+            background: #ff888822;
+        }
+
+        .cart-summary {
+            background: var(--gray);
+            border-radius: 24px;
+            padding: 28px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 18px 0;
+        }
+
+        .coupon-area {
+            background: var(--light-gray);
+            border-radius: 60px;
+            padding: 5px;
+            display: flex;
+            margin: 20px 0;
+        }
+
+        .coupon-area input {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            color: white;
+            border-radius: 40px;
+        }
+
+        .coupon-area button {
+            background: var(--pink);
+            border: none;
+            padding: 0 22px;
+            border-radius: 50px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .remove-coupon-btn {
+            background: none;
+            border: 1px solid #ff8888;
+            color: #ff8888;
+            padding: 6px 16px;
+            border-radius: 40px;
+            margin-right: 12px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .payment-methods {
+            margin: 24px 0 12px;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 14px 0;
+            flex-wrap: wrap;
+        }
+
+        .payment-method span.details {
+            font-size: 13px;
+            color: var(--pink-light);
+            margin-right: 8px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background: var(--pink);
+            border: none;
+            padding: 14px;
+            border-radius: 60px;
+            font-weight: bold;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 24px;
+            color: black;
+            transition: 0.2s;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #aaa;
+            border-top: 1px solid #2a2a2a;
+            margin-top: 40px;
+        }
+
+        /* ---------------------------------------------------------------
+           11.  رسالة منبثقة (Toast)
+        --------------------------------------------------------------- */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--pink);
+            color: black;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: bold;
+            opacity: 0;
+            transition: 0.3s;
+            z-index: 9999;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+
+        /* ---------------------------------------------------------------
+           12.  استعلامات الوسائط (لشاشات الموبايل)
+        --------------------------------------------------------------- */
+        @media (max-width: 800px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title .yq {
+                font-size: 68px;
+            }
+
+            .hero-title .state {
+                font-size: 44px;
+            }
+
+            .section-main {
+                font-size: 32px;
+            }
+
+            .product-card {
+                flex: 0 0 260px;
+                width: 260px;
+            }
+        }
+
+        /* أنماط إضافية لصفحات المحتوى */
+        .philosophy-card,
+        .about-card {
+            background: var(--gray);
+            border-radius: 32px;
+            padding: 48px;
+            text-align: center;
+            max-width: 720px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="#" class="logo">Y<span>Q</span></a>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showPage('hero')">الرئيسية</a></li>
+            <li><a href="#" onclick="showPage('philosophy')">القواعد</a></li>
+            <li><a href="#" onclick="showPage('collections')">الكوليكشنز</a></li>
+            <li><a href="#" onclick="showPage('about')">الهويه</a></li>
+            <li><a href="#" onclick="showPage('contact')">تواصل معنا</a></li>
+        </ul>
+        <div class="cart-icon" onclick="showPage('cart-page')">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </nav>
+
+    <!-- =================  الصفحة الرئيسية (الـ Hero)  ================= -->
+    <div class="page hero-page active" id="hero">
+        <div class="hero">
+            <div class="hero-content">
+                <div class="hero-subtitle">Fashion Redefined</div>
+                <div class="hero-title">
+                    <div class="yq">YQ</div>
+                    <div class="state">STATE</div>
+                </div>
+                <div class="hero-tagline">خليك أنيق مع يقين — تشكيلات حصرية</div>
+                <a href="#" class="hero-btn" onclick="showPage('collections')">استكشف الكوليكشن</a>
+            </div>
+        </div>
+        <footer>© 2026 يقين — جميع الحقوق محفوظة</footer>
+    </div>
+
+    <!-- =================  صفحة القواعد والسياسات  ================= -->
+    <div class="page" id="philosophy">
+        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px;">
+            <div class="philosophy-card">
+                <p class="section-title">قواعد يقين</p>
+                <h2 class="section-main">سياسة الاستبدال والاسترجاع</h2>
+                <div style="font-size: 18px; line-height: 1.8; margin: 35px 0; text-align: right;">
+                    <p style="margin-bottom: 20px;">✅ استرجاع خلال <strong style="color: var(--pink);">24 ساعة</strong> من الاستلام عند وجود عيب.</p>
+                    <p style="margin-bottom: 20px;">🔄 استبدال خلال <strong style="color: var(--pink);">48 ساعة</strong> لأي سبب (مقاس/لون/رغبة).</p>
+                    <p style="margin-bottom: 20px;">📞 دعم 24 ساعة عبر واتساب أو الهاتف.</p>
+                    <p>💎 ثقتكم أولويتنا — تجربة شراء ممتعة</p>
+                </div>
+                <div style="display: flex; gap: 30px; justify-content: center;">
+                    <div>
+                        <h4 style="color: var(--pink);">ثابت</h4>
+                        <p>على أرضك واقف</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--pink);">صادق</h4>
+                        <p>مع نفسك</p>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--pink);">مطمئن</h4>
+                        <p>عارف طريقك</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- =================  صفحة الكوليكشنز الرئيسية (الـ 4 أقسام)  ================= -->
+    <div class="page" id="collections">
+        <div class="collections-section">
+            <div class="section-header">
+                <p class="section-title">YQ Collections</p>
+                <h2 class="section-main">State Collection</h2>
+            </div>
+            <div class="collections-grid">
+                <div class="collection-card" onclick="showPage('streetwear-collection')">
+                    <img src="https://i.postimg.cc/wBz49DW1/IMG-8950.png" alt="streetwear">
+                    <div class="collection-overlay">
+                        <h3>YQ Drop 02</h3>
+                        <p>Summer Code 2026</p>
+                    </div>
+                </div>
+                <div class="collection-card" onclick="showPage('essentials-collection')">
+                    <img src="https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg" alt="essentials">
+                    <div class="collection-overlay">
+                        <h3>YQ Drop 01</h3>
+                        <p>Winter Code 2025</p>
+                    </div>
+                </div>
+                <div class="collection-card" onclick="showPage('signature-collection')">
+                    <img src="https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg" alt="signature">
+                    <div class="collection-overlay">
+                        <h3>YQ Women Wear</h3>
+                        <p>Women Summer Code 2026</p>
+                    </div>
+                </div>
+                <div class="collection-card" onclick="showPage('pants-collection')">
+                    <img src="https://i.postimg.cc/7L7Cn2DK/IMG-8952.jpg" alt="pants">
+                    <div class="collection-overlay">
+                        <h3>State Pants</h3>
+                        <p>YQ SweetPants</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- =================  صفحات الكوليكشنز الفرعية (عرض المنتجات)  ================= -->
+
+    <!-- صفحة كوليكشن الـ Streetwear (تيشرتات) -->
+    <div class="page" id="streetwear-collection">
+        <div style="padding: 110px 20px 60px; background: var(--dark);">
+            <div style="max-width:1300px; margin:0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h2>ستريت ووير <span style="color: var(--pink);">Streetwear</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);">← العودة</a>
+                </div>
+                <div class="products-grid" id="streetwearProducts"></div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- صفحة كوليكشن الأساسيات (هودي) - بدون أزرار مقاسات -->
+    <div class="page" id="essentials-collection">
+        <div style="padding: 110px 20px 60px; background: var(--dark);">
+            <div style="max-width:1300px; margin:0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h2>الأساسيات <span style="color: var(--pink);">Essentials</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);">← العودة</a>
+                </div>
+                <div class="products-grid" id="essentialsProducts"></div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- صفحة كوليكشن YQ Signature (حريمي) -->
+    <div class="page" id="signature-collection">
+        <div style="padding: 110px 20px 60px; background: var(--dark);">
+            <div style="max-width:1300px; margin:0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h2>YQ Signature <span style="color: var(--pink);">Limited</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);">← العودة</a>
+                </div>
+                <div class="products-grid" id="signatureProducts"></div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- صفحة كوليكشن البناطيل -->
+    <div class="page" id="pants-collection">
+        <div style="padding: 110px 20px 60px; background: var(--dark);">
+            <div style="max-width:1300px; margin:0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 30px;">
+                    <h2>كوليكشن <span style="color: var(--pink);">البناطيل</span> — State Edition</h2>
+                    <a href="#" onclick="showPage('collections')" style="color: var(--pink);">← العودة للمجموعات</a>
+                </div>
+                <div class="products-grid" id="pantsProducts"></div>
+            </div>
+        </div>
+        <footer>© 2026 يقين — تشكيلة البناطيل عالية الجودة</footer>
+    </div>
+
+    <!-- =================  صفحة سلة التسوق  ================= -->
+    <div class="page cart-page" id="cart-page">
+        <div class="cart-container">
+            <div class="cart-items-list">
+                <h3 style="margin-bottom: 25px;">🛍️ منتجاتك</h3>
+                <div id="cartItemsContainer"></div>
+            </div>
+            <div class="cart-summary" id="cartSummary" style="display: none;">
+                <div class="summary-row">
+                    <span>المجموع الفرعي</span>
+                    <span id="cartSubtotal">0 ج.م</span>
+                </div>
+                <div class="coupon-area">
+                    <input type="text" id="couponCode" placeholder="كود الخصم (YAQEEN15, FIRST20)">
+                    <button onclick="applyCoupon()">تطبيق</button>
+                </div>
+                <div id="couponMessage"></div>
+                <div id="discountDisplay" class="summary-row" style="display: none;">
+                    <span>الخصم (<span id="discountName"></span>)</span>
+                    <span>- <span id="discountAmount">0</span> ج.م</span>
+                </div>
+                <div class="summary-row">
+                    <span>رسوم التوصيل</span>
+                    <span>60 ج.م</span>
+                </div>
+                <div class="summary-row">
+                    <span>⏱️ مدة التوصيل</span>
+                    <span>24-28 ساعة</span>
+                </div>
+                <div class="summary-row" style="font-size: 22px; font-weight: bold;">
+                    <span>الإجمالي النهائي</span>
+                    <span id="cartTotalPage">0 ج.م</span>
+                </div>
+                <div class="payment-methods">
+                    <div><i class="fas fa-wallet"></i> طريقة الدفع</div>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="cash" checked> 💵 كاش عند الاستلام
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="vodafone"> 📱 فودافون كاش
+                        <span class="details">(01027515725)</span>
+                    </label>
+                    <label class="payment-method">
+                        <input type="radio" name="paymentMethod" value="instapay"> 🏦 إنستا باي
+                        <span class="details">(01027515725)</span>
+                    </label>
+                </div>
+                <button class="checkout-btn" onclick="sendOrderEmail()">إتمام الطلب</button>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- =================  صفحة عن البراند  ================= -->
+    <div class="page" id="about">
+        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
+            <div class="about-card">
+                <h2>عن <span style="color: var(--pink);">يقين</span></h2>
+                <p style="margin-top: 25px;">بدأنا قصة يقين من الأول عشان نقدم أفضل خامات بأسعار تنافسية، وأناقة تعكس شخصيتك.</p>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- =================  صفحة تواصل معنا (روابط شغالة)  ================= -->
+    <div class="page" id="contact">
+        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
+            <div style="text-align: center;">
+                <h2>تواصل <span style="color: var(--pink);">معنا</span></h2>
+                <div style="display: flex; gap: 48px; margin-top: 48px; flex-wrap: wrap; justify-content: center;">
+                    <a href="tel:+201027515725" style="text-decoration: none; color: inherit;">
+                        <div>
+                            <i class="fas fa-phone-alt" style="font-size: 38px; color: var(--pink);"></i>
+                            <p>اتصل بنا</p>
+                            <p>+20 1027515725</p>
+                        </div>
+                    </a>
+                    <a href="https://wa.me/201027515725" target="_blank" style="text-decoration: none; color: inherit;">
+                        <div>
+                            <i class="fab fa-whatsapp" style="font-size: 38px; color: var(--pink);"></i>
+                            <p>واتساب</p>
+                            <p>محادثة مباشرة</p>
+                        </div>
+                    </a>
+                    <a href="https://instagram.com/yaqeen.state" target="_blank" style="text-decoration: none; color: inherit;">
+                        <div>
+                            <i class="fab fa-instagram" style="font-size: 38px; color: var(--pink);"></i>
+                            <p>إنستغرام</p>
+                            <p>@yaqeen.state</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        /* ------------------------------------------------------------------
+            بيانات المنتجات (مع تحديد المقاسات لكل منتج)
+            ملاحظة: الهودي (essentials) لم يعد له أزرار مقاسات، فقط حقل مقاس خاص.
+            لذلك تم إزالة خاصية sizes من منتجات essentials.
+        ------------------------------------------------------------------ */
+        const productsData = {
+            // كوليكشن التيشرتات - مقاسات L, XL, XXL
+            streetwear: [
+                { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/RFp8ZjtC/IMG-8939.png', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ Graphite Gray Tshirt', price: 500, img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ Graphite Black Tshirt', price: 500, img: 'https://i.postimg.cc/Nj8zHyTK/IMG-8941.png', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ Black Tshirt', price: 449, img: 'https://i.postimg.cc/XqLDPqKc/IMG-8944.jpg', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ White Tshirt', price: 449, img: 'https://i.postimg.cc/CLM2qCY3/IMG-8943.jpg', sizes: ['L', 'XL', 'XXL'] }
+            ],
+            // كوليكشن الهودي - بدون أزرار مقاسات (لن نضيف خاصية sizes أو سنتركها فارغة)
+            essentials: [
+                { name: 'YQ More Self Love Hoodie 2XL', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png' },
+                { name: 'YQ Welcome To World XL', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png' },
+                { name: 'YQ Time Is Money YQ Edition L', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png' },
+                { name: 'YQ Protect Your Peace M', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png' },
+                { name: 'YQ Love Hoodie L', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png' },
+                { name: 'YQ Dear Person Behind Me Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png' },
+                { name: 'YQ All Eyes On Me 2XL ', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png' },
+                { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg' }
+            ],
+            // كوليكشن الحريمي - مقاس واحد (One Size)
+            signature: [
+                { name: 'YQ Women Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'] },
+                { name: 'YQ Women Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'] },
+                { name: 'YQ Women Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'] },
+                { name: 'YQ Women Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'] },
+                { name: 'YQ Women Birgandi Shirt', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'] },
+                { name: 'YQ Women Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'] },
+                { name: 'YQ Women Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'] }
+            ],
+            // كوليكشن البناطيل - مقاسات عادية M, L, XL, XXL
+            pants: [
+                { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/J05W4T1W/IMG-8946.jpg', sizes: ['M', 'L', 'XL', 'XXL'] },
+                { name: 'Gray SweetPants', price: 500, img: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400', sizes: ['M', 'L', 'XL', 'XXL'] },
+                { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/RFwkXPJX/IMG-8947.jpg', sizes: ['M', 'L', 'XL', 'XXL'] },
+                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/13tZsc2T/IMG-8948.jpg', sizes: ['M', 'L', 'XL', 'XXL'] }
+            ]
+        };
+
+        /* ------------------------------------------------------------------
+            دالة عرض المنتجات مع المقاسات الديناميكية
+            - لو المنتج معندوش خاصية sizes، يتم عرض حقل مقاس خاص فقط (بدون أزرار).
+        ------------------------------------------------------------------ */
+        function renderProducts(containerId, products) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            let html = '';
+            for (let i = 0; i < products.length; i++) {
+                const p = products[i];
+                
+                // التحقق من وجود مقاسات محددة للمنتج
+                const hasSizes = p.sizes && p.sizes.length;
+                
+                let sizesHtml = '';
+                if (hasSizes) {
+                    sizesHtml = '<div class="size-options">';
+                    for (let s of p.sizes) {
+                        const oneSizeClass = (s === 'One Size') ? 'one-size' : '';
+                        sizesHtml += `<div class="size-option ${oneSizeClass}" data-size="${s}">${s}</div>`;
+                    }
+                    sizesHtml += '</div>';
+                }
+                // إذا لم توجد مقاسات محددة، لا نضيف أي أزرار، فقط حقل المقاس الخاص
+
+                html += `
+                    <div class="product-card">
+                        <img src="${p.img}" alt="${p.name}">
+                        <h3>${p.name}</h3>
+                        <div class="product-price">${p.price} ج.م</div>
+                        ${sizesHtml}
+                        <input type="text" class="custom-size" placeholder="مقاس خاص">
+                        <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, '${p.img}', this)">إضافة للسلة</button>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+            attachSizeEvents();
+        }
+
+        /* ------------------------------------------------------------------
+            ربط أحداث النقر على خيارات المقاسات والمقاس الخاص
+        ------------------------------------------------------------------ */
+        function attachSizeEvents() {
+            // أحداث خيارات المقاسات (فقط الموجودة)
+            const sizeOptions = document.querySelectorAll('.size-option');
+            for (let i = 0; i < sizeOptions.length; i++) {
+                sizeOptions[i].removeEventListener('click', sizeClickHandler);
+                sizeOptions[i].addEventListener('click', sizeClickHandler);
+            }
+
+            // أحداث حقل المقاس الخاص (لجميع المنتجات)
+            const customInputs = document.querySelectorAll('.custom-size');
+            for (let i = 0; i < customInputs.length; i++) {
+                customInputs[i].removeEventListener('change', customSizeHandler);
+                customInputs[i].addEventListener('change', customSizeHandler);
+            }
+        }
+
+        function sizeClickHandler() {
+            const parent = this.parentNode;
+            const allOptions = parent.querySelectorAll('.size-option');
+            for (let i = 0; i < allOptions.length; i++) {
+                allOptions[i].classList.remove('selected');
+            }
+            this.classList.add('selected');
+            const card = this.closest('.product-card');
+            card.dataset.selectedSize = this.getAttribute('data-size');
+            // مسح حقل المقاس الخاص إن وجد
+            const custom = card.querySelector('.custom-size');
+            if (custom) custom.value = '';
+        }
+
+        function customSizeHandler() {
+            const card = this.closest('.product-card');
+            if (this.value.trim()) {
+                card.dataset.selectedSize = this.value.trim();
+                // إلغاء تحديد أي مقاس عادي
+                const allOptions = card.querySelectorAll('.size-option');
+                for (let i = 0; i < allOptions.length; i++) {
+                    allOptions[i].classList.remove('selected');
+                }
+            } else {
+                delete card.dataset.selectedSize;
+            }
+        }
+
+        // عرض جميع المنتجات
+        renderProducts('streetwearProducts', productsData.streetwear);
+        renderProducts('essentialsProducts', productsData.essentials);
+        renderProducts('signatureProducts', productsData.signature);
+        renderProducts('pantsProducts', productsData.pants);
+
+        /* ------------------------------------------------------------------
+            باقي دوال السلة والكوبونات (نفس السابق)
+        ------------------------------------------------------------------ */
+        let cart = [];
+        let total = 0;
+        let appliedCoupon = null;
+        const SHIPPING = 60;
+        const validCoupons = {
+            'YAQEEN15': { type: 'percent', value: 15, name: '15% خصم' },
+            'FIRST20': { type: 'fixed', value: 20, name: '20 ج.م خصم' },
+            'WELCOME10': { type: 'percent', value: 10, name: '10% خصم' }
+        };
+
+        window.addToCart = function(name, price, img, btn) {
+            const card = btn.closest('.product-card');
+            let size = card.dataset.selectedSize;
+            if (!size) {
+                const custom = card.querySelector('.custom-size');
+                if (custom && custom.value.trim()) {
+                    size = custom.value.trim();
+                } else {
+                    alert('الرجاء اختيار المقاس');
+                    return;
+                }
+            }
+            cart.push({ name, price, img, size });
+            total += price;
+            if (appliedCoupon) updateCouponDisplay();
+            updateCartCount();
+            showToast('✅ تمت الإضافة إلى السلة');
+        };
+
+        window.removeFromCart = function(index) {
+            total -= cart[index].price;
+            cart.splice(index, 1);
+            if (appliedCoupon) updateCouponDisplay();
+            updateCartCount();
+            if (document.getElementById('cart-page').classList.contains('active')) {
+                renderCartPage();
+            }
+        };
+
+        function updateCartCount() {
+            document.getElementById('cartCount').innerText = cart.length;
+        }
+
+        function calculateDiscount() {
+            if (!appliedCoupon) return 0;
+            if (appliedCoupon.type === 'percent') {
+                return total * appliedCoupon.value / 100;
+            }
+            return Math.min(appliedCoupon.value, total);
+        }
+
+        function getFinalTotal() {
+            return total + SHIPPING - calculateDiscount();
+        }
+
+        function updateCouponDisplay() {
+            const discount = calculateDiscount();
+            document.getElementById('cartSubtotal').innerText = total + ' ج.م';
+            const discDiv = document.getElementById('discountDisplay');
+            if (appliedCoupon) {
+                discDiv.style.display = 'flex';
+                document.getElementById('discountName').innerText = appliedCoupon.name;
+                document.getElementById('discountAmount').innerText = discount.toFixed(0);
+            } else {
+                discDiv.style.display = 'none';
+            }
+            document.getElementById('cartTotalPage').innerText = getFinalTotal().toFixed(0) + ' ج.م';
+        }
+
+        window.applyCoupon = function() {
+            const code = document.getElementById('couponCode').value.trim().toUpperCase();
+            const msgDiv = document.getElementById('couponMessage');
+            if (!code) {
+                msgDiv.innerHTML = '<span style="color:#ff8888;">أدخل كود</span>';
+                return;
+            }
+            if (appliedCoupon && appliedCoupon.code === code) {
+                msgDiv.innerHTML = '<span style="color:#ff8888;">مطبق بالفعل</span>';
+                return;
+            }
+            const coupon = validCoupons[code];
+            if (!coupon) {
+                msgDiv.innerHTML = '<span style="color:#ff8888;">كود غير صالح</span>';
+                return;
+            }
+            appliedCoupon = { code, ...coupon };
+            msgDiv.innerHTML = `<span style="color:var(--pink);">✅ تم تطبيق ${coupon.name}</span>`;
+            updateCouponDisplay();
+            renderCartPage();
+        };
+
+        window.removeCoupon = function() {
+            appliedCoupon = null;
+            document.getElementById('couponMessage').innerHTML = '';
+            document.getElementById('couponCode').value = '';
+            updateCouponDisplay();
+            renderCartPage();
+            showToast('تم إلغاء الخصم');
+        };
+
+        function renderCartPage() {
+            const container = document.getElementById('cartItemsContainer');
+            const summary = document.getElementById('cartSummary');
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:40px;">🛒 السلة فارغة</p>';
+                summary.style.display = 'none';
+                appliedCoupon = null;
+                updateCouponDisplay();
+            } else {
+                summary.style.display = 'block';
+                let itemsHtml = '';
+                for (let i = 0; i < cart.length; i++) {
+                    const item = cart[i];
+                    itemsHtml += `
+                        <div class="cart-item">
+                            <img src="${item.img}" alt="">
+                            <div class="cart-item-details">
+                                <h4>${item.name}</h4>
+                                <div>المقاس: ${item.size}</div>
+                                <div class="product-price">${item.price} ج.م</div>
+                            </div>
+                            <button class="cart-item-remove" onclick="removeFromCart(${i})">إزالة</button>
+                        </div>
+                    `;
+                }
+                container.innerHTML = itemsHtml;
+                document.getElementById('cartSubtotal').innerText = total + ' ج.م';
+                updateCouponDisplay();
+
+                const existingRemove = document.querySelector('.remove-coupon-btn');
+                if (appliedCoupon && !existingRemove) {
+                    const btn = document.createElement('button');
+                    btn.innerText = 'إلغاء الخصم';
+                    btn.className = 'remove-coupon-btn';
+                    btn.onclick = () => removeCoupon();
+                    document.querySelector('.coupon-area').appendChild(btn);
+                } else if (!appliedCoupon && existingRemove) {
+                    existingRemove.remove();
+                }
+            }
+        }
+
+        window.sendOrderEmail = function() {
+            if (cart.length === 0) {
+                alert('السلة فارغة');
+                return;
+            }
+            const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
+            let payText = '';
+            if (payment === 'cash') payText = 'الدفع عند الاستلام';
+            else if (payment === 'vodafone') payText = 'فودافون كاش';
+            else payText = 'إنستا باي';
+
+            const finalTotal = getFinalTotal();
+            const discount = calculateDiscount();
+            let details = 'طلب جديد من yaqeen.com:\n';
+            for (let i = 0; i < cart.length; i++) {
+                const item = cart[i];
+                details += `${i + 1}. ${item.name} (${item.size}) - ${item.price} ج.م\n`;
+            }
+            details += `\nالمجموع: ${total} ج.م`;
+            if (discount > 0) details += `\nالخصم: -${discount.toFixed(0)} ج.م`;
+            details += `\nالتوصيل: ${SHIPPING} ج.م\nالإجمالي النهائي: ${finalTotal.toFixed(0)} ج.م`;
+            details += `\nطريقة الدفع: ${payText}\nمدة التوصيل: 24-28 ساعة`;
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'https://formsubmit.co/info@yaqeen.com';
+            form.style.display = 'none';
+
+            const addField = (name, value) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = name;
+                input.value = value;
+                form.appendChild(input);
+            };
+            addField('_subject', 'طلب جديد من yaqeen.com');
+            addField('message', details);
+            document.body.appendChild(form);
+            form.submit();
+
+            cart = [];
+            total = 0;
+            appliedCoupon = null;
+            updateCartCount();
+            renderCartPage();
+            showPage('collections');
+            showToast('✅ تم إرسال الطلب بنجاح');
+        };
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2600);
+        }
+
+        window.showPage = function(id) {
+            const pages = document.querySelectorAll('.page');
+            for (let i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('active');
+            }
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo(0, 0);
+                if (id === 'cart-page') {
+                    renderCartPage();
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
