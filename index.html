@@ -9,14 +9,11 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome 6 (الأيقونات) -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ---------------------------------------------------------------
-           1.  تعريف الخط التجاري المخصص (Another Danger)
-           يجب وضع ملف الخط في نفس مجلد ملف HTML
-        --------------------------------------------------------------- */
+        /* تعريف الخط المخصص مع fallback جيد */
         @font-face {
             font-family: 'Another Danger';
             src: url('Another Danger Slanted - Demo.otf') format('opentype');
@@ -25,18 +22,12 @@
             font-display: swap;
         }
 
-        /* ---------------------------------------------------------------
-           2.  إعادة تعيين الإعدادات الافتراضية للمتصفح
-        --------------------------------------------------------------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ---------------------------------------------------------------
-           3.  المتغيرات العامة (الثيم الوردي)
-        --------------------------------------------------------------- */
         :root {
             --black: #0d0d0d;
             --dark: #1a1a1a;
@@ -47,9 +38,6 @@
             --pink-light: #ff99cc;
         }
 
-        /* ---------------------------------------------------------------
-           4.  إعدادات الجسم الرئيسي
-        --------------------------------------------------------------- */
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--black);
@@ -57,9 +45,6 @@
             overflow-x: hidden;
         }
 
-        /* ---------------------------------------------------------------
-           5.  نظام الصفحات المتعددة (كل صفحة "page" تظهر بالـ active)
-        --------------------------------------------------------------- */
         .page {
             position: fixed;
             top: 0;
@@ -79,9 +64,7 @@
             transform: translateX(0);
         }
 
-        /* ---------------------------------------------------------------
-           6.  شريط التنقل العلوي (ثابت)
-        --------------------------------------------------------------- */
+        /* شريط التنقل */
         nav {
             position: fixed;
             top: 0;
@@ -108,6 +91,7 @@
             color: var(--pink);
         }
 
+        /* القائمة العادية */
         .nav-links {
             display: flex;
             gap: 28px;
@@ -133,7 +117,52 @@
             color: var(--pink);
         }
 
-        /* أيقونة السلة */
+        /* أيقونة الهامبرغر للجوال */
+        .menu-icon {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--pink);
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 70px;
+            right: 0;
+            width: 100%;
+            background: rgba(13, 13, 13, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 999;
+            transform: translateY(-150%);
+            transition: transform 0.3s ease;
+            border-bottom: 1px solid rgba(255, 105, 180, 0.3);
+        }
+
+        .mobile-nav.open {
+            transform: translateY(0);
+        }
+
+        .mobile-nav .nav-links-mobile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .mobile-nav .nav-links-mobile a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .mobile-nav .nav-links-mobile a:hover {
+            color: var(--pink);
+        }
+
         .cart-icon {
             position: relative;
             cursor: pointer;
@@ -168,12 +197,10 @@
             justify-content: center;
         }
 
-        /* ---------------------------------------------------------------
-           7.  الصفحة الرئيسية (Hero Section)
-        --------------------------------------------------------------- */
+        /* Hero Section */
         .hero-page {
             position: relative;
-            background-image: url('https://i.postimg.cc/c4brqmLB/Final-Logo.png');
+            background-image: url('https://images.unsplash.com/photo-1551232864-3f0890e580d9?w=1400&auto=format');
             background-size: cover;
             background-position: center 30%;
         }
@@ -222,7 +249,7 @@
         }
 
         .hero-subtitle {
-            font-family: 'Space Grotesk';
+            font-family: 'Space Grotesk', monospace;
             font-size: 12px;
             letter-spacing: 8px;
             color: var(--pink);
@@ -271,9 +298,7 @@
             box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
         }
 
-        /* ---------------------------------------------------------------
-           8.  قسم عرض الكوليكشنز (بطاقات كبيرة)
-        --------------------------------------------------------------- */
+        /* Collections */
         .collections-section {
             padding: 100px 5% 80px;
             background: var(--dark);
@@ -346,9 +371,7 @@
             font-size: 22px;
         }
 
-        /* ---------------------------------------------------------------
-           9.  شبكة المنتجات (بطاقات فردية)
-        --------------------------------------------------------------- */
+        /* Products grid */
         .products-grid {
             display: flex;
             flex-wrap: wrap;
@@ -379,7 +402,6 @@
             width: 100%;
             height: 260px;
             object-fit: cover;
-            transition: 0.3s;
         }
 
         .product-card h3 {
@@ -396,7 +418,6 @@
             display: inline-block;
         }
 
-        /* خيارات المقاسات - تصميم مرن */
         .size-options {
             display: flex;
             justify-content: center;
@@ -416,10 +437,8 @@
             cursor: pointer;
             font-weight: 600;
             transition: 0.2s;
-            font-size: 14px;
         }
 
-        /* لـ "One Size" نعرضه بشكل مميز */
         .size-option.one-size {
             width: auto;
             padding: 0 18px;
@@ -432,7 +451,6 @@
             transform: scale(0.96);
         }
 
-        /* مقاس خاص (إدخال نصي) */
         .custom-size {
             width: 82%;
             margin: 12px auto 6px;
@@ -450,7 +468,6 @@
             border-color: var(--pink);
         }
 
-        /* زر إضافة للسلة */
         .add-btn {
             width: 85%;
             margin: 12px auto 20px;
@@ -471,9 +488,7 @@
             transform: scale(0.97);
         }
 
-        /* ---------------------------------------------------------------
-           10.  صفحة سلة التسوق (نفس السابق)
-        --------------------------------------------------------------- */
+        /* Cart page */
         .cart-page {
             background: var(--dark);
         }
@@ -581,6 +596,20 @@
             font-size: 12px;
         }
 
+        .delivery-options {
+            margin: 24px 0 12px;
+            background: #404040;
+            padding: 12px;
+            border-radius: 16px;
+        }
+
+        .delivery-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+        }
+
         .payment-methods {
             margin: 24px 0 12px;
         }
@@ -621,9 +650,6 @@
             margin-top: 40px;
         }
 
-        /* ---------------------------------------------------------------
-           11.  رسالة منبثقة (Toast)
-        --------------------------------------------------------------- */
         #toast {
             position: fixed;
             bottom: 30px;
@@ -641,37 +667,31 @@
             pointer-events: none;
         }
 
-        /* ---------------------------------------------------------------
-           12.  استعلامات الوسائط (لشاشات الموبايل)
-        --------------------------------------------------------------- */
         @media (max-width: 800px) {
             .cart-container {
                 grid-template-columns: 1fr;
             }
-
             .nav-links {
                 display: none;
             }
-
+            .menu-icon {
+                display: block;
+            }
             .hero-title .yq {
                 font-size: 68px;
             }
-
             .hero-title .state {
                 font-size: 44px;
             }
-
             .section-main {
                 font-size: 32px;
             }
-
             .product-card {
                 flex: 0 0 260px;
                 width: 260px;
             }
         }
 
-        /* أنماط إضافية لصفحات المحتوى */
         .philosophy-card,
         .about-card {
             background: var(--gray);
@@ -687,21 +707,34 @@
 <body>
 
     <nav>
+        <div class="menu-icon" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
         <a href="#" class="logo">Y<span>Q</span></a>
         <ul class="nav-links">
-            <li><a href="#" onclick="showPage('hero')">الرئيسية</a></li>
-            <li><a href="#" onclick="showPage('philosophy')">القواعد</a></li>
-            <li><a href="#" onclick="showPage('collections')">الكوليكشنز</a></li>
-            <li><a href="#" onclick="showPage('about')">الهويه</a></li>
-            <li><a href="#" onclick="showPage('contact')">تواصل معنا</a></li>
+            <li><a href="#" onclick="showPage('hero'); closeMobileMenu()">الرئيسية</a></li>
+            <li><a href="#" onclick="showPage('philosophy'); closeMobileMenu()">القواعد</a></li>
+            <li><a href="#" onclick="showPage('collections'); closeMobileMenu()">الكوليكشنز</a></li>
+            <li><a href="#" onclick="showPage('about'); closeMobileMenu()">الهويه</a></li>
+            <li><a href="#" onclick="showPage('contact'); closeMobileMenu()">تواصل معنا</a></li>
         </ul>
-        <div class="cart-icon" onclick="showPage('cart-page')">
+        <div class="cart-icon" onclick="showPage('cart-page'); closeMobileMenu()">
             <i class="fas fa-shopping-bag"></i>
             <span class="cart-count" id="cartCount">0</span>
         </div>
     </nav>
 
-    <!-- =================  الصفحة الرئيسية (الـ Hero)  ================= -->
+    <div class="mobile-nav" id="mobileNav">
+        <ul class="nav-links-mobile">
+            <li><a href="#" onclick="showPage('hero'); closeMobileMenu()">الرئيسية</a></li>
+            <li><a href="#" onclick="showPage('philosophy'); closeMobileMenu()">القواعد</a></li>
+            <li><a href="#" onclick="showPage('collections'); closeMobileMenu()">الكوليكشنز</a></li>
+            <li><a href="#" onclick="showPage('about'); closeMobileMenu()">الهويه</a></li>
+            <li><a href="#" onclick="showPage('contact'); closeMobileMenu()">تواصل معنا</a></li>
+        </ul>
+    </div>
+
+    <!-- Hero page -->
     <div class="page hero-page active" id="hero">
         <div class="hero">
             <div class="hero-content">
@@ -717,7 +750,7 @@
         <footer>© 2026 يقين — جميع الحقوق محفوظة</footer>
     </div>
 
-    <!-- =================  صفحة القواعد والسياسات  ================= -->
+    <!-- صفحة القواعد -->
     <div class="page" id="philosophy">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px;">
             <div class="philosophy-card">
@@ -730,25 +763,16 @@
                     <p>💎 ثقتكم أولويتنا — تجربة شراء ممتعة</p>
                 </div>
                 <div style="display: flex; gap: 30px; justify-content: center;">
-                    <div>
-                        <h4 style="color: var(--pink);">ثابت</h4>
-                        <p>على أرضك واقف</p>
-                    </div>
-                    <div>
-                        <h4 style="color: var(--pink);">صادق</h4>
-                        <p>مع نفسك</p>
-                    </div>
-                    <div>
-                        <h4 style="color: var(--pink);">مطمئن</h4>
-                        <p>عارف طريقك</p>
-                    </div>
+                    <div><h4 style="color: var(--pink);">ثابت</h4><p>على أرضك واقف</p></div>
+                    <div><h4 style="color: var(--pink);">صادق</h4><p>مع نفسك</p></div>
+                    <div><h4 style="color: var(--pink);">مطمئن</h4><p>عارف طريقك</p></div>
                 </div>
             </div>
         </div>
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحة الكوليكشنز الرئيسية (الـ 4 أقسام)  ================= -->
+    <!-- صفحة الكوليكشنز الرئيسية -->
     <div class="page" id="collections">
         <div class="collections-section">
             <div class="section-header">
@@ -758,40 +782,26 @@
             <div class="collections-grid">
                 <div class="collection-card" onclick="showPage('streetwear-collection')">
                     <img src="https://i.postimg.cc/wBz49DW1/IMG-8950.png" alt="streetwear">
-                    <div class="collection-overlay">
-                        <h3>YQ Drop 02</h3>
-                        <p>Summer Code 2026</p>
-                    </div>
+                    <div class="collection-overlay"><h3>YQ Drop 02</h3><p>Summer Code 2026</p></div>
                 </div>
                 <div class="collection-card" onclick="showPage('essentials-collection')">
                     <img src="https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg" alt="essentials">
-                    <div class="collection-overlay">
-                        <h3>YQ Drop 01</h3>
-                        <p>Winter Code 2025</p>
-                    </div>
+                    <div class="collection-overlay"><h3>YQ Drop 01</h3><p>Winter Code 2025</p></div>
                 </div>
                 <div class="collection-card" onclick="showPage('signature-collection')">
                     <img src="https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg" alt="signature">
-                    <div class="collection-overlay">
-                        <h3>YQ Women Wear</h3>
-                        <p>Women Summer Code 2026</p>
-                    </div>
+                    <div class="collection-overlay"><h3>YQ Women Wear</h3><p>Women Summer Code 2026</p></div>
                 </div>
                 <div class="collection-card" onclick="showPage('pants-collection')">
-                    <img src="https://i.postimg.cc/7L7Cn2DK/IMG-8952.jpg" alt="pants">
-                    <div class="collection-overlay">
-                        <h3>State Pants</h3>
-                        <p>YQ SweetPants</p>
-                    </div>
+                    <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600" alt="pants">
+                    <div class="collection-overlay"><h3>State Pants</h3><p>YQ SweetPants</p></div>
                 </div>
             </div>
         </div>
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحات الكوليكشنز الفرعية (عرض المنتجات)  ================= -->
-
-    <!-- صفحة كوليكشن الـ Streetwear (تيشرتات) -->
+    <!-- صفحات الكوليكشنز الفرعية -->
     <div class="page" id="streetwear-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -804,8 +814,6 @@
         </div>
         <footer>© 2026 يقين</footer>
     </div>
-
-    <!-- صفحة كوليكشن الأساسيات (هودي) - بدون أزرار مقاسات -->
     <div class="page" id="essentials-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -818,8 +826,6 @@
         </div>
         <footer>© 2026 يقين</footer>
     </div>
-
-    <!-- صفحة كوليكشن YQ Signature (حريمي) -->
     <div class="page" id="signature-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -832,8 +838,6 @@
         </div>
         <footer>© 2026 يقين</footer>
     </div>
-
-    <!-- صفحة كوليكشن البناطيل -->
     <div class="page" id="pants-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
@@ -847,7 +851,7 @@
         <footer>© 2026 يقين — تشكيلة البناطيل عالية الجودة</footer>
     </div>
 
-    <!-- =================  صفحة سلة التسوق  ================= -->
+    <!-- سلة التسوق -->
     <div class="page cart-page" id="cart-page">
         <div class="cart-container">
             <div class="cart-items-list">
@@ -868,13 +872,23 @@
                     <span>الخصم (<span id="discountName"></span>)</span>
                     <span>- <span id="discountAmount">0</span> ج.م</span>
                 </div>
-                <div class="summary-row">
+                <div class="delivery-options">
+                    <div class="delivery-option">
+                        <input type="radio" name="delivery" value="delivery" id="deliveryHome" checked>
+                        <label for="deliveryHome">🚚 توصيل للمنزل (60 ج.م)</label>
+                    </div>
+                    <div class="delivery-option">
+                        <input type="radio" name="delivery" value="pickup" id="deliveryPickup">
+                        <label for="deliveryPickup">📍 استلام من المكان المحدد (مجاني)</label>
+                    </div>
+                </div>
+                <div id="shippingDisplay" class="summary-row">
                     <span>رسوم التوصيل</span>
-                    <span>60 ج.م</span>
+                    <span id="shippingAmount">60 ج.م</span>
                 </div>
                 <div class="summary-row">
                     <span>⏱️ مدة التوصيل</span>
-                    <span>24-28 ساعة</span>
+                    <span>24-48 ساعة</span>
                 </div>
                 <div class="summary-row" style="font-size: 22px; font-weight: bold;">
                     <span>الإجمالي النهائي</span>
@@ -894,13 +908,13 @@
                         <span class="details">(01027515725)</span>
                     </label>
                 </div>
-                <button class="checkout-btn" onclick="sendOrderEmail()">إتمام الطلب</button>
+                <button class="checkout-btn" onclick="sendOrderWhatsApp()">إتمام الطلب عبر واتساب</button>
             </div>
         </div>
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحة عن البراند  ================= -->
+    <!-- عن البراند -->
     <div class="page" id="about">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
             <div class="about-card">
@@ -911,32 +925,20 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحة تواصل معنا (روابط شغالة)  ================= -->
+    <!-- تواصل معنا -->
     <div class="page" id="contact">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
             <div style="text-align: center;">
                 <h2>تواصل <span style="color: var(--pink);">معنا</span></h2>
                 <div style="display: flex; gap: 48px; margin-top: 48px; flex-wrap: wrap; justify-content: center;">
                     <a href="tel:+201027515725" style="text-decoration: none; color: inherit;">
-                        <div>
-                            <i class="fas fa-phone-alt" style="font-size: 38px; color: var(--pink);"></i>
-                            <p>اتصل بنا</p>
-                            <p>+20 1027515725</p>
-                        </div>
+                        <div><i class="fas fa-phone-alt" style="font-size: 38px; color: var(--pink);"></i><p>اتصل بنا</p><p>+20 1027515725</p></div>
                     </a>
                     <a href="https://wa.me/201027515725" target="_blank" style="text-decoration: none; color: inherit;">
-                        <div>
-                            <i class="fab fa-whatsapp" style="font-size: 38px; color: var(--pink);"></i>
-                            <p>واتساب</p>
-                            <p>محادثة مباشرة</p>
-                        </div>
+                        <div><i class="fab fa-whatsapp" style="font-size: 38px; color: var(--pink);"></i><p>واتساب</p><p>محادثة مباشرة</p></div>
                     </a>
                     <a href="https://instagram.com/yaqeen.state" target="_blank" style="text-decoration: none; color: inherit;">
-                        <div>
-                            <i class="fab fa-instagram" style="font-size: 38px; color: var(--pink);"></i>
-                            <p>إنستغرام</p>
-                            <p>@yaqeen.state</p>
-                        </div>
+                        <div><i class="fab fa-instagram" style="font-size: 38px; color: var(--pink);"></i><p>إنستغرام</p><p>@yaqeen.state</p></div>
                     </a>
                 </div>
             </div>
@@ -947,13 +949,8 @@
     <div id="toast"></div>
 
     <script>
-        /* ------------------------------------------------------------------
-            بيانات المنتجات (مع تحديد المقاسات لكل منتج)
-            ملاحظة: الهودي (essentials) لم يعد له أزرار مقاسات، فقط حقل مقاس خاص.
-            لذلك تم إزالة خاصية sizes من منتجات essentials.
-        ------------------------------------------------------------------ */
+        // بيانات المنتجات (نفس الكود السابق)
         const productsData = {
-            // كوليكشن التيشرتات - مقاسات L, XL, XXL
             streetwear: [
                 { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L', 'XL', 'XXL'] },
                 { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/RFp8ZjtC/IMG-8939.png', sizes: ['L', 'XL', 'XXL'] },
@@ -962,7 +959,6 @@
                 { name: 'YQ Black Tshirt', price: 449, img: 'https://i.postimg.cc/XqLDPqKc/IMG-8944.jpg', sizes: ['L', 'XL', 'XXL'] },
                 { name: 'YQ White Tshirt', price: 449, img: 'https://i.postimg.cc/CLM2qCY3/IMG-8943.jpg', sizes: ['L', 'XL', 'XXL'] }
             ],
-            // كوليكشن الهودي - بدون أزرار مقاسات (لن نضيف خاصية sizes أو سنتركها فارغة)
             essentials: [
                 { name: 'YQ More Self Love Hoodie 2XL', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png' },
                 { name: 'YQ Welcome To World XL', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png' },
@@ -971,10 +967,8 @@
                 { name: 'YQ Love Hoodie L', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png' },
                 { name: 'YQ Dear Person Behind Me Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png' },
                 { name: 'YQ All Eyes On Me 2XL ', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png' },
-                { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg' },
-                { name: 'YQ Limited Edition Hoodie 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png' }
+                { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg' }
             ],
-            // كوليكشن الحريمي - مقاس واحد (One Size)
             signature: [
                 { name: 'YQ Women Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'] },
                 { name: 'YQ Women Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'] },
@@ -984,7 +978,6 @@
                 { name: 'YQ Women Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'] },
                 { name: 'YQ Women Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'] }
             ],
-            // كوليكشن البناطيل - مقاسات عادية M, L, XL, XXL
             pants: [
                 { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/J05W4T1W/IMG-8946.jpg', sizes: ['M', 'L', 'XL', 'XXL'] },
                 { name: 'Gray SweetPants', price: 500, img: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=400', sizes: ['M', 'L', 'XL', 'XXL'] },
@@ -993,21 +986,12 @@
             ]
         };
 
-        /* ------------------------------------------------------------------
-            دالة عرض المنتجات مع المقاسات الديناميكية
-            - لو المنتج معندوش خاصية sizes، يتم عرض حقل مقاس خاص فقط (بدون أزرار).
-        ------------------------------------------------------------------ */
         function renderProducts(containerId, products) {
             const container = document.getElementById(containerId);
             if (!container) return;
-
             let html = '';
-            for (let i = 0; i < products.length; i++) {
-                const p = products[i];
-                
-                // التحقق من وجود مقاسات محددة للمنتج
+            for (let p of products) {
                 const hasSizes = p.sizes && p.sizes.length;
-                
                 let sizesHtml = '';
                 if (hasSizes) {
                     sizesHtml = '<div class="size-options">';
@@ -1017,8 +1001,6 @@
                     }
                     sizesHtml += '</div>';
                 }
-                // إذا لم توجد مقاسات محددة، لا نضيف أي أزرار، فقط حقل المقاس الخاص
-
                 html += `
                     <div class="product-card">
                         <img src="${p.img}" alt="${p.name}">
@@ -1034,35 +1016,22 @@
             attachSizeEvents();
         }
 
-        /* ------------------------------------------------------------------
-            ربط أحداث النقر على خيارات المقاسات والمقاس الخاص
-        ------------------------------------------------------------------ */
         function attachSizeEvents() {
-            // أحداث خيارات المقاسات (فقط الموجودة)
-            const sizeOptions = document.querySelectorAll('.size-option');
-            for (let i = 0; i < sizeOptions.length; i++) {
-                sizeOptions[i].removeEventListener('click', sizeClickHandler);
-                sizeOptions[i].addEventListener('click', sizeClickHandler);
-            }
-
-            // أحداث حقل المقاس الخاص (لجميع المنتجات)
-            const customInputs = document.querySelectorAll('.custom-size');
-            for (let i = 0; i < customInputs.length; i++) {
-                customInputs[i].removeEventListener('change', customSizeHandler);
-                customInputs[i].addEventListener('change', customSizeHandler);
-            }
+            document.querySelectorAll('.size-option').forEach(opt => {
+                opt.removeEventListener('click', sizeClickHandler);
+                opt.addEventListener('click', sizeClickHandler);
+            });
+            document.querySelectorAll('.custom-size').forEach(inp => {
+                inp.removeEventListener('change', customSizeHandler);
+                inp.addEventListener('change', customSizeHandler);
+            });
         }
 
         function sizeClickHandler() {
-            const parent = this.parentNode;
-            const allOptions = parent.querySelectorAll('.size-option');
-            for (let i = 0; i < allOptions.length; i++) {
-                allOptions[i].classList.remove('selected');
-            }
+            this.parentNode.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
             const card = this.closest('.product-card');
             card.dataset.selectedSize = this.getAttribute('data-size');
-            // مسح حقل المقاس الخاص إن وجد
             const custom = card.querySelector('.custom-size');
             if (custom) custom.value = '';
         }
@@ -1071,29 +1040,21 @@
             const card = this.closest('.product-card');
             if (this.value.trim()) {
                 card.dataset.selectedSize = this.value.trim();
-                // إلغاء تحديد أي مقاس عادي
-                const allOptions = card.querySelectorAll('.size-option');
-                for (let i = 0; i < allOptions.length; i++) {
-                    allOptions[i].classList.remove('selected');
-                }
+                card.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
             } else {
                 delete card.dataset.selectedSize;
             }
         }
 
-        // عرض جميع المنتجات
         renderProducts('streetwearProducts', productsData.streetwear);
         renderProducts('essentialsProducts', productsData.essentials);
         renderProducts('signatureProducts', productsData.signature);
         renderProducts('pantsProducts', productsData.pants);
 
-        /* ------------------------------------------------------------------
-            باقي دوال السلة والكوبونات (نفس السابق)
-        ------------------------------------------------------------------ */
+        // سلة التسوق
         let cart = [];
         let total = 0;
         let appliedCoupon = null;
-        const SHIPPING = 60;
         const validCoupons = {
             'YAQEEN15': { type: 'percent', value: 15, name: '15% خصم' },
             'FIRST20': { type: 'fixed', value: 20, name: '20 ج.م خصم' },
@@ -1105,12 +1066,8 @@
             let size = card.dataset.selectedSize;
             if (!size) {
                 const custom = card.querySelector('.custom-size');
-                if (custom && custom.value.trim()) {
-                    size = custom.value.trim();
-                } else {
-                    alert('الرجاء اختيار المقاس');
-                    return;
-                }
+                if (custom && custom.value.trim()) size = custom.value.trim();
+                else { alert('الرجاء اختيار المقاس'); return; }
             }
             cart.push({ name, price, img, size });
             total += price;
@@ -1119,14 +1076,12 @@
             showToast('✅ تمت الإضافة إلى السلة');
         };
 
-        window.removeFromCart = function(index) {
-            total -= cart[index].price;
-            cart.splice(index, 1);
+        window.removeFromCart = function(idx) {
+            total -= cart[idx].price;
+            cart.splice(idx, 1);
             if (appliedCoupon) updateCouponDisplay();
             updateCartCount();
-            if (document.getElementById('cart-page').classList.contains('active')) {
-                renderCartPage();
-            }
+            if (document.getElementById('cart-page').classList.contains('active')) renderCartPage();
         };
 
         function updateCartCount() {
@@ -1135,14 +1090,27 @@
 
         function calculateDiscount() {
             if (!appliedCoupon) return 0;
-            if (appliedCoupon.type === 'percent') {
-                return total * appliedCoupon.value / 100;
-            }
+            if (appliedCoupon.type === 'percent') return total * appliedCoupon.value / 100;
             return Math.min(appliedCoupon.value, total);
         }
 
+        function getShippingAmount() {
+            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+            for (let r of deliveryRadios) {
+                if (r.checked) return r.value === 'delivery' ? 60 : 0;
+            }
+            return 60;
+        }
+
         function getFinalTotal() {
-            return total + SHIPPING - calculateDiscount();
+            return total + getShippingAmount() - calculateDiscount();
+        }
+
+        function updateTotalAndShipping() {
+            const shipping = getShippingAmount();
+            document.getElementById('shippingAmount').innerText = shipping + ' ج.م';
+            document.getElementById('cartTotalPage').innerText = getFinalTotal().toFixed(0) + ' ج.م';
+            updateCouponDisplay();
         }
 
         function updateCouponDisplay() {
@@ -1162,19 +1130,10 @@
         window.applyCoupon = function() {
             const code = document.getElementById('couponCode').value.trim().toUpperCase();
             const msgDiv = document.getElementById('couponMessage');
-            if (!code) {
-                msgDiv.innerHTML = '<span style="color:#ff8888;">أدخل كود</span>';
-                return;
-            }
-            if (appliedCoupon && appliedCoupon.code === code) {
-                msgDiv.innerHTML = '<span style="color:#ff8888;">مطبق بالفعل</span>';
-                return;
-            }
+            if (!code) { msgDiv.innerHTML = '<span style="color:#ff8888;">أدخل كود</span>'; return; }
+            if (appliedCoupon && appliedCoupon.code === code) { msgDiv.innerHTML = '<span style="color:#ff8888;">مطبق بالفعل</span>'; return; }
             const coupon = validCoupons[code];
-            if (!coupon) {
-                msgDiv.innerHTML = '<span style="color:#ff8888;">كود غير صالح</span>';
-                return;
-            }
+            if (!coupon) { msgDiv.innerHTML = '<span style="color:#ff8888;">كود غير صالح</span>'; return; }
             appliedCoupon = { code, ...coupon };
             msgDiv.innerHTML = `<span style="color:var(--pink);">✅ تم تطبيق ${coupon.name}</span>`;
             updateCouponDisplay();
@@ -1217,8 +1176,7 @@
                 }
                 container.innerHTML = itemsHtml;
                 document.getElementById('cartSubtotal').innerText = total + ' ج.م';
-                updateCouponDisplay();
-
+                updateTotalAndShipping();
                 const existingRemove = document.querySelector('.remove-coupon-btn');
                 if (appliedCoupon && !existingRemove) {
                     const btn = document.createElement('button');
@@ -1226,84 +1184,82 @@
                     btn.className = 'remove-coupon-btn';
                     btn.onclick = () => removeCoupon();
                     document.querySelector('.coupon-area').appendChild(btn);
-                } else if (!appliedCoupon && existingRemove) {
-                    existingRemove.remove();
-                }
+                } else if (!appliedCoupon && existingRemove) existingRemove.remove();
             }
+            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+            deliveryRadios.forEach(r => {
+                r.removeEventListener('change', updateTotalAndShipping);
+                r.addEventListener('change', updateTotalAndShipping);
+            });
         }
 
-        window.sendOrderEmail = function() {
+        window.sendOrderWhatsApp = function() {
             if (cart.length === 0) {
                 alert('السلة فارغة');
                 return;
             }
             const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
-            let payText = '';
-            if (payment === 'cash') payText = 'الدفع عند الاستلام';
-            else if (payment === 'vodafone') payText = 'فودافون كاش';
-            else payText = 'إنستا باي';
-
-            const finalTotal = getFinalTotal();
-            const discount = calculateDiscount();
-            let details = 'طلب جديد من yaqeen.com:\n';
-            for (let i = 0; i < cart.length; i++) {
-                const item = cart[i];
-                details += `${i + 1}. ${item.name} (${item.size}) - ${item.price} ج.م\n`;
+            let payText = payment === 'cash' ? 'الدفع عند الاستلام' : (payment === 'vodafone' ? 'فودافون كاش' : 'إنستا باي');
+            const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
+            let deliveryMethod = 'توصيل للمنزل';
+            let shippingCost = 60;
+            for (let r of deliveryRadios) {
+                if (r.checked) {
+                    deliveryMethod = r.value === 'delivery' ? 'توصيل للمنزل' : 'استلام من المكان المحدد';
+                    shippingCost = r.value === 'delivery' ? 60 : 0;
+                    break;
+                }
             }
-            details += `\nالمجموع: ${total} ج.م`;
-            if (discount > 0) details += `\nالخصم: -${discount.toFixed(0)} ج.م`;
-            details += `\nالتوصيل: ${SHIPPING} ج.م\nالإجمالي النهائي: ${finalTotal.toFixed(0)} ج.م`;
-            details += `\nطريقة الدفع: ${payText}\nمدة التوصيل: 24-28 ساعة`;
-
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'https://formsubmit.co/info@yaqeen.com';
-            form.style.display = 'none';
-
-            const addField = (name, value) => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = name;
-                input.value = value;
-                form.appendChild(input);
-            };
-            addField('_subject', 'طلب جديد من yaqeen.com');
-            addField('message', details);
-            document.body.appendChild(form);
-            form.submit();
-
+            const discount = calculateDiscount();
+            const finalTotal = total + shippingCost - discount;
+            let message = '🛍️ *طلب جديد من YQ STATE*%0a%0a';
+            message += '📦 *المنتجات:*%0a';
+            cart.forEach((item, i) => {
+                message += `${i+1} - ${item.name} (مقاس: ${item.size}) - ${item.price} ج.م%0a`;
+            });
+            message += `%0a💰 *المجموع الفرعي:* ${total} ج.م%0a`;
+            if (discount > 0) message += `🎉 *الخصم:* -${discount.toFixed(0)} ج.م%0a`;
+            message += `🚚 *طريقة التوصيل:* ${deliveryMethod}${shippingCost > 0 ? ' (60 ج.م)' : ' (مجاني)'}%0a`;
+            message += `💵 *الإجمالي النهائي:* ${finalTotal.toFixed(0)} ج.م%0a`;
+            message += `💳 *طريقة الدفع:* ${payText}%0a`;
+            message += `%0a📲 *يرجى تأكيد الطلب*`;
+            const phoneNumber = '201027515725';
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
             cart = [];
             total = 0;
             appliedCoupon = null;
             updateCartCount();
             renderCartPage();
             showPage('collections');
-            showToast('✅ تم إرسال الطلب بنجاح');
+            showToast('✅ تم توجيهك إلى واتساب لإتمام الطلب');
         };
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.innerText = msg;
             toast.style.opacity = '1';
-            setTimeout(() => {
-                toast.style.opacity = '0';
-            }, 2600);
+            setTimeout(() => toast.style.opacity = '0', 2600);
         }
 
         window.showPage = function(id) {
-            const pages = document.querySelectorAll('.page');
-            for (let i = 0; i < pages.length; i++) {
-                pages[i].classList.remove('active');
-            }
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(id);
             if (target) {
                 target.classList.add('active');
                 window.scrollTo(0, 0);
-                if (id === 'cart-page') {
-                    renderCartPage();
-                }
+                if (id === 'cart-page') renderCartPage();
             }
+            closeMobileMenu();
         };
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+        function closeMobileMenu() {
+            document.getElementById('mobileNav').classList.remove('open');
+        }
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.closeMobileMenu = closeMobileMenu;
     </script>
 </body>
 
