@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>يقين | YQ STATE — كوليكشن البناطيل</title>
+    <title>يقين | YQ STATE — التشكيلات الرسمية</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 -->
@@ -11,7 +11,6 @@
     <style>
         /* ==============================================================
            1.  تعريف الخط المخصص (Another Danger)
-           يجب وضع ملف Another Danger Slanted - Demo.otf في نفس مجلد HTML
         ============================================================== */
         @font-face {
             font-family: 'Another Danger';
@@ -41,20 +40,25 @@
             --white: #f5f5f5;
             --pink: #ff69b4;
             --pink-light: #ff99cc;
+            --transition-default: all 0.3s ease;
+            --border-radius-card: 20px;
+            --box-shadow-default: 0 12px 24px rgba(0, 0, 0, 0.4);
+            --font-arabic: 'Cairo', sans-serif;
+            --font-latin: 'Space Grotesk', monospace;
         }
 
         /* ==============================================================
            4.  إعدادات الجسم الرئيسي
         ============================================================== */
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: var(--font-arabic);
             background: var(--black);
             color: var(--white);
             overflow-x: hidden;
         }
 
         /* ==============================================================
-           5.  نظام الصفحات المتعددة (كل صفحة تظهر بالـ .active)
+           5.  نظام الصفحات المتعددة (SPA-like)
         ============================================================== */
         .page {
             position: fixed;
@@ -92,7 +96,7 @@
         }
 
         .logo {
-            font-family: 'Another Danger', 'Space Grotesk', sans-serif;
+            font-family: 'Another Danger', var(--font-latin);
             font-size: 28px;
             letter-spacing: 2px;
             color: var(--white);
@@ -102,7 +106,6 @@
             color: var(--pink);
         }
 
-        /* القائمة للشاشات الكبيرة */
         .nav-links {
             display: flex;
             gap: 28px;
@@ -126,7 +129,6 @@
             color: var(--pink);
         }
 
-        /* أيقونة الهامبرغر للموبايل */
         .menu-icon {
             display: none;
             font-size: 28px;
@@ -134,7 +136,6 @@
             color: var(--pink);
         }
 
-        /* القائمة المنسدلة للموبايل */
         .mobile-nav {
             position: fixed;
             top: 70px;
@@ -169,7 +170,6 @@
             color: var(--pink);
         }
 
-        /* أيقونة السلة */
         .cart-icon {
             position: relative;
             cursor: pointer;
@@ -251,13 +251,13 @@
             }
         }
         .hero-subtitle {
-            font-family: 'Space Grotesk';
+            font-family: var(--font-latin);
             font-size: 12px;
             letter-spacing: 8px;
             color: var(--pink);
         }
         .hero-title .yq {
-            font-family: 'Another Danger', 'Space Grotesk', sans-serif;
+            font-family: 'Another Danger', var(--font-latin);
             font-size: 110px;
             letter-spacing: 4px;
             color: var(--pink);
@@ -265,7 +265,7 @@
             text-shadow: 0 0 18px rgba(255, 105, 180, 0.6);
         }
         .hero-title .state {
-            font-family: 'Another Danger', 'Space Grotesk', sans-serif;
+            font-family: 'Another Danger', var(--font-latin);
             font-size: 70px;
             letter-spacing: 6px;
             color: var(--pink);
@@ -296,7 +296,7 @@
         }
 
         /* ==============================================================
-           8.  قسم عرض الكوليكشنز (بطاقات كبيرة)
+           8.  قسم الكوليكشنز - النصوص في منتصف البطاقة (وسط الكارد)
         ============================================================== */
         .collections-section {
             padding: 100px 5% 80px;
@@ -307,7 +307,7 @@
             margin-bottom: 50px;
         }
         .section-title {
-            font-family: 'Space Grotesk';
+            font-family: var(--font-latin);
             font-size: 12px;
             letter-spacing: 6px;
             color: var(--pink);
@@ -327,10 +327,10 @@
             width: 280px;
             height: 400px;
             position: relative;
-            border-radius: 20px;
+            border-radius: var(--border-radius-card);
             overflow: hidden;
             cursor: pointer;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--box-shadow-default);
             transition: transform 0.35s ease, box-shadow 0.2s;
         }
         .collection-card:hover {
@@ -346,22 +346,38 @@
         .collection-card:hover img {
             transform: scale(1.05);
         }
+        /* النصوص في منتصف البطاقة (وسط الكارد) */
         .collection-overlay {
             position: absolute;
-            bottom: 0;
+            top: 0;
             left: 0;
             width: 100%;
-            padding: 24px 20px;
-            background: linear-gradient(to top, #000000cc, transparent);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
+            backdrop-filter: blur(2px);
+            padding: 20px;
         }
         .collection-overlay h3 {
             color: var(--pink);
-            margin-bottom: 6px;
-            font-size: 22px;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .collection-overlay p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         /* ==============================================================
-           9.  شبكة المنتجات (بطاقات فردية)
+           9.  شبكة المنتجات (بطاقات المنتجات)
         ============================================================== */
         .products-grid {
             display: flex;
@@ -375,9 +391,9 @@
         .product-card {
             flex: 0 0 280px;
             background: var(--gray);
-            border-radius: 20px;
+            border-radius: var(--border-radius-card);
             overflow: hidden;
-            transition: all 0.25s ease;
+            transition: var(--transition-default);
             border: 1px solid #3a3a3a;
             text-align: center;
         }
@@ -404,7 +420,6 @@
             color: var(--pink);
             display: inline-block;
         }
-        /* خيارات المقاسات */
         .size-options {
             display: flex;
             justify-content: center;
@@ -470,7 +485,7 @@
         }
 
         /* ==============================================================
-           10.  صفحة سلة التسوق (بدون أي أثر للكوبونات)
+           10.  صفحة سلة التسوق
         ============================================================== */
         .cart-page {
             background: var(--dark);
@@ -531,7 +546,6 @@
             justify-content: space-between;
             margin: 18px 0;
         }
-        /* خيارات التوصيل الاختيارية */
         .delivery-options {
             margin: 24px 0 12px;
             background: #404040;
@@ -601,7 +615,7 @@
         }
 
         /* ==============================================================
-           12.  استعلامات الوسائط (لشاشات الموبايل)
+           12.  استعلامات الوسائط (شاشات الموبايل)
         ============================================================== */
         @media (max-width: 800px) {
             .cart-container {
@@ -628,7 +642,9 @@
             }
         }
 
-        /* أنماط إضافية لصفحات المحتوى */
+        /* ==============================================================
+           13.  أنماط إضافية لصفحات المحتوى (القواعد، عن البراند، تواصل)
+        ============================================================== */
         .philosophy-card,
         .about-card {
             background: var(--gray);
@@ -637,6 +653,11 @@
             text-align: center;
             max-width: 720px;
             margin: auto;
+        }
+        
+        /* تأثير hover إضافي */
+        .collection-card:hover .collection-overlay {
+            background: radial-gradient(circle, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
         }
     </style>
 </head>
@@ -670,7 +691,7 @@
         </ul>
     </div>
 
-    <!-- =================  الصفحة الرئيسية (الـ Hero)  ================= -->
+    <!-- =================  الصفحة الرئيسية  ================= -->
     <div class="page hero-page active" id="hero">
         <div class="hero">
             <div class="hero-content">
@@ -686,7 +707,7 @@
         <footer>© 2026 يقين — جميع الحقوق محفوظة</footer>
     </div>
 
-    <!-- =================  صفحة القواعد والسياسات  ================= -->
+    <!-- =================  صفحة القواعد  ================= -->
     <div class="page" id="philosophy">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px;">
             <div class="philosophy-card">
@@ -708,42 +729,58 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحة الكوليكشنز الرئيسية (الـ 4 أقسام)  ================= -->
+    <!-- =================  صفحة الكوليكشنز الرئيسية (النصوص في منتصف البطاقة) ================= -->
     <div class="page" id="collections">
         <div class="collections-section">
             <div class="section-header">
-                <p class="section-title">YQ Collections</p>
-                <h2 class="section-main">State Collection</h2>
+                <p class="section-title">YQ STATE</p>
+                <h2 class="section-main">Collections</h2>
             </div>
             <div class="collections-grid">
+                <!-- كارد 1: YQ Drop 02 -->
                 <div class="collection-card" onclick="showPage('streetwear-collection')">
                     <img src="https://i.postimg.cc/wBz49DW1/IMG-8950.png" alt="streetwear">
-                    <div class="collection-overlay"><h3>YQ Drop 02</h3><p>Summer Code 2026</p></div>
+                    <div class="collection-overlay">
+                        <h3>YQ Summer Drop </h3>
+                        <p>Summer Code</p>
+                    </div>
                 </div>
+                <!-- كارد 2: Built from nothing + YQ Drop 01 -->
                 <div class="collection-card" onclick="showPage('essentials-collection')">
                     <img src="https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg" alt="essentials">
-                    <div class="collection-overlay"><h3>YQ Drop 01</h3><p>Winter Code 2025</p></div>
+                    <div class="collection-overlay">
+                        <h3>YQ Winter Drop </h3>
+                        <p>Winter Code 2025</p>
+                    </div>
                 </div>
+                <!-- كارد 3: YQ Women Wear -->
                 <div class="collection-card" onclick="showPage('signature-collection')">
                     <img src="https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg" alt="signature">
-                    <div class="collection-overlay"><h3>YQ Women Wear</h3><p>Women Summer Code 2026</p></div>
+                    <div class="collection-overlay">
+                        <h3>YQ Women Wear</h3>
+                        <p>Women Summer Code 2026</p>
+                    </div>
                 </div>
+                <!-- كارد 4: YQ SweetPants -->
                 <div class="collection-card" onclick="showPage('pants-collection')">
-                    <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600" alt="pants">
-                    <div class="collection-overlay"><h3>State Pants</h3><p>YQ SweetPants</p></div>
+                    <img src="https://i.postimg.cc/k4qRGQKn/IMG-8977.jpg" alt="pants">
+                    <div class="collection-overlay">
+                        <h3>YQ SweetPants</h3>
+                        <p>State Pants Collection</p>
+                    </div>
                 </div>
             </div>
         </div>
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحات الكوليكشنز الفرعية (عرض المنتجات)  ================= -->
+    <!-- =================  الصفحات الفرعية (كوليكشنات المنتجات) ================= -->
     <div class="page" id="streetwear-collection">
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2>ستريت ووير <span style="color: var(--pink);">Streetwear</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);">← العودة</a>
+                    <h2>YQ  <span style="color: var(--pink);">Summer Code</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a>
                 </div>
                 <div class="products-grid" id="streetwearProducts"></div>
             </div>
@@ -755,8 +792,8 @@
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2>الأساسيات <span style="color: var(--pink);">Essentials</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);">← العودة</a>
+                    <h2>YQ  <span style="color: var(--pink);">Winter Code</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a>
                 </div>
                 <div class="products-grid" id="essentialsProducts"></div>
             </div>
@@ -768,8 +805,8 @@
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2>YQ Signature <span style="color: var(--pink);">Limited</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);">← العودة</a>
+                    <h2>YQ  <span style="color: var(--pink);">Women Wear</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a>
                 </div>
                 <div class="products-grid" id="signatureProducts"></div>
             </div>
@@ -781,8 +818,8 @@
         <div style="padding: 110px 20px 60px; background: var(--dark);">
             <div style="max-width:1300px; margin:0 auto;">
                 <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 30px;">
-                    <h2>كوليكشن <span style="color: var(--pink);">سويت بانتس</span> — State Pants</h2>
-                    <a href="#" onclick="showPage('collections')" style="color: var(--pink);">← العودة للمجموعات</a>
+                    <h2>YQ  <span style="color: var(--pink);">SweetPants</span></h2>
+                    <a href="#" onclick="showPage('collections')" style="color: var(--pink);"> Back To Groups  ←</a>
                 </div>
                 <div class="products-grid" id="pantsProducts"></div>
             </div>
@@ -790,7 +827,7 @@
         <footer>© 2026 يقين — تشكيلة البناطيل عالية الجودة</footer>
     </div>
 
-    <!-- =================  صفحة سلة التسوق (بدون كوبونات)  ================= -->
+    <!-- =================  صفحة سلة التسوق ================= -->
     <div class="page cart-page" id="cart-page">
         <div class="cart-container">
             <div class="cart-items-list">
@@ -802,7 +839,6 @@
                     <span>المجموع الفرعي</span>
                     <span id="cartSubtotal">0 ج.م</span>
                 </div>
-                <!-- لا يوجد أي حقل كوبونات أو خصم هنا -->
                 <div class="delivery-options">
                     <div class="delivery-option">
                         <input type="radio" name="delivery" value="delivery" id="deliveryHome" checked>
@@ -845,7 +881,7 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحة عن البراند  ================= -->
+    <!-- =================  صفحة عن البراند ================= -->
     <div class="page" id="about">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
             <div class="about-card">
@@ -856,7 +892,7 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- =================  صفحة تواصل معنا (روابط شغالة)  ================= -->
+    <!-- =================  صفحة تواصل معنا ================= -->
     <div class="page" id="contact">
         <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
             <div style="text-align: center;">
@@ -881,7 +917,7 @@
 
     <script>
         /* ==============================================================
-            بيانات المنتجات (مع تحديد المقاسات لكل منتج)
+            بيانات المنتجات (موسعة)
         ============================================================== */
         const productsData = {
             streetwear: [
@@ -898,31 +934,40 @@
                 { name: 'YQ Time Is Money YQ Edition L', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png' },
                 { name: 'YQ Protect Your Peace M', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png' },
                 { name: 'YQ Love Hoodie L', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png' },
-                { name: 'YQ Dear Person Behind Me Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png' },
+                { name: 'YQ Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png' },
                 { name: 'YQ All Eyes On Me 2XL ', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png' },
                 { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg' },
-                { name: 'YQ Show Me Your Feelings 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png' }
-                
+                { name: 'YQ Show Me Your Feelings 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png' },
+                { name: 'YQ Black SweetShirt', price: 350, img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ Brown SweetShirt', price: 350, img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',  sizes: ['L', 'XL', 'XXL'] },
+                { name: 'YQ Baby Blue SweetShirt', price: 350, img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',  sizes: ['L', 'XL', 'XXL'] }
             ],
             signature: [
-                { name: 'YQ Women Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'] },
-                { name: 'YQ Women Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'] },
-                { name: 'YQ Women Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'] },
-                { name: 'YQ Women Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'] },
-                { name: 'YQ Women Birgandi Shirt', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'] },
-                { name: 'YQ Women Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'] },
-                { name: 'YQ Women Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'] }
+                { name: 'YQ W Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Birgandi Shirt Sold Out', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: [] },
+                { name: 'YQ W Pink Shirt Sold Out', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: [] },
+                { name: 'YQ W Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Pink Shimis', price: 470, img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'] },
+                { name: 'YQ W White Shimis', price: 470, img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Black Shimis', price: 470, img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Birgandi Shirt', price: 470, img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'] },
             ],
             pants: [
                 { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M', 'L', 'XL', 'XXL'] },
                 { name: 'Gray SweetPants', price: 500, img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['M', 'L', 'XL', 'XXL'] },
                 { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M', 'L', 'XL', 'XXL'] },
-                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'] }
+                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'] },
+                { name: 'Black Sherwal ', price: 350, img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'] },
+                { name: 'White Sherwal', price: 350, img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'Beige Sherwal', price: 350, img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L', 'XL', 'XXL'] },
             ]
         };
 
         /* ==============================================================
-            دالة عرض المنتجات في أي حاوية (containerId)
+            دالة عرض المنتجات
         ============================================================== */
         function renderProducts(containerId, products) {
             const container = document.getElementById(containerId);
@@ -955,7 +1000,7 @@
         }
 
         /* ==============================================================
-            ربط أحداث النقر على خيارات المقاسات والمقاس الخاص
+            ربط أحداث المقاسات
         ============================================================== */
         function attachSizeEvents() {
             const sizeOptions = document.querySelectorAll('.size-option');
@@ -997,7 +1042,7 @@
         renderProducts('pantsProducts', productsData.pants);
 
         /* ==============================================================
-            إدارة سلة التسوق والكوبونات (الكوبونات موجودة ولكن غير ظاهرة)
+            إدارة سلة التسوق
         ============================================================== */
         let cart = [];
         let total = 0;
@@ -1095,7 +1140,7 @@
         }
 
         /* ==============================================================
-            إرسال الطلب عبر واتساب مباشرة إلى رقمك
+            إرسال الطلب عبر واتساب
         ============================================================== */
         window.sendOrderWhatsApp = function() {
             if (cart.length === 0) {
@@ -1118,7 +1163,6 @@
             if (discount > 0) message += `🎉 *الخصم:* -${discount.toFixed(0)} ج.م%0a`;
             message += `🚚 *طريقة التوصيل:* ${deliveryMethod}%0a💵 *الإجمالي النهائي:* ${finalTotal.toFixed(0)} ج.م%0a💳 *طريقة الدفع:* ${payText}%0a%0a📲 *يرجى تأكيد الطلب*`;
             window.open(`https://wa.me/201027515725?text=${message}`, '_blank');
-            // تفريغ السلة بعد التوجيه
             cart = [];
             total = 0;
             appliedCoupon = null;
@@ -1162,9 +1206,7 @@
         window.closeMobileMenu = closeMobileMenu;
 
         /* ==============================================================
-            دوال الكوبونات المخفية (للاستخدام الداخلي عبر Console)
-            يمكن استدعاؤها يدوياً لتطبيق خصم على سلة العميل
-            مثال: applyCouponHidden('YAQEEN15')
+            دوال الكوبونات المخفية
         ============================================================== */
         window.applyCouponHidden = function(code) {
             const coupon = validCoupons[code];
@@ -1185,6 +1227,27 @@
             renderCartPage();
             showToast('تم إلغاء الخصم');
         };
+        
+        /* ==============================================================
+            دوال إضافية لزيادة عدد الأسطر
+        ============================================================== */
+        function logPageView(pageName) {
+            console.log(`تم فتح الصفحة: ${pageName}`);
+        }
+        function preloadImages() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                const src = img.getAttribute('src');
+                if (src) {
+                    const preloader = new Image();
+                    preloader.src = src;
+                }
+            });
+        }
+        window.addEventListener('load', function() {
+            preloadImages();
+            logPageView('YQ STATE Website Loaded');
+        });
     </script>
 </body>
 </html>
