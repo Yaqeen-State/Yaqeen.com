@@ -420,6 +420,16 @@
             color: var(--pink);
             display: inline-block;
         }
+        /* إضافة تنسيق معلومات المخزون */
+        .stock-info {
+            font-size: 13px;
+            margin: 6px auto;
+            color: #ccc;
+            background: #2a2a2a;
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+        }
         .size-options {
             display: flex;
             justify-content: center;
@@ -482,6 +492,21 @@
         .add-btn:hover {
             background: var(--pink-light);
             transform: scale(0.97);
+        }
+        /* زر Sold Out */
+        .sold-out-btn {
+            width: 85%;
+            margin: 12px auto 20px;
+            padding: 12px 0;
+            background: #555;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            color: #aaa;
+            display: block;
+            text-align: center;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
         /* ==============================================================
@@ -917,57 +942,57 @@
 
     <script>
         /* ==============================================================
-            بيانات المنتجات (موسعة)
+            بيانات المنتجات (مع إضافة خاصية stock)
         ============================================================== */
         const productsData = {
             streetwear: [
-                { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/RFp8ZjtC/IMG-8939.png', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ Graphite Gray Tshirt', price: 500, img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ Graphite Black Tshirt', price: 500, img: 'https://i.postimg.cc/Nj8zHyTK/IMG-8941.png', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ Black Tshirt', price: 449, img: 'https://i.postimg.cc/XqLDPqKc/IMG-8944.jpg', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ White Tshirt', price: 449, img: 'https://i.postimg.cc/CLM2qCY3/IMG-8943.jpg', sizes: ['L', 'XL', 'XXL'] }
+                { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L', 'XL', 'XXL'], stock: 5 },
+                { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/RFp8ZjtC/IMG-8939.png', sizes: ['L', 'XL', 'XXL'], stock: 2 },
+                { name: 'YQ Graphite Gray Tshirt', price: 500, img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: ['L', 'XL', 'XXL'], stock: 2 },
+                { name: 'YQ Graphite Black Tshirt', price: 500, img: 'https://i.postimg.cc/Nj8zHyTK/IMG-8941.png', sizes: ['L', 'XL', 'XXL'], stock: 5 },
+                { name: 'YQ Black Tshirt', price: 449, img: 'https://i.postimg.cc/XqLDPqKc/IMG-8944.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5 },
+                { name: 'YQ White Tshirt', price: 449, img: 'https://i.postimg.cc/CLM2qCY3/IMG-8943.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5 }
             ],
             essentials: [
-                { name: 'YQ More Self Love Hoodie 2XL', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png' },
-                { name: 'YQ Welcome To World XL', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png' },
-                { name: 'YQ Time Is Money YQ Edition L', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png' },
-                { name: 'YQ Protect Your Peace M', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png' },
-                { name: 'YQ Love Hoodie L', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png' },
-                { name: 'YQ Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png' },
-                { name: 'YQ All Eyes On Me 2XL ', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png' },
-                { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg' },
-                { name: 'YQ Show Me Your Feelings 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png' },
-                { name: 'YQ Black SweetShirt', price: 350, img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ Brown SweetShirt', price: 350, img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',  sizes: ['L', 'XL', 'XXL'] },
-                { name: 'YQ Baby Blue SweetShirt', price: 350, img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',  sizes: ['L', 'XL', 'XXL'] }
+                { name: 'YQ More Self Love Hoodie 2XL', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', stock: 1 },
+                { name: 'YQ Welcome To World XL', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', stock: 1 },
+                { name: 'YQ Time Is Money YQ Edition L', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', stock: 1 },
+                { name: 'YQ Protect Your Peace M', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', stock: 1 },
+                { name: 'YQ Love Hoodie L', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', stock: 1 },
+                { name: 'YQ Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', stock: 1 },
+                { name: 'YQ All Eyes On Me 2XL ', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', stock: 1 },
+                { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', stock: 1 },
+                { name: 'YQ Show Me Your Feelings 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', stock: 1 },
+                { name: 'YQ Black SweetShirt', price: 350, img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L', 'XL', 'XXL'], stock: 4 },
+                { name: 'YQ Brown SweetShirt', price: 350, img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',  sizes: ['L','XXL'], stock: 2 },
+                { name: 'YQ Baby Blue SweetShirt', price: 350, img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',  sizes: ['L', 'XL', 'XXL'], stock: 4 }
             ],
             signature: [
-                { name: 'YQ W Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Birgandi Shirt Sold Out', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: [] },
-                { name: 'YQ W Pink Shirt Sold Out', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: [] },
-                { name: 'YQ W Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Pink Shimis', price: 470, img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'] },
-                { name: 'YQ W White Shimis', price: 470, img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Black Shimis', price: 470, img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'] },
-                { name: 'YQ W Birgandi Shirt', price: 470, img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'] },
+                { name: 'YQ W Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'], stock: 2 },
+                { name: 'YQ W Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'], stock: 2 },
+                { name: 'YQ W Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'], stock: 2 },
+                { name: 'YQ W Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'], stock: 2 },
+                { name: 'YQ W Birgandi Shirt ', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'], stock: 0 },
+                { name: 'YQ W Pink Shirt ', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0 },
+                { name: 'YQ W Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'], stock: 1 },
+                { name: 'YQ W Pink Shimis', price: 470, img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'], stock: 1 },
+                { name: 'YQ W White Shimis', price: 470, img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'], stock: 1 },
+                { name: 'YQ W Black Shimis', price: 470, img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'], stock: 2 },
+                { name: 'YQ W Birgandi Shirt', price: 470, img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'], stock: 2 }
             ],
             pants: [
-                { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M', 'L', 'XL', 'XXL'] },
-                { name: 'Gray SweetPants', price: 500, img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['M', 'L', 'XL', 'XXL'] },
-                { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M', 'L', 'XL', 'XXL'] },
-                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'] },
-                { name: 'Black Sherwal ', price: 350, img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'] },
-                { name: 'White Sherwal', price: 350, img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L', 'XL', 'XXL'] },
-                { name: 'Beige Sherwal', price: 350, img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L', 'XL', 'XXL'] },
+                { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 3 },
+                { name: 'Gray SweetPants', price: 500, img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['XL'], stock: 1 },
+                { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 3 },
+                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 8 },
+                { name: 'Black Sherwal ', price: 350, img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'], stock: 1 },
+                { name: 'White Sherwal', price: 350, img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3 },
+                { name: 'Beige Sherwal', price: 350, img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L', 'XL', 'XXL'], stock: 2 }
             ]
         };
 
         /* ==============================================================
-            دالة عرض المنتجات
+            دالة عرض المنتجات مع إظهار المخزون وزر Sold Out
         ============================================================== */
         function renderProducts(containerId, products) {
             const container = document.getElementById(containerId);
@@ -984,19 +1009,81 @@
                     }
                     sizesHtml += '</div>';
                 }
+                const stockText = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد من المخزون';
+                const buttonHtml = (p.stock > 0) 
+                    ? `<button class="add-btn" data-name="${p.name}" data-price="${p.price}" data-img="${p.img}">إضافة للسلة</button>`
+                    : `<button class="sold-out-btn" disabled>Sold Out</button>`;
+                
                 html += `
-                    <div class="product-card">
+                    <div class="product-card" data-product-name="${p.name}">
                         <img src="${p.img}" alt="${p.name}">
                         <h3>${p.name}</h3>
                         <div class="product-price">${p.price} ج.م</div>
+                        <div class="stock-info">${stockText}</div>
                         ${sizesHtml}
                         <input type="text" class="custom-size" placeholder="مقاس خاص">
-                        <button class="add-btn" onclick="addToCart('${p.name}', ${p.price}, '${p.img}', this)">إضافة للسلة</button>
+                        ${buttonHtml}
                     </div>
                 `;
             }
             container.innerHTML = html;
             attachSizeEvents();
+            // ربط أحداث الإضافة مع التحقق من المخزون
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.removeEventListener('click', addToCartHandler);
+                btn.addEventListener('click', addToCartHandler);
+            });
+        }
+
+        /* ==============================================================
+            معالج إضافة المنتج مع التحقق من المخزون وإنقاصه
+        ============================================================== */
+        function addToCartHandler(e) {
+            const btn = e.currentTarget;
+            const card = btn.closest('.product-card');
+            const productName = card.dataset.productName;
+            // البحث عن المنتج في البيانات الأصلية
+            let product = null;
+            let productCategory = null;
+            for (let category in productsData) {
+                const found = productsData[category].find(p => p.name === productName);
+                if (found) {
+                    product = found;
+                    productCategory = category;
+                    break;
+                }
+            }
+            if (!product) return;
+            if (product.stock <= 0) {
+                showToast('⚠️ هذا المنتج نفد من المخزون');
+                return;
+            }
+            let size = card.dataset.selectedSize;
+            if (!size) {
+                const custom = card.querySelector('.custom-size');
+                if (custom && custom.value.trim()) size = custom.value.trim();
+                else { alert('الرجاء اختيار المقاس'); return; }
+            }
+            // إضافة إلى السلة
+            cart.push({ name: product.name, price: product.price, img: product.img, size });
+            total += product.price;
+            // إنقاص المخزون
+            product.stock--;
+            // تحديث عرض المخزون في البطاقة
+            const stockSpan = card.querySelector('.stock-info');
+            if (stockSpan) stockSpan.innerText = product.stock > 0 ? `✅ متبقي: ${product.stock}` : '❌ نفد من المخزون';
+            if (product.stock === 0) {
+                // استبدال الزر بـ Sold Out
+                btn.removeEventListener('click', addToCartHandler);
+                const newBtn = document.createElement('button');
+                newBtn.className = 'sold-out-btn';
+                newBtn.disabled = true;
+                newBtn.innerText = 'Sold Out';
+                btn.parentNode.replaceChild(newBtn, btn);
+            }
+            if (appliedCoupon) updateTotals();
+            updateCartCount();
+            showToast('✅ تمت الإضافة إلى السلة');
         }
 
         /* ==============================================================
@@ -1053,7 +1140,10 @@
             'WELCOME10': { type: 'percent', value: 10, name: '10% خصم' }
         };
 
+        // دالة addToCart الأصلية (نحتفظ بها للتوافق ولكننا نستخدم المعالج الجديد)
         window.addToCart = function(name, price, img, btn) {
+            // هذه الدالة أصبحت غير مستخدمة مباشرة بسبب addToCartHandler
+            // ولكن نتركها للتوافق
             const card = btn.closest('.product-card');
             let size = card.dataset.selectedSize;
             if (!size) {
@@ -1229,7 +1319,7 @@
         };
         
         /* ==============================================================
-            دوال إضافية لزيادة عدد الأسطر
+            دوال إضافية
         ============================================================== */
         function logPageView(pageName) {
             console.log(`تم فتح الصفحة: ${pageName}`);
