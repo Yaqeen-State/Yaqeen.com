@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>يقين | YQ STATE — التشكيلات الرسمية</title>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==============================================================
-           1.  تعريف الخط المخصص (Another Danger)
-        ============================================================== */
+        /* ============================================================
+           القسم 1: الخط المخصص وإعادة التعيين والمتغيرات (80 سطر)
+           ============================================================ */
         @font-face {
             font-family: 'Another Danger';
             src: url('Another Danger Slanted - Demo.otf') format('opentype');
@@ -19,19 +17,11 @@
             font-style: normal;
             font-display: swap;
         }
-
-        /* ==============================================================
-           2.  إعادة تعيين الإعدادات الافتراضية
-        ============================================================== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
-        /* ==============================================================
-           3.  المتغيرات العامة (الثيم الوردي)
-        ============================================================== */
         :root {
             --black: #0d0d0d;
             --dark: #1a1a1a;
@@ -42,24 +32,24 @@
             --pink-light: #ff99cc;
             --transition-default: all 0.3s ease;
             --border-radius-card: 20px;
-            --box-shadow-default: 0 12px 24px rgba(0, 0, 0, 0.4);
+            --box-shadow-default: 0 12px 24px rgba(0,0,0,0.4);
             --font-arabic: 'Cairo', sans-serif;
             --font-latin: 'Space Grotesk', monospace;
+            --toast-bg: #ff69b4;
+            --modal-bg: rgba(0,0,0,0.9);
+            --footer-border: #2a2a2a;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
         }
-
-        /* ==============================================================
-           4.  إعدادات الجسم الرئيسي
-        ============================================================== */
         body {
             font-family: var(--font-arabic);
             background: var(--black);
             color: var(--white);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
-
-        /* ==============================================================
-           5.  نظام الصفحات المتعددة (SPA-like)
-        ============================================================== */
+        /* نظام الصفحات المتعددة */
         .page {
             position: fixed;
             top: 0;
@@ -69,18 +59,16 @@
             opacity: 0;
             visibility: hidden;
             overflow-y: auto;
-            transition: all 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            transform: translateX(20px);
+            transition: all 0.45s cubic-bezier(0.2,0.9,0.4,1.1);
+            transform: translateX(30px);
+            background: var(--black);
         }
         .page.active {
             opacity: 1;
             visibility: visible;
             transform: translateX(0);
         }
-
-        /* ==============================================================
-           6.  شريط التنقل العلوي (ثابت)
-        ============================================================== */
+        /* شريط التنقل */
         nav {
             position: fixed;
             top: 0;
@@ -90,31 +78,28 @@
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(13, 13, 13, 0.92);
+            background: rgba(13,13,13,0.92);
             backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255, 105, 180, 0.4);
+            border-bottom: 1px solid rgba(255,105,180,0.4);
         }
-
         .logo {
             font-family: 'Another Danger', var(--font-latin);
             font-size: 28px;
             letter-spacing: 2px;
             color: var(--white);
             text-decoration: none;
+            cursor: pointer;
         }
-        .logo span {
-            color: var(--pink);
-        }
-
+        .logo span { color: var(--pink); }
         .nav-links {
             display: flex;
             gap: 28px;
             list-style: none;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(4px);
             padding: 5px 24px;
             border-radius: 50px;
-            border: 1px solid rgba(255, 105, 180, 0.25);
+            border: 1px solid rgba(255,105,180,0.25);
         }
         .nav-links a {
             color: #e0e0e0;
@@ -125,32 +110,26 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-        .nav-links a:hover {
-            color: var(--pink);
-        }
-
+        .nav-links a:hover { color: var(--pink); }
         .menu-icon {
             display: none;
             font-size: 28px;
             cursor: pointer;
             color: var(--pink);
         }
-
         .mobile-nav {
             position: fixed;
             top: 70px;
             right: 0;
             width: 100%;
-            background: rgba(13, 13, 13, 0.95);
+            background: rgba(13,13,13,0.95);
             backdrop-filter: blur(10px);
             z-index: 999;
             transform: translateY(-150%);
             transition: transform 0.3s ease;
-            border-bottom: 1px solid rgba(255, 105, 180, 0.3);
+            border-bottom: 1px solid rgba(255,105,180,0.3);
         }
-        .mobile-nav.open {
-            transform: translateY(0);
-        }
+        .mobile-nav.open { transform: translateY(0); }
         .mobile-nav .nav-links-mobile {
             display: flex;
             flex-direction: column;
@@ -166,10 +145,8 @@
             font-weight: 500;
             text-transform: uppercase;
         }
-        .mobile-nav .nav-links-mobile a:hover {
-            color: var(--pink);
-        }
-
+        .mobile-nav .nav-links-mobile a:hover { color: var(--pink); }
+        /* أيقونة السلة مع Tooltip */
         .cart-icon {
             position: relative;
             cursor: pointer;
@@ -186,6 +163,29 @@
             background: var(--light-gray);
             transform: scale(1.02);
         }
+        .cart-tooltip {
+            position: absolute;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dark);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1010;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.2s;
+            pointer-events: none;
+            border: 1px solid var(--pink);
+        }
+        .cart-icon:hover .cart-tooltip {
+            opacity: 1;
+            visibility: visible;
+            top: 110%;
+        }
         .cart-count {
             position: absolute;
             top: -5px;
@@ -201,10 +201,24 @@
             align-items: center;
             justify-content: center;
         }
-
-        /* ==============================================================
-           7.  الصفحة الرئيسية (Hero Section)
-        ============================================================== */
+        /* شريط تقدم */
+        .progress-bar-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255,105,180,0.2);
+            z-index: 1001;
+            visibility: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--pink);
+            transition: width 0.2s linear;
+        }
+        /* الصفحة الرئيسية Hero */
         .hero-page {
             position: relative;
             background-image: url('https://i.postimg.cc/c4brqmLB/Final-Logo.png');
@@ -218,7 +232,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.68);
+            background: rgba(0,0,0,0.68);
             z-index: 0;
         }
         .hero {
@@ -234,21 +248,22 @@
             text-align: center;
             max-width: 750px;
             padding: 40px 45px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0,0,0,0.6);
             border-radius: 70px;
-            border: 1px solid rgba(255, 105, 180, 0.5);
+            border: 1px solid rgba(255,105,180,0.5);
             backdrop-filter: blur(4px);
             animation: fadeUp 0.7s ease-out;
         }
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(35px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { text-shadow: 0 0 0px rgba(255,105,180,0); }
+            100% { text-shadow: 0 0 15px rgba(255,105,180,0.8); }
+        }
+        .hero-title .yq, .hero-title .state {
+            animation: pulseGlow 3s infinite alternate;
         }
         .hero-subtitle {
             font-family: var(--font-latin);
@@ -262,14 +277,12 @@
             letter-spacing: 4px;
             color: var(--pink);
             line-height: 1;
-            text-shadow: 0 0 18px rgba(255, 105, 180, 0.6);
         }
         .hero-title .state {
             font-family: 'Another Danger', var(--font-latin);
             font-size: 70px;
             letter-spacing: 6px;
             color: var(--pink);
-            text-shadow: 0 0 12px rgba(255, 105, 180, 0.6);
         }
         .hero-tagline {
             color: var(--pink-light);
@@ -292,12 +305,9 @@
             background: var(--pink);
             color: black;
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 8px 20px rgba(255,105,180,0.3);
         }
-
-        /* ==============================================================
-           8.  قسم الكوليكشنز - النصوص في منتصف البطاقة (وسط الكارد)
-        ============================================================== */
+        /* قسم الكوليكشنز */
         .collections-section {
             padding: 100px 5% 80px;
             background: var(--dark);
@@ -335,7 +345,7 @@
         }
         .collection-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.5);
         }
         .collection-card img {
             width: 100%;
@@ -346,7 +356,6 @@
         .collection-card:hover img {
             transform: scale(1.05);
         }
-        /* النصوص في منتصف البطاقة (وسط الكارد) */
         .collection-overlay {
             position: absolute;
             top: 0;
@@ -367,18 +376,56 @@
             margin-bottom: 10px;
             font-size: 24px;
             font-weight: 800;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         .collection-overlay p {
             font-size: 14px;
             line-height: 1.6;
-            color: #ffffff;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            color: white;
         }
-
-        /* ==============================================================
-           9.  شبكة المنتجات (بطاقات المنتجات)
-        ============================================================== */
+        /* شريط البحث والفلتر */
+        .search-filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: var(--gray);
+            padding: 15px 20px;
+            border-radius: 60px;
+        }
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: var(--light-gray);
+            border-radius: 40px;
+            padding: 8px 18px;
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 8px;
+            width: 100%;
+            outline: none;
+        }
+        .search-box i { color: var(--pink); }
+        .filter-options { display: flex; gap: 15px; }
+        .filter-btn {
+            background: var(--light-gray);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--pink);
+            color: black;
+        }
+        /* شبكة المنتجات */
         .products-grid {
             display: flex;
             flex-wrap: wrap;
@@ -396,11 +443,13 @@
             transition: var(--transition-default);
             border: 1px solid #3a3a3a;
             text-align: center;
+            cursor: pointer;
+            position: relative;
         }
         .product-card:hover {
             transform: translateY(-6px);
             border-color: var(--pink);
-            box-shadow: 0 16px 28px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 16px 28px rgba(0,0,0,0.4);
         }
         .product-card img {
             width: 100%;
@@ -420,7 +469,6 @@
             color: var(--pink);
             display: inline-block;
         }
-        /* إضافة تنسيق معلومات المخزون */
         .stock-info {
             font-size: 13px;
             margin: 6px auto;
@@ -429,6 +477,21 @@
             display: inline-block;
             padding: 3px 12px;
             border-radius: 20px;
+        }
+        .low-stock-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--warning-color);
+            color: black;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .size-options {
             display: flex;
@@ -454,8 +517,7 @@
             width: auto;
             padding: 0 18px;
         }
-        .size-option.selected,
-        .size-option:hover {
+        .size-option.selected, .size-option:hover {
             background: var(--pink);
             color: black;
             transform: scale(0.96);
@@ -475,46 +537,34 @@
             outline: none;
             border-color: var(--pink);
         }
-        .add-btn {
+        .add-btn, .sold-out-btn {
             width: 85%;
             margin: 12px auto 20px;
             padding: 12px 0;
-            background: var(--pink);
-            border: none;
             border-radius: 50px;
             font-weight: 800;
-            cursor: pointer;
-            transition: 0.2s;
-            color: black;
             display: block;
             text-align: center;
+            border: none;
+        }
+        .add-btn {
+            background: var(--pink);
+            color: black;
+            cursor: pointer;
+            transition: 0.2s;
         }
         .add-btn:hover {
             background: var(--pink-light);
             transform: scale(0.97);
         }
-        /* زر Sold Out */
         .sold-out-btn {
-            width: 85%;
-            margin: 12px auto 20px;
-            padding: 12px 0;
             background: #555;
-            border: none;
-            border-radius: 50px;
-            font-weight: 800;
             color: #aaa;
-            display: block;
-            text-align: center;
             cursor: not-allowed;
             pointer-events: none;
         }
-
-        /* ==============================================================
-           10.  صفحة سلة التسوق
-        ============================================================== */
-        .cart-page {
-            background: var(--dark);
-        }
+        /* سلة التسوق */
+        .cart-page { background: var(--dark); }
         .cart-container {
             max-width: 1200px;
             margin: 110px auto 60px;
@@ -541,10 +591,34 @@
             height: 85px;
             object-fit: cover;
             border-radius: 16px;
+            cursor: pointer;
         }
-        .cart-item-details {
-            flex: 1;
-            text-align: right;
+        .cart-item-details { flex: 1; text-align: right; }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .cart-item-quantity button {
+            background: var(--light-gray);
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cart-item-quantity button:hover {
+            background: var(--pink);
+            color: black;
+        }
+        .cart-item-quantity span {
+            font-size: 18px;
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
         }
         .cart-item-remove {
             background: none;
@@ -553,11 +627,6 @@
             padding: 8px 18px;
             border-radius: 40px;
             cursor: pointer;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-        .cart-item-remove:hover {
-            background: #ff888822;
         }
         .cart-summary {
             background: var(--gray);
@@ -583,9 +652,7 @@
             gap: 12px;
             margin: 12px 0;
         }
-        .payment-methods {
-            margin: 24px 0 12px;
-        }
+        .payment-methods { margin: 24px 0 12px; }
         .payment-method {
             display: flex;
             align-items: center;
@@ -609,25 +676,115 @@
             cursor: pointer;
             margin-top: 24px;
             color: black;
-            transition: 0.2s;
         }
         footer {
             text-align: center;
             padding: 40px 20px;
             color: #aaa;
-            border-top: 1px solid #2a2a2a;
+            border-top: 1px solid var(--footer-border);
             margin-top: 40px;
         }
-
-        /* ==============================================================
-           11.  رسالة منبثقة (Toast)
-        ============================================================== */
+        /* النافذة المنبثقة Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-bg);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .modal-content {
+            background: var(--dark);
+            border-radius: 30px;
+            max-width: 500px;
+            width: 90%;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            border: 2px solid var(--pink);
+            animation: fadeInModal 0.3s ease;
+            cursor: default;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        @keyframes fadeInModal {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .modal-content img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--pink);
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .modal-close:hover { transform: scale(1.1); background: rgba(255,105,180,0.3); }
+        .modal .size-options { justify-content: center; margin: 10px 0; }
+        .modal .custom-size { width: 90%; margin: 10px auto; }
+        .modal .add-btn { width: 90%; margin: 15px auto; }
+        /* المنتجات التي شاهدتها مؤخرًا */
+        .recent-section {
+            background: var(--dark);
+            padding: 60px 5% 40px;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+        }
+        .recent-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .recent-item {
+            width: 180px;
+            background: var(--gray);
+            border-radius: 16px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .recent-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--pink);
+        }
+        .recent-item img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .recent-item p { margin-top: 8px; font-size: 14px; }
+        /* رسالة toast */
         #toast {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--pink);
+            background: var(--toast-bg);
             color: black;
             padding: 12px 28px;
             border-radius: 50px;
@@ -635,43 +792,10 @@
             opacity: 0;
             transition: 0.3s;
             z-index: 9999;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             pointer-events: none;
         }
-
-        /* ==============================================================
-           12.  استعلامات الوسائط (شاشات الموبايل)
-        ============================================================== */
-        @media (max-width: 800px) {
-            .cart-container {
-                grid-template-columns: 1fr;
-            }
-            .nav-links {
-                display: none;
-            }
-            .menu-icon {
-                display: block;
-            }
-            .hero-title .yq {
-                font-size: 68px;
-            }
-            .hero-title .state {
-                font-size: 44px;
-            }
-            .section-main {
-                font-size: 32px;
-            }
-            .product-card {
-                flex: 0 0 260px;
-                width: 260px;
-            }
-        }
-
-        /* ==============================================================
-           13.  أنماط إضافية لصفحات المحتوى (القواعد، عن البراند، تواصل)
-        ============================================================== */
-        .philosophy-card,
-        .about-card {
+        /* صفحات إضافية */
+        .philosophy-card, .about-card {
             background: var(--gray);
             border-radius: 32px;
             padding: 48px;
@@ -679,665 +803,466 @@
             max-width: 720px;
             margin: auto;
         }
-        
-        /* تأثير hover إضافي */
+        /* استعلامات الموبايل */
+        @media (max-width: 800px) {
+            .cart-container { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            .menu-icon { display: block; }
+            .hero-title .yq { font-size: 68px; }
+            .hero-title .state { font-size: 44px; }
+            .section-main { font-size: 32px; }
+            .product-card { flex: 0 0 260px; width: 260px; }
+            .search-filter-bar { flex-direction: column; align-items: stretch; }
+            .modal-close { top: 5px; left: 10px; width: 35px; height: 35px; font-size: 28px; }
+            .recent-item { width: 140px; }
+        }
+        /* تأثيرات إضافية */
         .collection-card:hover .collection-overlay {
             background: radial-gradient(circle, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
         }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="menu-icon" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
-        </div>
-        <a href="#" class="logo">Y<span>Q</span></a>
-        <ul class="nav-links">
-            <li><a href="#" onclick="showPage('hero'); closeMobileMenu()">الرئيسية</a></li>
-            <li><a href="#" onclick="showPage('philosophy'); closeMobileMenu()">القواعد</a></li>
-            <li><a href="#" onclick="showPage('collections'); closeMobileMenu()">الكوليكشنز</a></li>
-            <li><a href="#" onclick="showPage('about'); closeMobileMenu()">الهويه</a></li>
-            <li><a href="#" onclick="showPage('contact'); closeMobileMenu()">تواصل معنا</a></li>
-        </ul>
-        <div class="cart-icon" onclick="showPage('cart-page'); closeMobileMenu()">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count" id="cartCount">0</span>
-        </div>
-    </nav>
-
-    <div class="mobile-nav" id="mobileNav">
-        <ul class="nav-links-mobile">
-            <li><a href="#" onclick="showPage('hero'); closeMobileMenu()">الرئيسية</a></li>
-            <li><a href="#" onclick="showPage('philosophy'); closeMobileMenu()">القواعد</a></li>
-            <li><a href="#" onclick="showPage('collections'); closeMobileMenu()">الكوليكشنز</a></li>
-            <li><a href="#" onclick="showPage('about'); closeMobileMenu()">الهويه</a></li>
-            <li><a href="#" onclick="showPage('contact'); closeMobileMenu()">تواصل معنا</a></li>
-        </ul>
+<nav>
+    <div class="menu-icon" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+    <a href="#" class="logo" onclick="showPage('collections'); return false;">Y<span>Q</span></a>
+    <ul class="nav-links">
+        <li><a href="#" onclick="showPage('hero')">الرئيسية</a></li>
+        <li><a href="#" onclick="showPage('philosophy')">القواعد</a></li>
+        <li><a href="#" onclick="showPage('collections')">الكوليكشنز</a></li>
+        <li><a href="#" onclick="showPage('about')">الهويه</a></li>
+        <li><a href="#" onclick="showPage('contact')">تواصل معنا</a></li>
+    </ul>
+    <div class="cart-icon" onclick="showPage('cart-page')">
+        <i class="fas fa-shopping-bag"></i>
+        <span class="cart-count" id="cartCount">0</span>
+        <div class="cart-tooltip" id="cartTooltip">السلة فارغة</div>
     </div>
+</nav>
+<div class="mobile-nav" id="mobileNav">
+    <ul class="nav-links-mobile">
+        <li><a href="#" onclick="showPage('hero')">الرئيسية</a></li>
+        <li><a href="#" onclick="showPage('philosophy')">القواعد</a></li>
+        <li><a href="#" onclick="showPage('collections')">الكوليكشنز</a></li>
+        <li><a href="#" onclick="showPage('about')">الهويه</a></li>
+        <li><a href="#" onclick="showPage('contact')">تواصل معنا</a></li>
+    </ul>
+</div>
+<div class="progress-bar-container" id="progressContainer"><div class="progress-bar" id="progressBar"></div></div>
 
-    <!-- =================  الصفحة الرئيسية  ================= -->
-    <div class="page hero-page active" id="hero">
-        <div class="hero">
-            <div class="hero-content">
-                <div class="hero-subtitle">Fashion Redefined</div>
-                <div class="hero-title">
-                    <div class="yq">YQ</div>
-                    <div class="state">STATE</div>
-                </div>
-                <div class="hero-tagline">خليك أنيق مع يقين — تشكيلات حصرية</div>
-                <a href="#" class="hero-btn" onclick="showPage('collections')">استكشف الكوليكشن</a>
-            </div>
-        </div>
-        <footer>© 2026 يقين — جميع الحقوق محفوظة</footer>
-    </div>
+<!-- الصفحات -->
+<div class="page hero-page active" id="hero">
+    <div class="hero"><div class="hero-content"><div class="hero-subtitle">Fashion Redefined</div><div class="hero-title"><div class="yq">YQ</div><div class="state">STATE</div></div><div class="hero-tagline">خليك أنيق مع يقين — تشكيلات حصرية</div><a href="#" class="hero-btn" onclick="showPage('collections')">استكشف الكوليكشن</a></div></div>
+    <footer>© 2026 يقين — جميع الحقوق محفوظة</footer>
+</div>
+<div class="page" id="philosophy"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px;"><div class="philosophy-card"><p class="section-title">قواعد يقين</p><h2 class="section-main">سياسة الاستبدال والاسترجاع</h2><div style="font-size:18px;line-height:1.8;margin:35px 0;text-align:right;"><p>✅ استرجاع خلال <strong style="color:var(--pink);">24 ساعة</strong> من الاستلام عند وجود عيب.</p><p>🔄 استبدال خلال <strong style="color:var(--pink);">48 ساعة</strong> لأي سبب.</p><p>📞 دعم 24 ساعة عبر واتساب أو الهاتف.</p><p>💎 ثقتكم أولويتنا — تجربة شراء ممتعة</p></div><div style="display:flex;gap:30px;justify-content:center;"><div><h4 style="color:var(--pink);">ثابت</h4><p>على أرضك واقف</p></div><div><h4 style="color:var(--pink);">صادق</h4><p>مع نفسك</p></div><div><h4 style="color:var(--pink);">مطمئن</h4><p>عارف طريقك</p></div></div></div></div><footer>© 2026 يقين</footer></div>
+<div class="page" id="collections">
+    <div class="collections-section"><div class="section-header"><p class="section-title">YQ STATE</p><h2 class="section-main">Collections</h2></div><div class="collections-grid"><div class="collection-card" onclick="showPage('streetwear-collection')"><img src="https://i.postimg.cc/wBz49DW1/IMG-8950.png"><div class="collection-overlay"><h3>YQ Summer Drop</h3><p>Summer Code</p></div></div><div class="collection-card" onclick="showPage('essentials-collection')"><img src="https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg"><div class="collection-overlay"><h3>YQ Winter Drop</h3><p>Winter Code 2025</p></div></div><div class="collection-card" onclick="showPage('signature-collection')"><img src="https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg"><div class="collection-overlay"><h3>YQ Women Wear</h3><p>Women Summer Code 2026</p></div></div><div class="collection-card" onclick="showPage('pants-collection')"><img src="https://i.postimg.cc/k4qRGQKn/IMG-8977.jpg"><div class="collection-overlay"><h3>YQ SweetPants</h3><p>State Pants Collection</p></div></div></div></div>
+    <div class="recent-section" id="recentSection" style="display: none;"><div class="section-header"><p class="section-title">🕒 آخر ما شاهدته</p><h2 class="section-main">Recently Viewed</h2></div><div class="recent-grid" id="recentGrid"></div></div>
+    <footer>© 2026 يقين</footer>
+</div>
+<div class="page" id="streetwear-collection"><div style="padding:110px 20px 60px;background:var(--dark);"><div style="max-width:1300px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;"><h2>YQ <span style="color:var(--pink);">Summer Code</span></h2><a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a></div><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchStreetwear" placeholder="ابحث عن منتج..."></div><div class="filter-options"><button class="filter-btn active" data-filter="all">الكل</button><button class="filter-btn" data-filter="inStock">متاح</button><button class="filter-btn" data-filter="soldOut">نفد</button></div></div><div class="products-grid" id="streetwearProducts"></div></div></div><footer>© 2026 يقين</footer></div>
+<div class="page" id="essentials-collection"><div style="padding:110px 20px 60px;background:var(--dark);"><div style="max-width:1300px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;"><h2>YQ <span style="color:var(--pink);">Winter Code</span></h2><a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a></div><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchEssentials" placeholder="ابحث عن منتج..."></div><div class="filter-options"><button class="filter-btn active" data-filter="all">الكل</button><button class="filter-btn" data-filter="inStock">متاح</button><button class="filter-btn" data-filter="soldOut">نفد</button></div></div><div class="products-grid" id="essentialsProducts"></div></div></div><footer>© 2026 يقين</footer></div>
+<div class="page" id="signature-collection"><div style="padding:110px 20px 60px;background:var(--dark);"><div style="max-width:1300px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;"><h2>YQ <span style="color:var(--pink);">Women Wear</span></h2><a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a></div><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchSignature" placeholder="ابحث عن منتج..."></div><div class="filter-options"><button class="filter-btn active" data-filter="all">الكل</button><button class="filter-btn" data-filter="inStock">متاح</button><button class="filter-btn" data-filter="soldOut">نفد</button></div></div><div class="products-grid" id="signatureProducts"></div></div></div><footer>© 2026 يقين</footer></div>
+<div class="page" id="pants-collection"><div style="padding:110px 20px 60px;background:var(--dark);"><div style="max-width:1300px;margin:0 auto;"><div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;margin-bottom:30px;"><h2>YQ <span style="color:var(--pink);">SweetPants</span></h2><a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a></div><div class="search-filter-bar"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchPants" placeholder="ابحث عن منتج..."></div><div class="filter-options"><button class="filter-btn active" data-filter="all">الكل</button><button class="filter-btn" data-filter="inStock">متاح</button><button class="filter-btn" data-filter="soldOut">نفد</button></div></div><div class="products-grid" id="pantsProducts"></div></div></div><footer>© 2026 يقين — تشكيلة البناطيل عالية الجودة</footer></div>
 
-    <!-- =================  صفحة القواعد  ================= -->
-    <div class="page" id="philosophy">
-        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 100px 24px;">
-            <div class="philosophy-card">
-                <p class="section-title">قواعد يقين</p>
-                <h2 class="section-main">سياسة الاستبدال والاسترجاع</h2>
-                <div style="font-size: 18px; line-height: 1.8; margin: 35px 0; text-align: right;">
-                    <p style="margin-bottom: 20px;">✅ استرجاع خلال <strong style="color: var(--pink);">24 ساعة</strong> من الاستلام عند وجود عيب.</p>
-                    <p style="margin-bottom: 20px;">🔄 استبدال خلال <strong style="color: var(--pink);">48 ساعة</strong> لأي سبب (مقاس/لون/رغبة).</p>
-                    <p style="margin-bottom: 20px;">📞 دعم 24 ساعة عبر واتساب أو الهاتف.</p>
-                    <p>💎 ثقتكم أولويتنا — تجربة شراء ممتعة</p>
-                </div>
-                <div style="display: flex; gap: 30px; justify-content: center;">
-                    <div><h4 style="color: var(--pink);">ثابت</h4><p>على أرضك واقف</p></div>
-                    <div><h4 style="color: var(--pink);">صادق</h4><p>مع نفسك</p></div>
-                    <div><h4 style="color: var(--pink);">مطمئن</h4><p>عارف طريقك</p></div>
-                </div>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+<div class="page cart-page" id="cart-page">
+    <div class="cart-container"><div class="cart-items-list"><h3>🛍️ منتجاتك</h3><div id="cartItemsContainer"></div></div><div class="cart-summary" id="cartSummary" style="display:none;"><div class="summary-row"><span>المجموع الفرعي</span><span id="cartSubtotal">0 ج.م</span></div><div class="delivery-options"><div class="delivery-option"><input type="radio" name="delivery" value="delivery" id="deliveryHome" checked> <label for="deliveryHome">🚚 توصيل للمنزل (60 ج.م)</label></div><div class="delivery-option"><input type="radio" name="delivery" value="pickup" id="deliveryPickup"> <label for="deliveryPickup">📍 استلام مجاني</label></div></div><div class="summary-row"><span>رسوم التوصيل</span><span id="shippingAmount">60 ج.م</span></div><div class="summary-row"><span>⏱️ مدة التوصيل</span><span>24-48 ساعة</span></div><div class="summary-row" style="font-size:22px;"><span>الإجمالي النهائي</span><span id="cartTotalPage">0 ج.م</span></div><div class="payment-methods"><div><i class="fas fa-wallet"></i> طريقة الدفع</div><label class="payment-method"><input type="radio" name="paymentMethod" value="cash" checked> 💵 كاش عند الاستلام</label><label class="payment-method"><input type="radio" name="paymentMethod" value="vodafone"> 📱 فودافون كاش <span class="details">(01027515725)</span></label><label class="payment-method"><input type="radio" name="paymentMethod" value="instapay"> 🏦 إنستا باي <span class="details">(01027515725)</span></label></div><button class="checkout-btn" onclick="sendOrderWhatsApp()">إتمام الطلب عبر واتساب</button></div></div>
+    <footer>© 2026 يقين</footer>
+</div>
 
-    <!-- =================  صفحة الكوليكشنز الرئيسية (النصوص في منتصف البطاقة) ================= -->
-    <div class="page" id="collections">
-        <div class="collections-section">
-            <div class="section-header">
-                <p class="section-title">YQ STATE</p>
-                <h2 class="section-main">Collections</h2>
-            </div>
-            <div class="collections-grid">
-                <!-- كارد 1: YQ Drop 02 -->
-                <div class="collection-card" onclick="showPage('streetwear-collection')">
-                    <img src="https://i.postimg.cc/wBz49DW1/IMG-8950.png" alt="streetwear">
-                    <div class="collection-overlay">
-                        <h3>YQ Summer Drop </h3>
-                        <p>Summer Code</p>
-                    </div>
-                </div>
-                <!-- كارد 2: Built from nothing + YQ Drop 01 -->
-                <div class="collection-card" onclick="showPage('essentials-collection')">
-                    <img src="https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg" alt="essentials">
-                    <div class="collection-overlay">
-                        <h3>YQ Winter Drop </h3>
-                        <p>Winter Code 2025</p>
-                    </div>
-                </div>
-                <!-- كارد 3: YQ Women Wear -->
-                <div class="collection-card" onclick="showPage('signature-collection')">
-                    <img src="https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg" alt="signature">
-                    <div class="collection-overlay">
-                        <h3>YQ Women Wear</h3>
-                        <p>Women Summer Code 2026</p>
-                    </div>
-                </div>
-                <!-- كارد 4: YQ SweetPants -->
-                <div class="collection-card" onclick="showPage('pants-collection')">
-                    <img src="https://i.postimg.cc/k4qRGQKn/IMG-8977.jpg" alt="pants">
-                    <div class="collection-overlay">
-                        <h3>YQ SweetPants</h3>
-                        <p>State Pants Collection</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+<div class="page" id="about"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);"><div class="about-card"><h2>عن <span style="color:var(--pink);">يقين</span></h2><p>بدأنا قصة يقين من الأول عشان نقدم أفضل خامات بأسعار تنافسية، وأناقة تعكس شخصيتك.</p></div></div><footer>© 2026 يقين</footer></div>
+<div class="page" id="contact"><div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);"><div style="text-align:center;"><h2>تواصل <span style="color:var(--pink);">معنا</span></h2><div style="display:flex;gap:48px;margin-top:48px;flex-wrap:wrap;justify-content:center;"><a href="tel:+201027515725"><div><i class="fas fa-phone-alt" style="font-size:38px;color:var(--pink);"></i><p>اتصل بنا</p><p>+20 1027515725</p></div></a><a href="https://wa.me/201027515725" target="_blank"><div><i class="fab fa-whatsapp" style="font-size:38px;color:var(--pink);"></i><p>واتساب</p><p>محادثة مباشرة</p></div></a><a href="https://instagram.com/yaqeen.state" target="_blank"><div><i class="fab fa-instagram" style="font-size:38px;color:var(--pink);"></i><p>إنستغرام</p><p>@yaqeen.state</p></div></a></div></div></div><footer>© 2026 يقين</footer></div>
 
-    <!-- =================  الصفحات الفرعية (كوليكشنات المنتجات) ================= -->
-    <div class="page" id="streetwear-collection">
-        <div style="padding: 110px 20px 60px; background: var(--dark);">
-            <div style="max-width:1300px; margin:0 auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2>YQ  <span style="color: var(--pink);">Summer Code</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a>
-                </div>
-                <div class="products-grid" id="streetwearProducts"></div>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+<div id="toast"></div>
+<div id="productModal" class="modal" onclick="closeModalOnBackground(event)"><div class="modal-content" onclick="event.stopPropagation()"><span class="modal-close" onclick="closeModal()">&times;</span><img id="modalImg" src=""><h3 id="modalName"></h3><p id="modalPrice"></p><p id="modalStock"></p><div id="modalSizesContainer"></div><button id="modalAddToCartBtn" class="add-btn">إضافة للسلة</button></div></div>
 
-    <div class="page" id="essentials-collection">
-        <div style="padding: 110px 20px 60px; background: var(--dark);">
-            <div style="max-width:1300px; margin:0 auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2>YQ  <span style="color: var(--pink);">Winter Code</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a>
-                </div>
-                <div class="products-grid" id="essentialsProducts"></div>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+<script>
+    // ----------------------------------------------------------------
+    //  بيانات المنتجات (مع إضافة خاصية stock)
+    // ----------------------------------------------------------------
+    const productsData = {
+        streetwear: [
+            { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L','XL','XXL'], stock: 5 },
+            { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/RFp8ZjtC/IMG-8939.png', sizes: ['XL','XXL'], stock: 2 },
+            { name: 'YQ Graphite Gray Tshirt', price: 500, img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: ['L','XL'], stock: 2 },
+            { name: 'YQ Graphite Black Tshirt', price: 500, img: 'https://i.postimg.cc/Nj8zHyTK/IMG-8941.png', sizes: ['L','XL','XXL'], stock: 5 },
+            { name: 'YQ Black Tshirt', price: 449, img: 'https://i.postimg.cc/XqLDPqKc/IMG-8944.jpg', sizes: ['L','XL','XXL'], stock: 5 },
+            { name: 'YQ White Tshirt', price: 449, img: 'https://i.postimg.cc/CLM2qCY3/IMG-8943.jpg', sizes: ['L','XL','XXL'], stock: 5 }
+        ],
+        essentials: [
+            { name: 'YQ More Self Love Hoodie', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', sizes: ['XXL'], stock: 1 },
+            { name: 'YQ Welcome To World', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', sizes: ['XL'], stock: 1 },
+            { name: 'YQ Time Is Money', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', sizes: ['L'], stock: 1 },
+            { name: 'YQ Protect Your Peace', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', sizes: ['M'], stock: 1 },
+            { name: 'YQ Love Hoodie', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', sizes: ['L'], stock: 1 },
+            { name: 'YQ Pink Edition', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', sizes: ['L'], stock: 1 },
+            { name: 'YQ All Eyes On Me', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', sizes: ['XXL'], stock: 1 },
+            { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', sizes: ['L'], stock: 1 },
+            { name: 'YQ Show Me Your Feelings 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', sizes: ['XXL'], stock: 1 },
+            { name: 'YQ Black SweetShirt', price: 350, img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L','XL','XXL'], stock: 4 },
+            { name: 'YQ Brown SweetShirt', price: 350, img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',  sizes: ['L','XXL'], stock: 2 },
+            { name: 'YQ Baby Blue SweetShirt', price: 350, img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',  sizes: ['L','XL','XXL'], stock: 4 }
+        ],
+        signature: [
+            { name: 'YQ W Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W Birgandi Shirt', price: 470, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'], stock: 0 },
+            { name: 'YQ W Pink Shirt', price: 470, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0 },
+            { name: 'YQ W Olive Shirt', price: 470, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'], stock: 1 },
+            { name: 'YQ W Pink Shimis', price: 470, img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W White Shimis', price: 470, img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W Black Shimis', price: 470, img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'], stock: 2 },
+            { name: 'YQ W Birgandi Shirt New', price: 470, img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'], stock: 2 }
+        ],
+        pants: [
+            { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M','L','XL'], stock: 3 },
+            { name: 'Gray SweetPants', price: 500, img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['XL'], stock: 1 },
+            { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M','L','XL','XXL'], stock: 3 },
+            { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M','L','XL','XXL'], stock: 8 },
+            { name: 'Black Sherwal', price: 350, img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'], stock: 1 },
+            { name: 'White Sherwal', price: 350, img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L','XL','XXL'], stock: 3 },
+            { name: 'Beige Sherwal', price: 350, img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L','XXL'], stock: 2 }
+        ]
+    };
 
-    <div class="page" id="signature-collection">
-        <div style="padding: 110px 20px 60px; background: var(--dark);">
-            <div style="max-width:1300px; margin:0 auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h2>YQ  <span style="color: var(--pink);">Women Wear</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color:var(--pink);"> Back ←</a>
-                </div>
-                <div class="products-grid" id="signatureProducts"></div>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+    // دوال مساعدة
+    function findProductByName(name) {
+        for(let cat in productsData) {
+            let found = productsData[cat].find(p => p.name === name);
+            if(found) return found;
+        }
+        return null;
+    }
 
-    <div class="page" id="pants-collection">
-        <div style="padding: 110px 20px 60px; background: var(--dark);">
-            <div style="max-width:1300px; margin:0 auto;">
-                <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 30px;">
-                    <h2>YQ  <span style="color: var(--pink);">SweetPants</span></h2>
-                    <a href="#" onclick="showPage('collections')" style="color: var(--pink);"> Back To Groups  ←</a>
-                </div>
-                <div class="products-grid" id="pantsProducts"></div>
-            </div>
-        </div>
-        <footer>© 2026 يقين — تشكيلة البناطيل عالية الجودة</footer>
-    </div>
+    // ----------------------------------------------------------------
+    //  سلة التسوق (لا يتم خصم المخزون هنا)
+    // ----------------------------------------------------------------
+    let cart = [];
+    let total = 0;
+    let appliedCoupon = null;
+    const validCoupons = { 'YAQEEN15': { type: 'percent', value: 15 }, 'FIRST20': { type: 'fixed', value: 20 }, 'WELCOME10': { type: 'percent', value: 10 } };
 
-    <!-- =================  صفحة سلة التسوق ================= -->
-    <div class="page cart-page" id="cart-page">
-        <div class="cart-container">
-            <div class="cart-items-list">
-                <h3 style="margin-bottom: 25px;">🛍️ منتجاتك</h3>
-                <div id="cartItemsContainer"></div>
-            </div>
-            <div class="cart-summary" id="cartSummary" style="display: none;">
-                <div class="summary-row">
-                    <span>المجموع الفرعي</span>
-                    <span id="cartSubtotal">0 ج.م</span>
-                </div>
-                <div class="delivery-options">
-                    <div class="delivery-option">
-                        <input type="radio" name="delivery" value="delivery" id="deliveryHome" checked>
-                        <label for="deliveryHome">🚚 توصيل للمنزل (60 ج.م)</label>
-                    </div>
-                    <div class="delivery-option">
-                        <input type="radio" name="delivery" value="pickup" id="deliveryPickup">
-                        <label for="deliveryPickup">📍 استلام من المكان المحدد (مجاني)</label>
-                    </div>
-                </div>
-                <div id="shippingDisplay" class="summary-row">
-                    <span>رسوم التوصيل</span>
-                    <span id="shippingAmount">60 ج.م</span>
-                </div>
-                <div class="summary-row">
-                    <span>⏱️ مدة التوصيل</span>
-                    <span>24-48 ساعة</span>
-                </div>
-                <div class="summary-row" style="font-size: 22px; font-weight: bold;">
-                    <span>الإجمالي النهائي</span>
-                    <span id="cartTotalPage">0 ج.م</span>
-                </div>
-                <div class="payment-methods">
-                    <div><i class="fas fa-wallet"></i> طريقة الدفع</div>
-                    <label class="payment-method">
-                        <input type="radio" name="paymentMethod" value="cash" checked> 💵 كاش عند الاستلام
-                    </label>
-                    <label class="payment-method">
-                        <input type="radio" name="paymentMethod" value="vodafone"> 📱 فودافون كاش
-                        <span class="details">(01027515725)</span>
-                    </label>
-                    <label class="payment-method">
-                        <input type="radio" name="paymentMethod" value="instapay"> 🏦 إنستا باي
-                        <span class="details">(01027515725)</span>
-                    </label>
-                </div>
-                <button class="checkout-btn" onclick="sendOrderWhatsApp()">إتمام الطلب عبر واتساب</button>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+    function updateCartTooltip() {
+        let tooltip = document.getElementById('cartTooltip');
+        let count = cart.reduce((sum,item) => sum + item.quantity, 0);
+        if(count === 0) tooltip.innerText = 'السلة فارغة';
+        else tooltip.innerText = `🛒 ${count} منتج - ${total} ج.م`;
+    }
+    function showProgressBar() {
+        let container = document.getElementById('progressContainer');
+        let bar = document.getElementById('progressBar');
+        container.style.visibility = 'visible';
+        bar.style.width = '100%';
+        setTimeout(() => {
+            bar.style.width = '0%';
+            setTimeout(() => { container.style.visibility = 'hidden'; }, 300);
+        }, 800);
+    }
+    function saveCartToLocal() { localStorage.setItem('yqCart', JSON.stringify(cart)); localStorage.setItem('yqTotal', total); updateCartTooltip(); }
+    function loadCartFromLocal() {
+        let savedCart = localStorage.getItem('yqCart');
+        if(savedCart) {
+            cart = JSON.parse(savedCart);
+            total = localStorage.getItem('yqTotal') ? parseFloat(localStorage.getItem('yqTotal')) : 0;
+            updateCartCount();
+            updateCartTooltip();
+            if(document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
+        }
+    }
+    function updateCartCount() {
+        let count = cart.reduce((sum,item) => sum + item.quantity, 0);
+        document.getElementById('cartCount').innerText = count;
+        updateCartTooltip();
+    }
+    // إضافة للسلة بدون خصم المخزون
+    function addToCartLogic(product, selectedSize) {
+        let existing = cart.find(item => item.name === product.name && item.size === selectedSize);
+        if(existing) {
+            existing.quantity++;
+            total += product.price;
+        } else {
+            cart.push({ name: product.name, price: product.price, img: product.img, size: selectedSize, quantity: 1 });
+            total += product.price;
+        }
+        saveCartToLocal(); updateCartCount(); if(document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
+        showProgressBar();
+        showToast('✅ تمت الإضافة إلى السلة');
+        return true;
+    }
+    function updateCartItemQuantity(index, delta) {
+        let item = cart[index]; if(!item) return;
+        if(delta > 0) {
+            item.quantity++; total += item.price;
+        } else if(delta < 0 && item.quantity > 1) {
+            item.quantity--; total -= item.price;
+        } else if(delta < 0 && item.quantity === 1) {
+            removeFromCart(index);
+            return;
+        }
+        saveCartToLocal(); updateCartCount(); renderCartPage();
+    }
+    window.removeFromCart = function(idx) {
+        let item = cart[idx];
+        total -= item.price * item.quantity; cart.splice(idx,1);
+        saveCartToLocal(); updateCartCount(); if(document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
+    };
+    function getShippingAmount() { let r = document.querySelector('input[name="delivery"]:checked'); return r && r.value === 'delivery' ? 60 : 0; }
+    function calculateDiscount() { if(!appliedCoupon) return 0; if(appliedCoupon.type === 'percent') return total * appliedCoupon.value / 100; return Math.min(appliedCoupon.value, total); }
+    function getFinalTotal() { return total + getShippingAmount() - calculateDiscount(); }
+    function updateTotals() { document.getElementById('cartSubtotal').innerText = total + ' ج.م'; document.getElementById('shippingAmount').innerText = getShippingAmount() + ' ج.م'; document.getElementById('cartTotalPage').innerText = getFinalTotal().toFixed(0) + ' ج.م'; }
+    function renderCartPage() {
+        let container = document.getElementById('cartItemsContainer'); let summary = document.getElementById('cartSummary');
+        if(cart.length === 0) { container.innerHTML = '<p style="text-align:center;padding:40px;">🛒 السلة فارغة</p>'; summary.style.display = 'none'; appliedCoupon = null; updateTotals(); }
+        else {
+            summary.style.display = 'block'; let html = '';
+            cart.forEach((item, idx) => {
+                html += `<div class="cart-item"><img src="${item.img}" onclick="openModalFromCart('${item.name}')"><div class="cart-item-details"><h4>${item.name}</h4><div>المقاس: ${item.size}</div><div class="product-price">${item.price} ج.م</div><div class="cart-item-quantity"><button onclick="updateCartItemQuantity(${idx},-1)">-</button><span>${item.quantity}</span><button onclick="updateCartItemQuantity(${idx},1)">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">إزالة</button></div>`;
+            });
+            container.innerHTML = html; updateTotals();
+            document.querySelectorAll('input[name="delivery"]').forEach(r => { r.removeEventListener('change', updateTotals); r.addEventListener('change', updateTotals); });
+        }
+    }
 
-    <!-- =================  صفحة عن البراند ================= -->
-    <div class="page" id="about">
-        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
-            <div class="about-card">
-                <h2>عن <span style="color: var(--pink);">يقين</span></h2>
-                <p style="margin-top: 25px;">بدأنا قصة يقين من الأول عشان نقدم أفضل خامات بأسعار تنافسية، وأناقة تعكس شخصيتك.</p>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+    // ----------------------------------------------------------------
+    //  إتمام الطلب عبر واتساب (يتم هنا خصم المخزون والتحقق من التوفر)
+    // ----------------------------------------------------------------
+    window.sendOrderWhatsApp = function() {
+        if(cart.length === 0) { alert('السلة فارغة'); return; }
+        // التحقق من توفر الكمية
+        let insufficientStock = false;
+        let errorMessage = '';
+        for(let item of cart) {
+            let product = findProductByName(item.name);
+            if(!product) continue;
+            if(product.stock < item.quantity) {
+                insufficientStock = true;
+                errorMessage += `- ${item.name} (مقاس: ${item.size}) متوفر ${product.stock} فقط، وأنت تطلب ${item.quantity}\n`;
+            }
+        }
+        if(insufficientStock) {
+            alert(`⚠️ الكمية غير متوفرة:\n${errorMessage}\nالرجاء تعديل الكمية.`);
+            return;
+        }
+        // خصم المخزون
+        for(let item of cart) {
+            let product = findProductByName(item.name);
+            if(product) product.stock -= item.quantity;
+        }
+        // تحديث عرض المنتجات في جميع الصفحات
+        renderProducts('streetwearProducts', productsData.streetwear, 'streetwear');
+        renderProducts('essentialsProducts', productsData.essentials, 'essentials');
+        renderProducts('signatureProducts', productsData.signature, 'signature');
+        renderProducts('pantsProducts', productsData.pants, 'pants');
+        // تجهيز رسالة الواتساب
+        let payment = document.querySelector('input[name="paymentMethod"]:checked').value;
+        let payText = payment==='cash'?'الدفع عند الاستلام':(payment==='vodafone'?'فودافون كاش':'إنستا باي');
+        let deliveryRadio = document.querySelector('input[name="delivery"]:checked');
+        let deliveryMethod = deliveryRadio && deliveryRadio.value === 'delivery' ? 'توصيل للمنزل (60 ج.م)' : 'استلام مجاني';
+        let discount = calculateDiscount(); let shipping = getShippingAmount(); let finalTotal = total + shipping - discount;
+        let message = '🛍️ *طلب جديد من YQ STATE*%0a%0a📦 *المنتجات:*%0a';
+        cart.forEach((item,i) => { message += `${i+1} - ${item.name} (مقاس: ${item.size}) x${item.quantity} - ${item.price*item.quantity} ج.م%0a`; });
+        message += `%0a💰 *المجموع الفرعي:* ${total} ج.م%0a`;
+        if(discount>0) message += `🎉 *الخصم:* -${discount.toFixed(0)} ج.م%0a`;
+        message += `🚚 *طريقة التوصيل:* ${deliveryMethod}%0a💵 *الإجمالي النهائي:* ${finalTotal.toFixed(0)} ج.م%0a💳 *طريقة الدفع:* ${payText}%0a%0a📲 *يرجى تأكيد الطلب*`;
+        window.open(`https://wa.me/201027515725?text=${message}`, '_blank');
+        // تفريغ السلة وحفظ التغييرات
+        cart = []; total = 0; appliedCoupon = null;
+        saveCartToLocal(); updateCartCount(); renderCartPage();
+        showPage('collections');
+        showToast('✅ تم إرسال الطلب! شكراً لتسوقك مع يقين');
+    };
+    function showToast(msg) { let toast = document.getElementById('toast'); toast.innerText = msg; toast.style.opacity = '1'; setTimeout(()=>{ toast.style.opacity = '0'; },2000); }
 
-    <!-- =================  صفحة تواصل معنا ================= -->
-    <div class="page" id="contact">
-        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dark);">
-            <div style="text-align: center;">
-                <h2>تواصل <span style="color: var(--pink);">معنا</span></h2>
-                <div style="display: flex; gap: 48px; margin-top: 48px; flex-wrap: wrap; justify-content: center;">
-                    <a href="tel:+201027515725" style="text-decoration: none; color: inherit;">
-                        <div><i class="fas fa-phone-alt" style="font-size: 38px; color: var(--pink);"></i><p>اتصل بنا</p><p>+20 1027515725</p></div>
-                    </a>
-                    <a href="https://wa.me/201027515725" target="_blank" style="text-decoration: none; color: inherit;">
-                        <div><i class="fab fa-whatsapp" style="font-size: 38px; color: var(--pink);"></i><p>واتساب</p><p>محادثة مباشرة</p></div>
-                    </a>
-                    <a href="https://instagram.com/yaqeen.state" target="_blank" style="text-decoration: none; color: inherit;">
-                        <div><i class="fab fa-instagram" style="font-size: 38px; color: var(--pink);"></i><p>إنستغرام</p><p>@yaqeen.state</p></div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <footer>© 2026 يقين</footer>
-    </div>
+    // ----------------------------------------------------------------
+    //  منتجات شاهدتها مؤخرًا
+    // ----------------------------------------------------------------
+    let recentProducts = [];
+    function addToRecent(productName) {
+        let product = findProductByName(productName);
+        if(!product) return;
+        recentProducts = recentProducts.filter(p => p.name !== productName);
+        recentProducts.unshift({ name: product.name, img: product.img, price: product.price });
+        if(recentProducts.length > 3) recentProducts.pop();
+        localStorage.setItem('yqRecent', JSON.stringify(recentProducts));
+        renderRecentSection();
+    }
+    function renderRecentSection() {
+        let section = document.getElementById('recentSection');
+        let container = document.getElementById('recentGrid');
+        if(!section || !container) return;
+        if(recentProducts.length === 0) { section.style.display = 'none'; return; }
+        section.style.display = 'block';
+        let html = '';
+        recentProducts.forEach(p => {
+            html += `<div class="recent-item" onclick="openProductByName('${p.name}')"><img src="${p.img}" alt="${p.name}"><p>${p.name.length > 20 ? p.name.substring(0,20)+'...' : p.name}</p><div class="product-price">${p.price} ج.م</div></div>`;
+        });
+        container.innerHTML = html;
+    }
+    function openProductByName(name) {
+        let product = findProductByName(name);
+        if(product) { let fakeCard = { dataset: { productName: name } }; openModal(fakeCard); }
+    }
+    function loadRecentFromLocal() {
+        let saved = localStorage.getItem('yqRecent');
+        if(saved) { recentProducts = JSON.parse(saved); renderRecentSection(); }
+    }
 
-    <div id="toast"></div>
-
-    <script>
-        /* ==============================================================
-            بيانات المنتجات (مع إضافة خاصية stock)
-        ============================================================== */
-        const productsData = {
-            streetwear: [
-                { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/SKsHbSXt/IMG-8942.png', sizes: ['L', 'XL', 'XXL'], stock: 5 },
-                { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/RFp8ZjtC/IMG-8939.png', sizes: ['L', 'XL', 'XXL'], stock: 2 },
-                { name: 'YQ Graphite Gray Tshirt', price: 500, img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: ['L', 'XL', 'XXL'], stock: 2 },
-                { name: 'YQ Graphite Black Tshirt', price: 500, img: 'https://i.postimg.cc/Nj8zHyTK/IMG-8941.png', sizes: ['L', 'XL', 'XXL'], stock: 5 },
-                { name: 'YQ Black Tshirt', price: 449, img: 'https://i.postimg.cc/XqLDPqKc/IMG-8944.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5 },
-                { name: 'YQ White Tshirt', price: 449, img: 'https://i.postimg.cc/CLM2qCY3/IMG-8943.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5 }
-            ],
-            essentials: [
-                { name: 'YQ More Self Love Hoodie 2XL', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', stock: 1 },
-                { name: 'YQ Welcome To World XL', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', stock: 1 },
-                { name: 'YQ Time Is Money YQ Edition L', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', stock: 1 },
-                { name: 'YQ Protect Your Peace M', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', stock: 1 },
-                { name: 'YQ Love Hoodie L', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', stock: 1 },
-                { name: 'YQ Pink Edition L', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', stock: 1 },
-                { name: 'YQ All Eyes On Me 2XL ', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', stock: 1 },
-                { name: 'YQ Show Me Your Feelings L', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', stock: 1 },
-                { name: 'YQ Show Me Your Feelings 2XL', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', stock: 1 },
-                { name: 'YQ Black SweetShirt', price: 350, img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L', 'XL', 'XXL'], stock: 4 },
-                { name: 'YQ Brown SweetShirt', price: 350, img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',  sizes: ['L','XXL'], stock: 2 },
-                { name: 'YQ Baby Blue SweetShirt', price: 350, img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',  sizes: ['L', 'XL', 'XXL'], stock: 4 }
-            ],
-            signature: [
-                { name: 'YQ W Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'], stock: 2 },
-                { name: 'YQ W Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'], stock: 2 },
-                { name: 'YQ W Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'], stock: 2 },
-                { name: 'YQ W Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'], stock: 2 },
-                { name: 'YQ W Birgandi Shirt ', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'], stock: 0 },
-                { name: 'YQ W Pink Shirt ', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0 },
-                { name: 'YQ W Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'], stock: 1 },
-                { name: 'YQ W Pink Shimis', price: 470, img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'], stock: 1 },
-                { name: 'YQ W White Shimis', price: 470, img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'], stock: 1 },
-                { name: 'YQ W Black Shimis', price: 470, img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'], stock: 2 },
-                { name: 'YQ W Birgandi Shirt', price: 470, img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'], stock: 2 }
-            ],
-            pants: [
-                { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 3 },
-                { name: 'Gray SweetPants', price: 500, img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['XL'], stock: 1 },
-                { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 3 },
-                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 8 },
-                { name: 'Black Sherwal ', price: 350, img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'], stock: 1 },
-                { name: 'White Sherwal', price: 350, img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3 },
-                { name: 'Beige Sherwal', price: 350, img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L', 'XL', 'XXL'], stock: 2 }
-            ]
-        };
-
-        /* ==============================================================
-            دالة عرض المنتجات مع إظهار المخزون وزر Sold Out
-        ============================================================== */
-        function renderProducts(containerId, products) {
-            const container = document.getElementById(containerId);
-            if (!container) return;
-            let html = '';
-            for (let p of products) {
-                const hasSizes = p.sizes && p.sizes.length;
-                let sizesHtml = '';
-                if (hasSizes) {
-                    sizesHtml = '<div class="size-options">';
-                    for (let s of p.sizes) {
-                        const oneSizeClass = (s === 'One Size') ? 'one-size' : '';
-                        sizesHtml += `<div class="size-option ${oneSizeClass}" data-size="${s}">${s}</div>`;
-                    }
-                    sizesHtml += '</div>';
-                }
-                const stockText = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد من المخزون';
-                const buttonHtml = (p.stock > 0) 
-                    ? `<button class="add-btn" data-name="${p.name}" data-price="${p.price}" data-img="${p.img}">إضافة للسلة</button>`
-                    : `<button class="sold-out-btn" disabled>Sold Out</button>`;
-                
-                html += `
-                    <div class="product-card" data-product-name="${p.name}">
-                        <img src="${p.img}" alt="${p.name}">
+    // ----------------------------------------------------------------
+    //  عرض المنتجات (بحث، فلتر، Badge محدود)
+    // ----------------------------------------------------------------
+    function renderProducts(containerId, products, categoryKey) {
+        const container = document.getElementById(containerId);
+        if(!container) return;
+        let searchTerm = document.getElementById(`search${categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)}`)?.value.toLowerCase() || '';
+        let activeFilter = document.querySelector(`#${containerId} .filter-btn.active`)?.dataset.filter || 'all';
+        let filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+        if(activeFilter === 'inStock') filtered = filtered.filter(p => p.stock > 0);
+        else if(activeFilter === 'soldOut') filtered = filtered.filter(p => p.stock === 0);
+        let html = '';
+        for(let p of filtered) {
+            let lowStockBadge = (p.stock > 0 && p.stock <= 2) ? '<div class="low-stock-badge">🔥 محدود</div>' : '';
+            let sizesHtml = '';
+            if(p.sizes && p.sizes.length) {
+                sizesHtml = '<div class="size-options">';
+                for(let s of p.sizes) sizesHtml += `<div class="size-option ${s==='One Size'?'one-size':''}" data-size="${s}">${s}</div>`;
+                sizesHtml += '</div>';
+            }
+            let stockText = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد من المخزون';
+            let btnHtml = (p.stock > 0) ? `<button class="add-btn" data-name="${p.name}" data-price="${p.price}" data-img="${p.img}">إضافة للسلة</button>` : `<button class="sold-out-btn" disabled>Sold Out</button>`;
+            html += `<div class="product-card" data-product-name="${p.name}" data-product-img="${p.img}" data-product-price="${p.price}" data-product-stock="${p.stock}" data-product-sizes='${JSON.stringify(p.sizes||[])}'>
+                        ${lowStockBadge}
+                        <img src="${p.img}" alt="${p.name}" loading="lazy">
                         <h3>${p.name}</h3>
                         <div class="product-price">${p.price} ج.م</div>
                         <div class="stock-info">${stockText}</div>
                         ${sizesHtml}
                         <input type="text" class="custom-size" placeholder="مقاس خاص">
-                        ${buttonHtml}
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-            attachSizeEvents();
-            // ربط أحداث الإضافة مع التحقق من المخزون
-            document.querySelectorAll('.add-btn').forEach(btn => {
-                btn.removeEventListener('click', addToCartHandler);
-                btn.addEventListener('click', addToCartHandler);
-            });
+                        ${btnHtml}
+                     </div>`;
         }
+        container.innerHTML = html;
+        attachSizeEvents(containerId);
+        document.querySelectorAll(`#${containerId} .add-btn`).forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); handleAddFromCard(btn); }));
+        document.querySelectorAll(`#${containerId} .product-card`).forEach(card => card.addEventListener('click', (e) => { if(!e.target.closest('.add-btn') && !e.target.closest('.size-option') && !e.target.closest('.custom-size')) { openModal(card); addToRecent(card.dataset.productName); } }));
+    }
+    function handleAddFromCard(btn) {
+        let card = btn.closest('.product-card'); let name = card.dataset.productName; let product = findProductByName(name);
+        if(!product) return;
+        if(product.stock <= 0) { showToast('⚠️ هذا المنتج نفد من المخزون'); return; }
+        let size = card.dataset.selectedSize || card.querySelector('.custom-size')?.value.trim();
+        if(!size) { alert('اختر المقاس'); return; }
+        addToCartLogic(product, size);
+    }
+    function attachSizeEvents(containerId) {
+        document.querySelectorAll(`#${containerId} .size-option`).forEach(opt => opt.addEventListener('click', (e) => { e.stopPropagation();
+            let parent = opt.parentNode; parent.querySelectorAll('.size-option').forEach(o=>o.classList.remove('selected'));
+            opt.classList.add('selected'); let card = opt.closest('.product-card'); card.dataset.selectedSize = opt.dataset.size;
+            let custom = card.querySelector('.custom-size'); if(custom) custom.value = '';
+        }));
+        document.querySelectorAll(`#${containerId} .custom-size`).forEach(inp => inp.addEventListener('change', function(){
+            let card = this.closest('.product-card');
+            if(this.value.trim()){ card.dataset.selectedSize = this.value.trim(); card.querySelectorAll('.size-option').forEach(o=>o.classList.remove('selected')); }
+            else delete card.dataset.selectedSize;
+        }));
+    }
+    function bindFilters(categoryKey, containerId) {
+        let searchInput = document.getElementById(`search${categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)}`);
+        if(searchInput) searchInput.addEventListener('input', () => renderProducts(containerId, productsData[categoryKey], categoryKey));
+        let filterBtns = document.querySelectorAll(`#${containerId} .filter-btn`);
+        filterBtns.forEach(btn => btn.addEventListener('click', function(){ filterBtns.forEach(b=>b.classList.remove('active')); this.classList.add('active'); renderProducts(containerId, productsData[categoryKey], categoryKey); }));
+    }
 
-        /* ==============================================================
-            معالج إضافة المنتج مع التحقق من المخزون وإنقاصه
-        ============================================================== */
-        function addToCartHandler(e) {
-            const btn = e.currentTarget;
-            const card = btn.closest('.product-card');
-            const productName = card.dataset.productName;
-            // البحث عن المنتج في البيانات الأصلية
-            let product = null;
-            let productCategory = null;
-            for (let category in productsData) {
-                const found = productsData[category].find(p => p.name === productName);
-                if (found) {
-                    product = found;
-                    productCategory = category;
-                    break;
-                }
-            }
-            if (!product) return;
-            if (product.stock <= 0) {
-                showToast('⚠️ هذا المنتج نفد من المخزون');
-                return;
-            }
-            let size = card.dataset.selectedSize;
-            if (!size) {
-                const custom = card.querySelector('.custom-size');
-                if (custom && custom.value.trim()) size = custom.value.trim();
-                else { alert('الرجاء اختيار المقاس'); return; }
-            }
-            // إضافة إلى السلة
-            cart.push({ name: product.name, price: product.price, img: product.img, size });
-            total += product.price;
-            // إنقاص المخزون
-            product.stock--;
-            // تحديث عرض المخزون في البطاقة
-            const stockSpan = card.querySelector('.stock-info');
-            if (stockSpan) stockSpan.innerText = product.stock > 0 ? `✅ متبقي: ${product.stock}` : '❌ نفد من المخزون';
-            if (product.stock === 0) {
-                // استبدال الزر بـ Sold Out
-                btn.removeEventListener('click', addToCartHandler);
-                const newBtn = document.createElement('button');
-                newBtn.className = 'sold-out-btn';
-                newBtn.disabled = true;
-                newBtn.innerText = 'Sold Out';
-                btn.parentNode.replaceChild(newBtn, btn);
-            }
-            if (appliedCoupon) updateTotals();
-            updateCartCount();
-            showToast('✅ تمت الإضافة إلى السلة');
+    // ----------------------------------------------------------------
+    //  Modal (نافذة منبثقة للمنتج)
+    // ----------------------------------------------------------------
+    let currentModalSelectedSize = null;
+    function openModal(card) {
+        let productName = card.dataset.productName;
+        let product = findProductByName(productName);
+        if(!product) return;
+        currentModalSelectedSize = null;
+        document.getElementById('modalImg').src = product.img;
+        document.getElementById('modalName').innerText = product.name;
+        document.getElementById('modalPrice').innerText = product.price + ' ج.م';
+        document.getElementById('modalStock').innerText = product.stock > 0 ? `المتبقي: ${product.stock}` : 'نفد المخزون';
+        let sizesHtml = '';
+        if(product.sizes && product.sizes.length) {
+            sizesHtml = '<div class="size-options" id="modalSizeOptions">';
+            product.sizes.forEach(s => { sizesHtml += `<div class="size-option ${s==='One Size'?'one-size':''}" data-size="${s}">${s}</div>`; });
+            sizesHtml += '</div><input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
+        } else {
+            sizesHtml = '<input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
         }
-
-        /* ==============================================================
-            ربط أحداث المقاسات
-        ============================================================== */
-        function attachSizeEvents() {
-            const sizeOptions = document.querySelectorAll('.size-option');
-            for (let opt of sizeOptions) {
-                opt.removeEventListener('click', sizeClickHandler);
-                opt.addEventListener('click', sizeClickHandler);
-            }
-            const customInputs = document.querySelectorAll('.custom-size');
-            for (let inp of customInputs) {
-                inp.removeEventListener('change', customSizeHandler);
-                inp.addEventListener('change', customSizeHandler);
-            }
-        }
-
-        function sizeClickHandler() {
-            const parent = this.parentNode;
-            for (let opt of parent.querySelectorAll('.size-option')) opt.classList.remove('selected');
-            this.classList.add('selected');
-            const card = this.closest('.product-card');
-            card.dataset.selectedSize = this.getAttribute('data-size');
-            const custom = card.querySelector('.custom-size');
-            if (custom) custom.value = '';
-        }
-
-        function customSizeHandler() {
-            const card = this.closest('.product-card');
-            if (this.value.trim()) {
-                card.dataset.selectedSize = this.value.trim();
-                for (let opt of card.querySelectorAll('.size-option')) opt.classList.remove('selected');
-            } else {
-                delete card.dataset.selectedSize;
-            }
-        }
-
-        // عرض جميع المنتجات
-        renderProducts('streetwearProducts', productsData.streetwear);
-        renderProducts('essentialsProducts', productsData.essentials);
-        renderProducts('signatureProducts', productsData.signature);
-        renderProducts('pantsProducts', productsData.pants);
-
-        /* ==============================================================
-            إدارة سلة التسوق
-        ============================================================== */
-        let cart = [];
-        let total = 0;
-        let appliedCoupon = null;
-        const validCoupons = {
-            'YAQEEN15': { type: 'percent', value: 15, name: '15% خصم' },
-            'FIRST20': { type: 'fixed', value: 20, name: '20 ج.م خصم' },
-            'WELCOME10': { type: 'percent', value: 10, name: '10% خصم' }
+        document.getElementById('modalSizesContainer').innerHTML = sizesHtml;
+        const sizeOptions = document.querySelectorAll('#modalSizeOptions .size-option');
+        sizeOptions.forEach(opt => { opt.removeEventListener('click', modalSizeClickHandler); opt.addEventListener('click', modalSizeClickHandler); });
+        const customInput = document.getElementById('modalCustomSize');
+        if(customInput) { customInput.removeEventListener('input', modalCustomInputHandler); customInput.addEventListener('input', modalCustomInputHandler); }
+        const addBtn = document.getElementById('modalAddToCartBtn');
+        addBtn.disabled = (product.stock === 0);
+        addBtn.onclick = () => {
+            if(product.stock <= 0) { showToast('⚠️ نفد المخزون'); return; }
+            let size = currentModalSelectedSize;
+            if(!size) { const customVal = document.getElementById('modalCustomSize')?.value.trim(); if(customVal) size = customVal; else { alert('اختر المقاس'); return; } }
+            addToCartLogic(product, size);
+            closeModal();
         };
-
-        // دالة addToCart الأصلية (نحتفظ بها للتوافق ولكننا نستخدم المعالج الجديد)
-        window.addToCart = function(name, price, img, btn) {
-            // هذه الدالة أصبحت غير مستخدمة مباشرة بسبب addToCartHandler
-            // ولكن نتركها للتوافق
-            const card = btn.closest('.product-card');
-            let size = card.dataset.selectedSize;
-            if (!size) {
-                const custom = card.querySelector('.custom-size');
-                if (custom && custom.value.trim()) size = custom.value.trim();
-                else { alert('الرجاء اختيار المقاس'); return; }
-            }
-            cart.push({ name, price, img, size });
-            total += price;
-            if (appliedCoupon) updateTotals();
-            updateCartCount();
-            showToast('✅ تمت الإضافة إلى السلة');
-        };
-
-        window.removeFromCart = function(idx) {
-            total -= cart[idx].price;
-            cart.splice(idx, 1);
-            if (appliedCoupon) updateTotals();
-            updateCartCount();
-            if (document.getElementById('cart-page').classList.contains('active')) renderCartPage();
-        };
-
-        function updateCartCount() {
-            document.getElementById('cartCount').innerText = cart.length;
-        }
-
-        function calculateDiscount() {
-            if (!appliedCoupon) return 0;
-            if (appliedCoupon.type === 'percent') return total * appliedCoupon.value / 100;
-            return Math.min(appliedCoupon.value, total);
-        }
-
-        function getShippingAmount() {
-            const r = document.querySelector('input[name="delivery"]:checked');
-            return r && r.value === 'delivery' ? 60 : 0;
-        }
-
-        function getFinalTotal() {
-            return total + getShippingAmount() - calculateDiscount();
-        }
-
-        function updateTotals() {
-            document.getElementById('cartSubtotal').innerText = total + ' ج.م';
-            const shipping = getShippingAmount();
-            document.getElementById('shippingAmount').innerText = shipping + ' ج.م';
-            const finalTotal = getFinalTotal();
-            document.getElementById('cartTotalPage').innerText = finalTotal.toFixed(0) + ' ج.م';
-        }
-
-        function renderCartPage() {
-            const container = document.getElementById('cartItemsContainer');
-            const summary = document.getElementById('cartSummary');
-            if (cart.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:40px;">🛒 السلة فارغة</p>';
-                summary.style.display = 'none';
-                appliedCoupon = null;
-                updateTotals();
-            } else {
-                summary.style.display = 'block';
-                let itemsHtml = '';
-                for (let i = 0; i < cart.length; i++) {
-                    const item = cart[i];
-                    itemsHtml += `
-                        <div class="cart-item">
-                            <img src="${item.img}" alt="">
-                            <div class="cart-item-details">
-                                <h4>${item.name}</h4>
-                                <div>المقاس: ${item.size}</div>
-                                <div class="product-price">${item.price} ج.م</div>
-                            </div>
-                            <button class="cart-item-remove" onclick="removeFromCart(${i})">إزالة</button>
-                        </div>
-                    `;
-                }
-                container.innerHTML = itemsHtml;
-                document.getElementById('cartSubtotal').innerText = total + ' ج.م';
-                updateTotals();
-                const deliveryRadios = document.querySelectorAll('input[name="delivery"]');
-                for (let r of deliveryRadios) {
-                    r.removeEventListener('change', updateTotals);
-                    r.addEventListener('change', updateTotals);
-                }
-            }
-        }
-
-        /* ==============================================================
-            إرسال الطلب عبر واتساب
-        ============================================================== */
-        window.sendOrderWhatsApp = function() {
-            if (cart.length === 0) {
-                alert('السلة فارغة');
-                return;
-            }
-            const payment = document.querySelector('input[name="paymentMethod"]:checked').value;
-            let payText = payment === 'cash' ? 'الدفع عند الاستلام' : (payment === 'vodafone' ? 'فودافون كاش' : 'إنستا باي');
-            const deliveryRadio = document.querySelector('input[name="delivery"]:checked');
-            const deliveryMethod = deliveryRadio && deliveryRadio.value === 'delivery' ? 'توصيل للمنزل (60 ج.م)' : 'استلام من المكان المحدد (مجاني)';
-            const discount = calculateDiscount();
-            const shipping = getShippingAmount();
-            const finalTotal = total + shipping - discount;
-            let message = '🛍️ *طلب جديد من YQ STATE*%0a%0a📦 *المنتجات:*%0a';
-            for (let i = 0; i < cart.length; i++) {
-                const item = cart[i];
-                message += `${i+1} - ${item.name} (مقاس: ${item.size}) - ${item.price} ج.م%0a`;
-            }
-            message += `%0a💰 *المجموع الفرعي:* ${total} ج.م%0a`;
-            if (discount > 0) message += `🎉 *الخصم:* -${discount.toFixed(0)} ج.م%0a`;
-            message += `🚚 *طريقة التوصيل:* ${deliveryMethod}%0a💵 *الإجمالي النهائي:* ${finalTotal.toFixed(0)} ج.م%0a💳 *طريقة الدفع:* ${payText}%0a%0a📲 *يرجى تأكيد الطلب*`;
-            window.open(`https://wa.me/201027515725?text=${message}`, '_blank');
-            cart = [];
-            total = 0;
-            appliedCoupon = null;
-            updateCartCount();
-            renderCartPage();
-            showPage('collections');
-            showToast('✅ تم توجيهك إلى واتساب لإتمام الطلب');
-        };
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.style.opacity = '1';
-            setTimeout(() => { toast.style.opacity = '0'; }, 2600);
-        }
-
-        /* ==============================================================
-            التنقل بين الصفحات
-        ============================================================== */
-        window.showPage = function(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById(id);
-            if (target) {
-                target.classList.add('active');
-                window.scrollTo(0, 0);
-                if (id === 'cart-page') renderCartPage();
-            }
-            closeMobileMenu();
-        };
-
-        /* ==============================================================
-            دوال القائمة المنسدلة للجوال
-        ============================================================== */
-        function toggleMobileMenu() {
-            document.getElementById('mobileNav').classList.toggle('open');
-        }
-        function closeMobileMenu() {
-            document.getElementById('mobileNav').classList.remove('open');
-        }
-        window.toggleMobileMenu = toggleMobileMenu;
-        window.closeMobileMenu = closeMobileMenu;
-
-        /* ==============================================================
-            دوال الكوبونات المخفية
-        ============================================================== */
-        window.applyCouponHidden = function(code) {
-            const coupon = validCoupons[code];
-            if (coupon) {
-                appliedCoupon = { code, ...coupon };
-                updateTotals();
-                renderCartPage();
-                showToast('✅ تم تطبيق الخصم');
-                return true;
-            } else {
-                showToast('❌ كود غير صالح');
-                return false;
-            }
-        };
-        window.removeCouponHidden = function() {
-            appliedCoupon = null;
-            updateTotals();
-            renderCartPage();
-            showToast('تم إلغاء الخصم');
-        };
-        
-        /* ==============================================================
-            دوال إضافية
-        ============================================================== */
-        function logPageView(pageName) {
-            console.log(`تم فتح الصفحة: ${pageName}`);
-        }
-        function preloadImages() {
-            const images = document.querySelectorAll('img');
-            images.forEach(img => {
-                const src = img.getAttribute('src');
-                if (src) {
-                    const preloader = new Image();
-                    preloader.src = src;
-                }
-            });
-        }
-        window.addEventListener('load', function() {
-            preloadImages();
-            logPageView('YQ STATE Website Loaded');
-        });
-    </script>
+        document.getElementById('productModal').style.display = 'flex';
+    }
+    function modalSizeClickHandler(e) {
+        const allOpts = document.querySelectorAll('#modalSizeOptions .size-option');
+        allOpts.forEach(opt => opt.classList.remove('selected'));
+        this.classList.add('selected');
+        currentModalSelectedSize = this.dataset.size;
+        const custom = document.getElementById('modalCustomSize');
+        if(custom) custom.value = '';
+    }
+    function modalCustomInputHandler() {
+        if(this.value.trim()) {
+            const allOpts = document.querySelectorAll('#modalSizeOptions .size-option');
+            allOpts.forEach(opt => opt.classList.remove('selected'));
+            currentModalSelectedSize = this.value.trim();
+        } else currentModalSelectedSize = null;
+    }
+    function openModalFromCart(name) { let product = findProductByName(name); if(product) { let fakeCard = { dataset: { productName: name } }; openModal(fakeCard); } }
+    function closeModal() { document.getElementById('productModal').style.display = 'none'; currentModalSelectedSize = null; }
+    function closeModalOnBackground(event) { if(event.target === document.getElementById('productModal')) closeModal(); }
+    window.closeModal = closeModal; window.openModalFromCart = openModalFromCart; window.updateCartItemQuantity = updateCartItemQuantity;
+    
+    // التنقل بين الصفحات
+    window.showPage = function(id) {
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        const target = document.getElementById(id);
+        if(target) target.classList.add('active');
+        window.scrollTo(0,0);
+        if(id === 'cart-page') renderCartPage();
+        closeMobileMenu();
+    };
+    function toggleMobileMenu() { document.getElementById('mobileNav').classList.toggle('open'); }
+    function closeMobileMenu() { document.getElementById('mobileNav').classList.remove('open'); }
+    window.toggleMobileMenu = toggleMobileMenu; window.closeMobileMenu = closeMobileMenu;
+    window.applyCouponHidden = function(code) { let coupon = validCoupons[code]; if(coupon){ appliedCoupon = { code, ...coupon }; updateTotals(); renderCartPage(); showToast('✅ تم تطبيق الخصم'); return true; } else { showToast('❌ كود غير صالح'); return false; } };
+    window.removeCouponHidden = function() { appliedCoupon = null; updateTotals(); renderCartPage(); showToast('تم إلغاء الخصم'); };
+    
+    // تهيئة الصفحات
+    renderProducts('streetwearProducts', productsData.streetwear, 'streetwear');
+    bindFilters('streetwear', 'streetwearProducts');
+    renderProducts('essentialsProducts', productsData.essentials, 'essentials');
+    bindFilters('essentials', 'essentialsProducts');
+    renderProducts('signatureProducts', productsData.signature, 'signature');
+    bindFilters('signature', 'signatureProducts');
+    renderProducts('pantsProducts', productsData.pants, 'pants');
+    bindFilters('pants', 'pantsProducts');
+    loadCartFromLocal();
+    loadRecentFromLocal();
+    document.addEventListener('keydown', function(e) { if(e.key === 'Escape' && document.getElementById('productModal').style.display === 'flex') closeModal(); });
+</script>
 </body>
 </html>
