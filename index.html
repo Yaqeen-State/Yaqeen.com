@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>يقين | YQ STATE V2 — التشكيلات الرسمية</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <!-- SEO Meta Tags -->
     <meta name="description" content="يقين YQ STATE — تشكيلات حصرية من الملابس العصرية بجودة عالية وأسعار تنافسية.">
     <meta name="keywords" content="يقين, YQ STATE, ملابس, تشكيلات, تي شيرت, هودي, بناطيل, موضة">
@@ -114,7 +115,7 @@
             }
         }
         /* ============================================================
-           SECTION 3: NAVIGATION BAR (LINKS CENTERED WITH SLIGHT LEFT SHIFT)
+           SECTION 3: NAVIGATION BAR (LINKS CENTERED)
            ============================================================ */
         nav {
             position: fixed;
@@ -162,7 +163,6 @@
             border: 1px solid rgba(255, 105, 180, 0.2);
             justify-content: center;
             flex: 1;
-            /* Shift links slightly to the left (towards icons) */
             margin: 0 140px 0 40px;
         }
         .nav-links a {
@@ -321,7 +321,7 @@
             top: 110%;
         }
         /* ============================================================
-           SECTION 5: PROGRESS BAR & HERO
+           SECTION 5: PROGRESS BAR & HERO (WITH BACKGROUND IMAGE)
            ============================================================ */
         .progress-bar-container {
             position: fixed;
@@ -340,20 +340,14 @@
             transition: width 0.3s linear;
             border-radius: 0 2px 2px 0;
         }
-        /* ----- HERO PAGE ----- */
+        /* ----- HERO PAGE (with background image) ----- */
         .hero-page {
             position: relative;
             overflow: hidden;
-        }
-        .hero-page .hero-bg-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-            opacity: 0.5;
+            background-image: url('https://i.postimg.cc/c4brqmLB/Final-Logo.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         .hero-page .hero-bg-overlay {
             position: absolute;
@@ -361,7 +355,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.85) 100%);
+            background: rgba(0, 0, 0, 0.65);
             z-index: 1;
         }
         .hero {
@@ -1539,7 +1533,7 @@
             margin: 4px 0;
         }
         /* ============================================================
-           SECTION 13: DASHBOARD / ADMIN
+           SECTION 13: DASHBOARD / ADMIN (WITH SIZE & BADGE CONTROL)
            ============================================================ */
         .dashboard-page {
             background: var(--dark);
@@ -1731,6 +1725,17 @@
         .dashboard-products-list .dash-product-item .dash-product-info .dash-product-price {
             color: var(--pink);
             font-weight: 700;
+        }
+        .dashboard-products-list .dash-product-item .dash-product-info .dash-product-sizes {
+            font-size: 13px;
+            color: #aaa;
+        }
+        .dashboard-products-list .dash-product-item .dash-product-info .dash-product-badge {
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-block;
         }
         .dashboard-products-list .dash-product-item .dash-product-actions {
             display: flex;
@@ -2307,9 +2312,6 @@
 
     <!-- HERO -->
     <div class="page hero-page active" id="hero">
-        <video class="hero-bg-video" autoplay muted loop playsinline poster="https://i.postimg.cc/c4brqmLB/Final-Logo.png">
-            <source src="https://cdn.pixabay.com/video/2022/07/18/124590-735185393_large.mp4" type="video/mp4">
-        </video>
         <div class="hero-bg-overlay"></div>
         <div class="hero">
             <div class="hero-content">
@@ -2592,7 +2594,7 @@
             <div class="dashboard-tab-content active" id="tab-products">
                 <div class="dashboard-products-list" id="dashProductsList"></div>
             </div>
-            <!-- Tab: Add Product -->
+            <!-- Tab: Add Product (with Size & Badge control) -->
             <div class="dashboard-tab-content" id="tab-add">
                 <div class="dashboard-form">
                     <h3 style="text-align:center;margin-bottom:20px;">➕ إضافة منتج جديد</h3>
@@ -2610,11 +2612,21 @@
                     </div>
                     <div class="form-group">
                         <label>المقاسات (مفصولة بفاصلة)</label>
-                        <input type="text" id="dashProductSizes" placeholder="L, XL, XXL">
+                        <input type="text" id="dashProductSizes" placeholder="L, XL, XXL" value="L, XL, XXL">
                     </div>
                     <div class="form-group">
                         <label>الكمية</label>
-                        <input type="number" id="dashProductStock" placeholder="10">
+                        <input type="number" id="dashProductStock" placeholder="10" value="5">
+                    </div>
+                    <div class="form-group">
+                        <label>حالة المنتج (الوسم)</label>
+                        <select id="dashProductBadge">
+                            <option value="">بدون وسم</option>
+                            <option value="new">🆕 جديد</option>
+                            <option value="best">⭐ الأكثر مبيعاً</option>
+                            <option value="limited">🔥 محدود</option>
+                            <option value="soldout">❌ نفد</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>الفئة</label>
@@ -2744,9 +2756,9 @@
         const ADMIN_PASSWORD = 'YQ2026';
 
         // ================================================================
-        //  PRODUCTS DATA (ENHANCED)
+        //  PRODUCTS DATA (DEFAULT)
         // ================================================================
-        const productsData = {
+        const defaultProductsData = {
             streetwear: [
                 { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/XNFpyKtG/IMG-9174.jpg',
                     hoverImg: 'https://i.postimg.cc/XNFpyKtG/IMG-9174.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5,
@@ -2871,6 +2883,7 @@
         // ================================================================
         //  GLOBALS
         // ================================================================
+        let productsData = {};
         let cart = [];
         let total = 0;
         let wishlist = [];
@@ -2884,6 +2897,31 @@
 
         const validCoupons = { 'YAQEEN15': { type: 'percent', value: 15 }, 'FIRST20': { type: 'fixed', value: 20 },
             'WELCOME10': { type: 'percent', value: 10 } };
+
+        // ================================================================
+        //  PRODUCTS PERSISTENCE
+        // ================================================================
+        function saveProductsData() {
+            localStorage.setItem('yqProducts', JSON.stringify(productsData));
+        }
+
+        function loadProductsData() {
+            let saved = localStorage.getItem('yqProducts');
+            if (saved) {
+                try {
+                    productsData = JSON.parse(saved);
+                    for (let cat in defaultProductsData) {
+                        if (!productsData[cat]) productsData[cat] = [];
+                    }
+                    return true;
+                } catch (e) {
+                    console.warn('Failed to parse products data, using defaults.');
+                }
+            }
+            productsData = JSON.parse(JSON.stringify(defaultProductsData));
+            saveProductsData();
+            return false;
+        }
 
         // ================================================================
         //  UTILITY FUNCTIONS
@@ -2926,7 +2964,7 @@
         }
 
         // ================================================================
-        //  LOCAL STORAGE
+        //  LOCAL STORAGE (CART, WISHLIST, RECENT, REVIEWS, ORDERS)
         // ================================================================
         function saveCart() {
             localStorage.setItem('yqCart', JSON.stringify(cart));
@@ -2971,6 +3009,7 @@
         function loadReviews() {
             let saved = localStorage.getItem('yqReviews');
             if (saved) reviews = JSON.parse(saved);
+            else reviews = {};
         }
 
         function saveOrders() {
@@ -2980,6 +3019,7 @@
         function loadOrders() {
             let saved = localStorage.getItem('yqOrders');
             if (saved) orders = JSON.parse(saved);
+            else orders = [];
             updateDashOrders();
         }
 
@@ -3398,28 +3438,42 @@
         }
 
         // ================================================================
-        //  DASHBOARD
+        //  DASHBOARD (WITH SIZE & BADGE CONTROL)
         // ================================================================
         function addProductFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير', 'fa-exclamation-circle'); return; }
             let name = document.getElementById('dashProductName').value.trim();
             let price = parseFloat(document.getElementById('dashProductPrice').value);
             let img = document.getElementById('dashProductImg').value.trim();
-            let sizes = document.getElementById('dashProductSizes').value.trim().split(',').map(s => s.trim()).filter(Boolean);
+            let sizesRaw = document.getElementById('dashProductSizes').value.trim();
+            let sizes = sizesRaw ? sizesRaw.split(',').map(s => s.trim()).filter(Boolean) : ['One Size'];
             let stock = parseInt(document.getElementById('dashProductStock').value) || 0;
+            let badge = document.getElementById('dashProductBadge').value || '';
             let category = document.getElementById('dashProductCategory').value;
             if (!name || !price || !img || sizes.length === 0) {
-                showToast('⚠️ املأ جميع الحقول', 'fa-exclamation-circle');
+                showToast('⚠️ املأ جميع الحقول الأساسية', 'fa-exclamation-circle');
                 return;
             }
-            let newProduct = { name, price, img, hoverImg: img, sizes, stock, description: 'تمت الإضافة عبر لوحة التحكم' };
+            let newProduct = {
+                name,
+                price,
+                img,
+                hoverImg: img,
+                sizes,
+                stock,
+                badge: badge,
+                description: 'تمت الإضافة عبر لوحة التحكم'
+            };
             if (!productsData[category]) productsData[category] = [];
             productsData[category].push(newProduct);
+            saveProductsData();
+            // Clear form
             document.getElementById('dashProductName').value = '';
             document.getElementById('dashProductPrice').value = '';
             document.getElementById('dashProductImg').value = '';
-            document.getElementById('dashProductSizes').value = '';
-            document.getElementById('dashProductStock').value = '';
+            document.getElementById('dashProductSizes').value = 'L, XL, XXL';
+            document.getElementById('dashProductStock').value = '5';
+            document.getElementById('dashProductBadge').value = '';
             showToast('✅ تمت إضافة المنتج بنجاح!');
             renderAllProducts();
             updateDashStats();
@@ -3430,6 +3484,7 @@
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير', 'fa-exclamation-circle'); return; }
             if (!confirm('هل أنت متأكد من حذف هذا المنتج؟')) return;
             productsData[category].splice(index, 1);
+            saveProductsData();
             renderAllProducts();
             updateDashStats();
             renderDashProducts();
@@ -3447,6 +3502,13 @@
             if (newStock !== null && !isNaN(newStock)) p.stock = parseInt(newStock);
             let newImg = prompt('رابط الصورة:', p.img);
             if (newImg !== null && newImg.trim()) p.img = newImg.trim();
+            let newSizes = prompt('المقاسات (مفصولة بفاصلة):', p.sizes.join(', '));
+            if (newSizes !== null && newSizes.trim()) {
+                p.sizes = newSizes.split(',').map(s => s.trim()).filter(Boolean);
+            }
+            let newBadge = prompt('الوسم (new/best/limited/soldout/اترك فارغاً):', p.badge || '');
+            p.badge = newBadge !== null ? newBadge.trim() : p.badge;
+            saveProductsData();
             renderAllProducts();
             updateDashStats();
             renderDashProducts();
@@ -3458,9 +3520,24 @@
             if (!container) return;
             let html = '';
             let totalProducts = 0;
+            const badgeLabels = {
+                'new': '🆕 جديد',
+                'best': '⭐ الأكثر مبيعاً',
+                'limited': '🔥 محدود',
+                'soldout': '❌ نفد'
+            };
+            const badgeClasses = {
+                'new': 'badge-new',
+                'best': 'badge-best',
+                'limited': 'badge-limited',
+                'soldout': 'badge-sale'
+            };
             for (let cat in productsData) {
                 productsData[cat].forEach((p, idx) => {
                     totalProducts++;
+                    let badgeDisplay = p.badge && badgeLabels[p.badge] ?
+                        `<span class="dash-product-badge ${badgeClasses[p.badge] || ''}">${badgeLabels[p.badge]}</span>` :
+                        '';
                     html += `<div class="dash-product-item">
                                 <div class="dash-product-info">
                                     <img src="${p.img}" loading="lazy">
@@ -3468,6 +3545,8 @@
                                         <div class="dash-product-name">${p.name}</div>
                                         <div class="dash-product-price">${p.price} ج.م</div>
                                         <div style="font-size:13px;color:#aaa;">المخزون: ${p.stock} | ${cat}</div>
+                                        <div style="font-size:13px;color:#888;">المقاسات: ${p.sizes ? p.sizes.join(', ') : 'غير محدد'}</div>
+                                        ${badgeDisplay}
                                     </div>
                                 </div>
                                 <div class="dash-product-actions">
@@ -3668,22 +3747,22 @@
         }
 
         function renderAllProducts() {
-            renderProducts('streetwearProducts', productsData.streetwear, 'streetwear');
-            renderProducts('essentialsProducts', productsData.essentials, 'essentials');
-            renderProducts('signatureProducts', productsData.signature, 'signature');
-            renderProducts('pantsProducts', productsData.pants, 'pants');
+            renderProducts('streetwearProducts', productsData.streetwear || [], 'streetwear');
+            renderProducts('essentialsProducts', productsData.essentials || [], 'essentials');
+            renderProducts('signatureProducts', productsData.signature || [], 'signature');
+            renderProducts('pantsProducts', productsData.pants || [], 'pants');
         }
 
         function bindFilters(categoryKey, containerId) {
             let searchInput = document.getElementById(`search${categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1)}`);
-            if (searchInput) searchInput.oninput = () => renderProducts(containerId, productsData[categoryKey],
+            if (searchInput) searchInput.oninput = () => renderProducts(containerId, productsData[categoryKey] || [],
             categoryKey);
             let filterBtns = document.querySelectorAll(`#${containerId} .filter-btn`);
             filterBtns.forEach(btn => {
                 btn.onclick = function() {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    renderProducts(containerId, productsData[categoryKey], categoryKey);
+                    renderProducts(containerId, productsData[categoryKey] || [], categoryKey);
                 };
             });
         }
@@ -3692,7 +3771,6 @@
         //  PAGE NAVIGATION
         // ================================================================
         function showPage(id) {
-            // Protect dashboard
             if (id === 'dashboard' && !isAdmin) {
                 showToast('⚠️ يجب تسجيل الدخول كمدير أولاً', 'fa-exclamation-circle');
                 openAdminLogin();
@@ -3739,6 +3817,7 @@
                 let p = findProductByName(item.name);
                 if (p) p.stock -= item.quantity;
             }
+            saveProductsData();
             let payment = document.querySelector('input[name="paymentMethod"]:checked');
             let payText = payment ? (payment.value === 'cash' ? 'الدفع عند الاستلام' : (payment.value === 'vodafone' ?
                 'فودافون كاش' : 'إنستا باي')) : 'الدفع عند الاستلام';
@@ -3792,6 +3871,7 @@
         // ================================================================
         //  INIT
         // ================================================================
+        loadProductsData();
         loadCart();
         loadWishlist();
         loadRecent();
@@ -3807,7 +3887,6 @@
         renderCartPage();
         renderWishlistPage();
 
-        // Dashboard tabs
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -3817,7 +3896,6 @@
             };
         });
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (document.getElementById('productModal').style.display === 'flex') closeModal();
@@ -3830,7 +3908,6 @@
         console.log('📦 Products:', Object.keys(productsData).reduce((s, c) => s + productsData[c].length, 0));
         console.log('🔐 Admin:', isAdmin ? 'Logged in' : 'Not logged in');
 
-        // Expose globals
         window.showPage = showPage;
         window.toggleMobileMenu = toggleMobileMenu;
         window.closeMobileMenu = closeMobileMenu;
