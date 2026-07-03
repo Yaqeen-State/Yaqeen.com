@@ -143,7 +143,7 @@
             border: 1px solid rgba(255, 105, 180, 0.2);
             justify-content: center;
             flex: 1;
-            margin: 0 60px 0 80px;
+            margin: 0 20px 0 100px;
         }
         .nav-links a {
             color: #e0e0e0;
@@ -2393,10 +2393,6 @@
         </ul>
     </div>
 
-    <div class="progress-bar-container" id="progressContainer">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-
     <!-- ===== TOAST ===== -->
     <div id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">تم!</span></div>
 
@@ -2650,7 +2646,6 @@
                         <div class="form-group"><label>رابط الصورة</label><input type="text" id="dashCollectionImg" placeholder="https://i.postimg.cc/..."></div>
                         <button class="submit-btn" onclick="addCollectionFromDash()">➕ إضافة مجموعة</button>
                     </div>
-                    <!-- هنا هتظهر قائمة المجموعات الموجودة مع أزرار تعديل وحذف -->
                     <div id="dashCollectionsList"></div>
                 </div>
             </div>
@@ -2805,139 +2800,172 @@
     </div>
 
     <!-- ================================================================ -->
-    <!-- ===== JAVASCRIPT – التعديل الوحيد هو جلب البيانات من Worker ===== -->
+    <!-- ===== JAVASCRIPT – التعديلات النهائية ===== -->
     <!-- ================================================================ -->
     <script>
         // ================================================================
-        //  0. رابط Cloudflare Worker – ضع رابط الـ Worker الخاص بك هنا
+        //  0. رابط Cloudflare Worker – استبدل الرابط
         // ================================================================
-        const VISITOR_WORKER_URL = 'https://visitor-analytics.xxxxxxxx.workers.dev'; // ⚠️ استبدل هذا الرابط
+        const VISITOR_WORKER_URL = 'https://visitor-analytics.xxxxxxxx.workers.dev'; // ⚠️ استبدل
 
         // ================================================================
-        //  1. بيانات المنتجات الأصلية (أكثر من 70 منتجاً)
+        //  1. البيانات الافتراضية مع collectionId
         // ================================================================
         const defaultProductsData = {
             streetwear: [
-                { name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg',
+                { id: 'p1', name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg',
                     hoverImg: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3,
-                    badge: 'new', description: 'تي شيرت Falling Man بتصميم مميز، خامة قطن فاخر.' },
-                { name: 'YQ Graphite White Tshirt', price: 500, img: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg',
+                    badge: 'new', description: 'تي شيرت Falling Man بتصميم مميز، خامة قطن فاخر.', collectionId: 'c1' },
+                { id: 'p2', name: 'YQ Graphite White Tshirt', price: 500,
+                    img: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg',
                     hoverImg: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg', sizes: ['XL', 'XXL'], stock: 2,
-                    description: 'تي شيرت جرافيت أبيض أنيق.' },
-                { name: 'YQ Graphite Gray Tshirt', price: 500, img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png',
+                    description: 'تي شيرت جرافيت أبيض أنيق.', collectionId: 'c1' },
+                { id: 'p3', name: 'YQ Graphite Gray Tshirt', price: 500,
+                    img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png',
                     hoverImg: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: [], stock: 0,
-                    badge: 'soldout', description: 'تي شيرت جرافيت رمادي — نفد المخزون.' },
-                { name: 'YQ Graphite Black Tshirt', price: 500, img: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg',
+                    badge: 'soldout', description: 'تي شيرت جرافيت رمادي — نفد المخزون.', collectionId: 'c1' },
+                { id: 'p4', name: 'YQ Graphite Black Tshirt', price: 500,
+                    img: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg',
                     hoverImg: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5,
-                    badge: 'best', description: 'تي شيرت جرافيت أسود، الأكثر مبيعاً.' },
-                { name: 'YQ Black Blue Tshirt', price: 500, img: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg',
+                    badge: 'best', description: 'تي شيرت جرافيت أسود، الأكثر مبيعاً.', collectionId: 'c1' },
+                { id: 'p5', name: 'YQ Black Blue Tshirt', price: 500,
+                    img: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg',
                     hoverImg: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg', sizes: ['L', 'XXL'], stock: 2,
-                    description: 'تي شيرت أزرق غامق أنيق.' },
-                { name: 'YQ White Egale Tshirt', price: 500, img: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg',
+                    description: 'تي شيرت أزرق غامق أنيق.', collectionId: 'c1' },
+                { id: 'p6', name: 'YQ White Egale Tshirt', price: 500,
+                    img: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg',
                     hoverImg: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg', sizes: [], stock: 0,
-                    badge: 'soldout', description: 'تي شيرت أبيض بنسر.' },
-                { name: 'YQ White Eye Tshirt', price: 400, img: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg',
+                    badge: 'soldout', description: 'تي شيرت أبيض بنسر.', collectionId: 'c1' },
+                { id: 'p7', name: 'YQ White Eye Tshirt', price: 400, img: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg',
                     hoverImg: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg', sizes: ['XXL'], stock: 1,
-                    badge: 'limited', description: 'تي شيرت عين — إصدار محدود.' },
-                { name: 'YQ Black Shadows Tshirt', price: 400, img: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg',
+                    badge: 'limited', description: 'تي شيرت عين — إصدار محدود.', collectionId: 'c1' },
+                { id: 'p8', name: 'YQ Black Shadows Tshirt', price: 400,
+                    img: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg',
                     hoverImg: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg', sizes: ['XL', 'XXL'], stock: 2,
-                    badge: 'limited', description: 'تي شيرت الظل — إصدار محدود.' }
+                    badge: 'limited', description: 'تي شيرت الظل — إصدار محدود.', collectionId: 'c1' }
             ],
             essentials: [
-                { name: 'YQ More Self Love Hoodie', price: 650, img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png',
+                { id: 'p9', name: 'YQ More Self Love Hoodie', price: 650,
+                    img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png',
                     hoverImg: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', sizes: ['XXL'], stock: 1,
-                    description: 'هودي More Self Love، رسالة حب للذات.' },
-                { name: 'YQ Welcome To World', price: 650, img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png',
+                    description: 'هودي More Self Love، رسالة حب للذات.', collectionId: 'c2' },
+                { id: 'p10', name: 'YQ Welcome To World', price: 650,
+                    img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png',
                     hoverImg: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', sizes: ['XL'], stock: 1,
-                    description: 'هودي Welcome To World.' },
-                { name: 'YQ Time Is Money', price: 650, img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png',
+                    description: 'هودي Welcome To World.', collectionId: 'c2' },
+                { id: 'p11', name: 'YQ Time Is Money', price: 650,
+                    img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png',
                     hoverImg: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', sizes: ['L'], stock: 1,
-                    description: 'هودي Time Is Money.' },
-                { name: 'YQ Protect Your Peace', price: 650, img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png',
+                    description: 'هودي Time Is Money.', collectionId: 'c2' },
+                { id: 'p12', name: 'YQ Protect Your Peace', price: 650,
+                    img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png',
                     hoverImg: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', sizes: ['M'], stock: 1,
-                    description: 'هودي Protect Your Peace.' },
-                { name: 'YQ Love Hoodie', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png',
+                    description: 'هودي Protect Your Peace.', collectionId: 'c2' },
+                { id: 'p13', name: 'YQ Love Hoodie', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png',
                     hoverImg: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', sizes: ['L'], stock: 1,
-                    description: 'هودي Love.' },
-                { name: 'YQ Pink Edition', price: 650, img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png',
+                    description: 'هودي Love.', collectionId: 'c2' },
+                { id: 'p14', name: 'YQ Pink Edition', price: 650,
+                    img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png',
                     hoverImg: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', sizes: ['L'], stock: 1,
-                    description: 'هودي Pink Edition.' },
-                { name: 'YQ All Eyes On Me', price: 650, img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png',
+                    description: 'هودي Pink Edition.', collectionId: 'c2' },
+                { id: 'p15', name: 'YQ All Eyes On Me', price: 650,
+                    img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png',
                     hoverImg: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', sizes: ['XXL'], stock: 1,
-                    description: 'هودي All Eyes On Me.' },
-                { name: 'YQ Show Me Your Feelings', price: 650, img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg',
+                    description: 'هودي All Eyes On Me.', collectionId: 'c2' },
+                { id: 'p16', name: 'YQ Show Me Your Feelings', price: 650,
+                    img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg',
                     hoverImg: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', sizes: ['L'], stock: 1,
-                    description: 'هودي Show Me Your Feelings.' },
-                { name: 'YQ YQ EDITION', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png',
+                    description: 'هودي Show Me Your Feelings.', collectionId: 'c2' },
+                { id: 'p17', name: 'YQ YQ EDITION', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png',
                     hoverImg: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', sizes: ['XXL'], stock: 1,
-                    badge: 'limited', description: 'هودي YQ EDITION — إصدار خاص.' },
-                { name: 'YQ Black SweetShirt', price: 350, img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg',
+                    badge: 'limited', description: 'هودي YQ EDITION — إصدار خاص.', collectionId: 'c2' },
+                { id: 'p18', name: 'YQ Black SweetShirt', price: 350,
+                    img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg',
                     hoverImg: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L', 'XL', 'XXL'], stock: 4,
-                    description: 'سويت شيرت أسود.' },
-                { name: 'YQ Brown SweetShirt', price: 350, img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',
+                    description: 'سويت شيرت أسود.', collectionId: 'c2' },
+                { id: 'p19', name: 'YQ Brown SweetShirt', price: 350,
+                    img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',
                     hoverImg: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg', sizes: ['L', 'XXL'], stock: 2,
-                    description: 'سويت شيرت بني.' },
-                { name: 'YQ Baby Blue SweetShirt', price: 350, img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',
+                    description: 'سويت شيرت بني.', collectionId: 'c2' },
+                { id: 'p20', name: 'YQ Baby Blue SweetShirt', price: 350,
+                    img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',
                     hoverImg: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg', sizes: ['L', 'XL', 'XXL'], stock: 4,
-                    badge: 'new', description: 'سويت شيرت بيبي بلو.' }
+                    badge: 'new', description: 'سويت شيرت بيبي بلو.', collectionId: 'c2' }
             ],
             signature: [
-                { name: 'YQ W Birgandi Basic Shirt', price: 350, img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg',
+                { id: 'p21', name: 'YQ W Birgandi Basic Shirt', price: 350,
+                    img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg',
                     hoverImg: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'قميص بيرغندي أساسي.' },
-                { name: 'YQ W Brown Basic Shirt', price: 350, img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg',
+                    description: 'قميص بيرغندي أساسي.', collectionId: 'c3' },
+                { id: 'p22', name: 'YQ W Brown Basic Shirt', price: 350,
+                    img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg',
                     hoverImg: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'قميص بني أساسي.' },
-                { name: 'YQ W Pink Basic Shirt', price: 350, img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg',
+                    description: 'قميص بني أساسي.', collectionId: 'c3' },
+                { id: 'p23', name: 'YQ W Pink Basic Shirt', price: 350,
+                    img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg',
                     hoverImg: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'], stock: 1,
-                    description: 'قميص وردي أساسي.' },
-                { name: 'YQ W Black Basic Shirt', price: 350, img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg',
+                    description: 'قميص وردي أساسي.', collectionId: 'c3' },
+                { id: 'p24', name: 'YQ W Black Basic Shirt', price: 350,
+                    img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg',
                     hoverImg: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'قميص أسود أساسي.' },
-                { name: 'YQ W Birgandi Shirt', price: 450, img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg',
+                    description: 'قميص أسود أساسي.', collectionId: 'c3' },
+                { id: 'p25', name: 'YQ W Birgandi Shirt', price: 450,
+                    img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg',
                     hoverImg: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'], stock: 0,
-                    badge: 'soldout', description: 'قميص بيرغندي — نفد المخزون.' },
-                { name: 'YQ W Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg',
+                    badge: 'soldout', description: 'قميص بيرغندي — نفد المخزون.', collectionId: 'c3' },
+                { id: 'p26', name: 'YQ W Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg',
                     hoverImg: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0,
-                    badge: 'soldout', description: 'قميص وردي — نفد المخزون.' },
-                { name: 'YQ W Olive Shirt', price: 450, img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg',
+                    badge: 'soldout', description: 'قميص وردي — نفد المخزون.', collectionId: 'c3' },
+                { id: 'p27', name: 'YQ W Olive Shirt', price: 450,
+                    img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg',
                     hoverImg: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'], stock: 1,
-                    description: 'قميص زيتوني.' },
-                { name: 'YQ W Pink Shimis', price: 470, img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg',
+                    description: 'قميص زيتوني.', collectionId: 'c3' },
+                { id: 'p28', name: 'YQ W Pink Shimis', price: 470,
+                    img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg',
                     hoverImg: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'], stock: 1,
-                    description: 'شيميز وردي.' },
-                { name: 'YQ W White Shimis', price: 470, img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg',
+                    description: 'شيميز وردي.', collectionId: 'c3' },
+                { id: 'p29', name: 'YQ W White Shimis', price: 470,
+                    img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg',
                     hoverImg: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'شيميز أبيض.' },
-                { name: 'YQ W Black Shimis', price: 470, img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg',
+                    description: 'شيميز أبيض.', collectionId: 'c3' },
+                { id: 'p30', name: 'YQ W Black Shimis', price: 470,
+                    img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg',
                     hoverImg: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'شيميز أسود.' },
-                { name: 'YQ W Birgandi Shirt New', price: 470, img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg',
+                    description: 'شيميز أسود.', collectionId: 'c3' },
+                { id: 'p31', name: 'YQ W Birgandi Shirt New', price: 470,
+                    img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg',
                     hoverImg: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'], stock: 2,
-                    badge: 'new', description: 'قميص بيرغندي جديد.' }
+                    badge: 'new', description: 'قميص بيرغندي جديد.', collectionId: 'c3' }
             ],
             pants: [
-                { name: 'Mint SweetPants', price: 500, img: 'https://i.postimg.cc/763RwV96/IMG-8971.png',
+                { id: 'p32', name: 'Mint SweetPants', price: 500,
+                    img: 'https://i.postimg.cc/763RwV96/IMG-8971.png',
                     hoverImg: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M', 'L', 'XL'], stock: 3,
-                    description: 'بنطلون SweetPants نعناعي.' },
-                { name: 'Gray SweetPants', price: 500, img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png',
+                    description: 'بنطلون SweetPants نعناعي.', collectionId: 'c4' },
+                { id: 'p33', name: 'Gray SweetPants', price: 500,
+                    img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png',
                     hoverImg: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['XL'], stock: 1,
-                    description: 'بنطلون SweetPants رمادي.' },
-                { name: 'Brown SweetPants', price: 500, img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png',
+                    description: 'بنطلون SweetPants رمادي.', collectionId: 'c4' },
+                { id: 'p34', name: 'Brown SweetPants', price: 500,
+                    img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png',
                     hoverImg: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 3,
-                    description: 'بنطلون SweetPants بني.' },
-                { name: 'Silver SweetPants', price: 500, img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png',
+                    description: 'بنطلون SweetPants بني.', collectionId: 'c4' },
+                { id: 'p35', name: 'Silver SweetPants', price: 500,
+                    img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png',
                     hoverImg: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 8,
-                    badge: 'best', description: 'بنطلون SweetPants فضي — الأكثر مبيعاً.' },
-                { name: 'Black Sherwal', price: 350, img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg',
+                    badge: 'best', description: 'بنطلون SweetPants فضي — الأكثر مبيعاً.', collectionId: 'c4' },
+                { id: 'p36', name: 'Black Sherwal', price: 350,
+                    img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg',
                     hoverImg: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'], stock: 1,
-                    description: 'شروال أسود.' },
-                { name: 'White Sherwal', price: 350, img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg',
+                    description: 'شروال أسود.', collectionId: 'c4' },
+                { id: 'p37', name: 'White Sherwal', price: 350,
+                    img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg',
                     hoverImg: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3,
-                    description: 'شروال أبيض.' },
-                { name: 'Beige Sherwal', price: 350, img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg',
+                    description: 'شروال أبيض.', collectionId: 'c4' },
+                { id: 'p38', name: 'Beige Sherwal', price: 350,
+                    img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg',
                     hoverImg: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L', 'XXL'], stock: 2,
-                    description: 'شروال بيج.' }
+                    description: 'شروال بيج.', collectionId: 'c4' }
             ]
         };
 
@@ -2964,6 +2992,7 @@
         let settings = { logo: '', brand: '', instagram: '', tiktok: '', whatsapp: '', email: '', footer: '' };
         let visitorsData = [];
         let chartInstance = null;
+        let currentCollectionId = null;
 
         // ================================================================
         //  3. دوال مساعدة
@@ -3043,6 +3072,19 @@
             allImages = loadFromLocal('allImages') || [];
             reviews = loadFromLocal('reviews') || {};
 
+            // تأكد من أن كل منتج لديه id و collectionId (للبيانات القديمة)
+            for (let cat in productsData) {
+                productsData[cat].forEach(p => {
+                    if (!p.id) p.id = generateId();
+                    if (!p.collectionId) {
+                        let found = collectionsData.find(c => c.name === cat);
+                        if (found) p.collectionId = found.id;
+                        else p.collectionId = collectionsData[0]?.id || 'c1';
+                    }
+                });
+            }
+            saveToLocal('productsData', productsData);
+
             applySettingsToUI();
             applyAnnouncement();
             renderAll();
@@ -3101,20 +3143,20 @@
             if (id === 'cart-page') renderCartPage();
             if (id === 'wishlist-page') renderWishlistPage();
             if (id === 'dashboard') {
-                // عند دخول لوحة التحكم، نقوم بجلب الإحصائيات (بدلاً من عرض 0)
                 updateDashStats();
                 renderDashProducts();
                 updateDashOrders();
                 populateCollectionSelect();
                 loadAnnouncementToForm();
                 loadSettingsToForm();
+                renderDashCollections();
             }
             if (id === 'collections') renderCollections();
             closeMobileMenu();
         };
 
         // ================================================================
-        //  8. دوال الرندر (مع المنتجات الكاملة) – لم تتغير
+        //  8. دوال الرندر (مع ربط المنتجات بـ collectionId)
         // ================================================================
         function renderCollections() {
             let grid = document.getElementById('collectionsGrid');
@@ -3132,8 +3174,6 @@
             grid.innerHTML = html;
             document.getElementById('dashTotalCollections').textContent = collectionsData.length;
         }
-
-        let currentCollectionId = null;
 
         function showCollection(id) {
             currentCollectionId = id;
@@ -3153,11 +3193,16 @@
             let activeFilter = document.querySelector('#collectionFilters .filter-btn.active')?.dataset?.filter || 'all';
             let products = [];
             if (currentCollectionId) {
-                let c = collectionsData.find(col => col.id === currentCollectionId);
-                if (c) products = productsData[c.name] || [];
+                for (let cat in productsData) {
+                    productsData[cat].forEach(p => {
+                        if (p.collectionId === currentCollectionId) products.push(p);
+                    });
+                }
             }
             if (!products.length) {
-                for (let cat in productsData) products = products.concat(productsData[cat]);
+                container.innerHTML =
+                    `<div style="text-align:center;padding:40px;width:100%;color:#888;">لا توجد منتجات في هذه المجموعة</div>`;
+                return;
             }
             let filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm));
             if (activeFilter === 'inStock') filtered = filtered.filter(p => p.stock > 0);
@@ -3532,8 +3577,10 @@
         }
 
         // ================================================================
-        //  10. دوال لوحة التحكم
+        //  10. دوال لوحة التحكم (معدلة)
         // ================================================================
+
+        // 10.1 عرض المنتجات في لوحة التحكم
         function renderDashProducts() {
             let container = document.getElementById('dashProductsList');
             if (!container) return;
@@ -3542,18 +3589,21 @@
             for (let cat in productsData) {
                 productsData[cat].forEach(p => {
                     total++;
+                    let collectionName = 'غير معروف';
+                    let c = collectionsData.find(col => col.id === p.collectionId);
+                    if (c) collectionName = c.name;
                     html += `<div class="dash-product-item">
                                 <div class="dash-product-info">
                                     <img src="${p.img}" loading="lazy">
                                     <div>
                                         <div class="dash-product-name">${p.name}</div>
                                         <div class="dash-product-price">${p.price} ج.م</div>
-                                        <div style="font-size:13px;color:#aaa;">المخزون: ${p.stock} | ${cat}</div>
+                                        <div style="font-size:13px;color:#aaa;">المخزون: ${p.stock} | المجموعة: ${collectionName}</div>
                                     </div>
                                 </div>
                                 <div class="dash-product-actions">
-                                    <button class="edit-btn" onclick="editProductFromDash('${cat}','${p.id}')">✏️</button>
-                                    <button class="delete-btn" onclick="deleteProductFromDash('${cat}','${p.id}')">🗑️</button>
+                                    <button class="edit-btn" onclick="editProductFromDash('${p.id}')">✏️</button>
+                                    <button class="delete-btn" onclick="deleteProductFromDash('${p.id}')">🗑️</button>
                                 </div>
                             </div>`;
                 });
@@ -3566,34 +3616,43 @@
             populateCollectionSelect();
         }
 
+        // 10.2 ملء قائمة المجموعات في نموذج الإضافة
         function populateCollectionSelect() {
             let select = document.getElementById('dashProductCollection');
             if (!select) return;
             let val = select.value;
             select.innerHTML = '<option value="">اختر مجموعة...</option>';
-            collectionsData.forEach(c => { select.innerHTML += `<option value="${c.name}">${c.name}</option>`; });
+            collectionsData.forEach(c => {
+                select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
+            });
             if (val) select.value = val;
         }
 
+        // 10.3 إضافة منتج جديد (مع collectionId)
         function addProductFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             let name = document.getElementById('dashProductName').value.trim();
             let price = parseFloat(document.getElementById('dashProductPrice').value);
             let img = document.getElementById('dashProductImg').value.trim();
-            let collection = document.getElementById('dashProductCollection').value;
+            let collectionId = document.getElementById('dashProductCollection').value;
             let stock = parseInt(document.getElementById('dashProductStock').value) || 0;
-            if (!name || !price || !img || !collection) { showToast('⚠️ املأ الحقول الأساسية'); return; }
+            if (!name || !price || !img || !collectionId) { showToast('⚠️ املأ الحقول الأساسية'); return; }
             let p = {
                 id: generateId(),
                 name,
                 price,
                 img,
                 stock,
+                collectionId,
                 sizes: document.getElementById('dashProductSizes').value.split(',').map(s => s.trim()).filter(Boolean),
-                badge: document.getElementById('dashProductBadge').value || ''
+                badge: document.getElementById('dashProductBadge').value || '',
+                description: document.getElementById('dashProductDesc').value.trim(),
+                hoverImg: document.getElementById('dashProductHoverImg').value.trim(),
+                old_price: parseFloat(document.getElementById('dashProductOldPrice').value) || 0
             };
-            if (!productsData[collection]) productsData[collection] = [];
-            productsData[collection].push(p);
+            let cat = collectionId;
+            if (!productsData[cat]) productsData[cat] = [];
+            productsData[cat].push(p);
             saveToLocal('productsData', productsData);
             renderAll();
             updateDashStats();
@@ -3601,34 +3660,88 @@
             showToast('✅ تمت الإضافة');
         }
 
-        function deleteProductFromDash(cat, id) {
-            if (!isAdmin || !confirm('حذف؟')) return;
-            let idx = productsData[cat].findIndex(p => p.id === id);
-            if (idx > -1) productsData[cat].splice(idx, 1);
-            saveToLocal('productsData', productsData);
-            renderAll();
-            updateDashStats();
-            renderDashProducts();
-            showToast('🗑️ تم الحذف');
+        // 10.4 حذف منتج
+        function deleteProductFromDash(productId) {
+            if (!isAdmin || !confirm('⚠️ هل أنت متأكد من حذف المنتج؟')) return;
+            for (let cat in productsData) {
+                let idx = productsData[cat].findIndex(p => p.id === productId);
+                if (idx > -1) {
+                    productsData[cat].splice(idx, 1);
+                    saveToLocal('productsData', productsData);
+                    renderAll();
+                    updateDashStats();
+                    renderDashProducts();
+                    showToast('🗑️ تم الحذف');
+                    return;
+                }
+            }
+            showToast('⚠️ المنتج غير موجود');
         }
 
-        function editProductFromDash(cat, id) {
+        // ================================================================
+        //  ★★★ دالة التعديل (تم إصلاحها بالكامل) ★★★
+        // ================================================================
+        function editProductFromDash(productId) {
             if (!isAdmin) return;
-            let p = productsData[cat].find(pr => pr.id === id);
-            if (!p) return;
-            let n = prompt('اسم:', p.name);
-            if (n) p.name = n.trim();
-            let pr = prompt('سعر:', p.price);
-            if (pr && !isNaN(pr)) p.price = parseFloat(pr);
-            let st = prompt('مخزون:', p.stock);
-            if (st && !isNaN(st)) p.stock = parseInt(st);
+
+            // البحث عن المنتج
+            let found = null,
+                cat = null;
+            for (let c in productsData) {
+                let p = productsData[c].find(pr => pr.id === productId);
+                if (p) { found = p;
+                    cat = c; break; }
+            }
+            if (!found) { showToast('⚠️ المنتج غير موجود'); return; }
+
+            // 1. تعديل الاسم
+            let newName = prompt('✏️ اسم المنتج:', found.name);
+            if (newName === null) return; // إلغاء
+
+            // 2. تعديل السعر
+            let newPrice = prompt('💰 السعر (ج.م):', found.price);
+            if (newPrice === null) return;
+            if (isNaN(parseFloat(newPrice))) { showToast('⚠️ السعر غير صحيح'); return; }
+
+            // 3. تعديل المخزون
+            let newStock = prompt('📦 المخزون:', found.stock);
+            if (newStock === null) return;
+            if (isNaN(parseInt(newStock))) { showToast('⚠️ المخزون غير صحيح'); return; }
+
+            // 4. تعديل المجموعة – نعرض قائمة بالمجموعات
+            let colOptions = collectionsData.map(c => `${c.id} - ${c.name}`).join('\n');
+            let newColId = prompt(`🏷️ المجموعة (أدخل الـ id من القائمة):\n${colOptions}`, found.collectionId);
+            if (newColId === null) return;
+            let colExists = collectionsData.some(c => c.id === newColId.trim());
+            if (!colExists) { showToast('⚠️ معرف المجموعة غير صحيح'); return; }
+
+            // 5. تعديل الصورة (اختياري)
+            let newImg = prompt('🖼️ رابط الصورة (اترك فارغاً للإبقاء على الحالي):', found.img);
+            // إذا ترك فارغاً نبقى على القديم
+            if (newImg !== null && newImg.trim() !== '') found.img = newImg.trim();
+
+            // 6. تعديل الوصف (اختياري)
+            let newDesc = prompt('📝 الوصف (اترك فارغاً للإبقاء على الحالي):', found.description || '');
+            if (newDesc !== null && newDesc.trim() !== '') found.description = newDesc.trim();
+
+            // الآن نطبق التغييرات
+            found.name = newName.trim();
+            found.price = parseFloat(newPrice);
+            found.stock = parseInt(newStock);
+            found.collectionId = newColId.trim();
+
+            // حفظ البيانات
             saveToLocal('productsData', productsData);
+
+            // إعادة الرندر
             renderAll();
             updateDashStats();
             renderDashProducts();
-            showToast('✅ تم التعديل');
+
+            showToast('✅ تم تعديل المنتج بنجاح');
         }
 
+        // 10.6 إضافة مجموعة جديدة
         function addCollectionFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             let name = document.getElementById('dashCollectionName').value.trim();
@@ -3643,11 +3756,11 @@
             saveToLocal('collectionsData', collectionsData);
             renderCollections();
             renderDashProducts();
-            renderDashCollections(); // تحديث القائمة في التبويب
+            renderDashCollections();
             showToast('✅ تمت إضافة المجموعة');
         }
 
-        // ===== دوال إدارة المجموعات (التعديل والحذف) =====
+        // 10.7 عرض المجموعات في لوحة التحكم مع أزرار تعديل وحذف
         function renderDashCollections() {
             let container = document.getElementById('dashCollectionsList');
             if (!container) return;
@@ -3674,6 +3787,7 @@
             container.innerHTML = html;
         }
 
+        // 10.8 تعديل مجموعة (تغيير الاسم، الوصف، الصورة)
         function editCollectionFromDash(id) {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             let c = collectionsData.find(col => col.id === id);
@@ -3690,16 +3804,22 @@
             showToast('✅ تم تعديل المجموعة بنجاح');
         }
 
+        // 10.9 حذف مجموعة (مع إمكانية إعادة ربط منتجاتها لاحقاً)
         function deleteCollectionFromDash(id) {
-            if (!isAdmin || !confirm('⚠️ هل أنت متأكد من حذف المجموعة؟')) return;
+            if (!isAdmin || !confirm('⚠️ هل أنت متأكد من حذف المجموعة؟ سيتم حذف المنتجات المرتبطة بها أيضاً.')) return;
+            for (let cat in productsData) {
+                productsData[cat] = productsData[cat].filter(p => p.collectionId !== id);
+            }
             collectionsData = collectionsData.filter(c => c.id !== id);
+            saveToLocal('productsData', productsData);
             saveToLocal('collectionsData', collectionsData);
-            renderCollections();
+            renderAll();
             renderDashCollections();
-            showToast('🗑️ تم حذف المجموعة');
+            renderDashProducts();
+            showToast('🗑️ تم حذف المجموعة ومنتجاتها');
         }
-        // ===== نهاية دوال إدارة المجموعات =====
 
+        // 10.10 إدارة الكوبونات
         function addCouponFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             let code = document.getElementById('dashCouponCode').value.trim().toUpperCase();
@@ -3735,6 +3855,7 @@
             container.innerHTML = html;
         }
 
+        // 10.11 الإعلانات والإعدادات
         function saveAnnouncement() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             announcement.text = document.getElementById('dashAnnouncementText').value.trim();
@@ -3764,10 +3885,9 @@
         }
 
         // ================================================================
-        //  ⭐ التعديل المطلوب: دالة إحصائيات الزوار – الآن تجلب من Worker
+        //  11. إحصائيات الزوار (مع Worker)
         // ================================================================
         async function updateDashStats() {
-            // ---- إحصائيات المنتجات (لم تتغير) ----
             let total = 0,
                 low = 0;
             for (let cat in productsData) {
@@ -3779,8 +3899,6 @@
             document.getElementById('dashTotalRevenue').textContent = orders.reduce((s, o) => s + (o.total || 0), 0);
             document.getElementById('dashTotalCollections').textContent = collectionsData.length;
 
-            // ---- ⭐ جلب إحصائيات الزوار من Cloudflare Worker ----
-            // عرض "جاري التحميل..." أثناء الجلب
             document.getElementById('dashVisitorsToday').textContent = '⏳';
             document.getElementById('dashVisitorsWeek').textContent = '⏳';
             document.getElementById('dashVisitorsMonth').textContent = '⏳';
@@ -3792,7 +3910,6 @@
                     document.getElementById('dashVisitorsWeek').textContent = data.week || 0;
                     document.getElementById('dashVisitorsMonth').textContent = data.month || 0;
 
-                    // تحديث الرسم البياني
                     if (document.getElementById('visitorsChart') && data.chart && data.chart.length) {
                         const ctx = document.getElementById('visitorsChart').getContext('2d');
                         if (chartInstance) chartInstance.destroy();
@@ -3823,24 +3940,8 @@
                                 }
                             }
                         });
-                    } else {
-                        // عرض رسم بياني فارغ في حال عدم وجود بيانات
-                        if (document.getElementById('visitorsChart')) {
-                            const ctx = document.getElementById('visitorsChart').getContext('2d');
-                            if (chartInstance) chartInstance.destroy();
-                            chartInstance = new Chart(ctx, {
-                                type: 'line',
-                                data: {
-                                    labels: ['لا توجد بيانات'],
-                                    datasets: [{ label: 'الزيارات', data: [0], borderColor: '#ff69b4', tension: 0.4 }]
-                                },
-                                options: { responsive: true, maintainAspectRatio: false }
-                            });
-                        }
                     }
                 } else {
-                    // في حال فشل الجلب، نعرض 0 مع رسالة في الكونسول
-                    console.warn('⚠️ لم يتم جلب بيانات الزوار، العرض بقيمة 0');
                     document.getElementById('dashVisitorsToday').textContent = '0';
                     document.getElementById('dashVisitorsWeek').textContent = '0';
                     document.getElementById('dashVisitorsMonth').textContent = '0';
@@ -3894,6 +3995,9 @@
             showToast(`📦 تم العثور على الطلب: ${randomStatus}`, 'fa-truck');
         }
 
+        // ================================================================
+        //  12. مكتبة الصور (موجودة)
+        // ================================================================
         function renderImageLibrary() {
             let container = document.getElementById('imageLibrary');
             if (!container) return;
@@ -3975,7 +4079,7 @@
         }
 
         // ================================================================
-        //  11. دوال المصادقة
+        //  13. دوال المصادقة
         // ================================================================
         function toggleAdminLogin() { if (isAdmin) adminLogout();
             else openAdminLogin(); }
@@ -4046,19 +4150,17 @@
             renderCollections();
             renderCollectionPage();
             renderDashProducts();
-            // لا نستدعي updateDashStats هنا مباشرة لأنها async – سنستدعيها بعد التحميل
-            // ولكننا نستدعيها في showPage عند الدخول للداشبورد
             updateDashOrders();
             renderWishlistPage();
             renderCartPage();
             renderRecent();
             updateCouponsList();
             renderImageLibrary();
-            renderDashCollections(); // عرض المجموعات في لوحة التحكم
+            renderDashCollections();
         }
 
         // ================================================================
-        //  12. التهيئة (Init)
+        //  14. التهيئة (Init)
         // ================================================================
         loadCart();
         if (localStorage.getItem('yqWishlist')) {
@@ -4073,12 +4175,10 @@
         checkAdminSession();
         loadAllData();
 
-        // بعد تحميل البيانات، نقوم بتحديث الإحصائيات (بما فيها الزوار) مرة واحدة
         setTimeout(() => {
             updateDashStats();
         }, 500);
 
-        // ربط أحداث التبويبات في لوحة التحكم
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -4091,7 +4191,7 @@
                 if (this.dataset.tab === 'tab-collections') {
                     renderCollections();
                     populateCollectionSelect();
-                    renderDashCollections(); // عرض قائمة المجموعات
+                    renderDashCollections();
                 }
                 if (this.dataset.tab === 'tab-announcement') loadAnnouncementToForm();
                 if (this.dataset.tab === 'tab-settings') loadSettingsToForm();
@@ -4100,7 +4200,6 @@
             };
         });
 
-        // ربط أحداث البحث والفلاتر في صفحة المجموعة
         document.getElementById('collectionSearch')?.addEventListener('input', renderCollectionPage);
         document.querySelectorAll('#collectionFilters .filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -4111,7 +4210,6 @@
             });
         });
 
-        // إغلاق المودال بالضغط على Escape
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 if (document.getElementById('productModal').style.display === 'flex') closeModal();
@@ -4151,12 +4249,10 @@
         window.copyImageUrl = copyImageUrl;
         window.replaceImage = replaceImage;
         window.deleteImage = deleteImage;
-        // دوال إدارة المجموعات الجديدة
         window.editCollectionFromDash = editCollectionFromDash;
         window.deleteCollectionFromDash = deleteCollectionFromDash;
 
         console.log('✅ تم تشغيل الموقع بنجاح — عداد الزوار متصل بـ Cloudflare Worker');
-        console.log('📦 عدد المنتجات:', Object.keys(productsData).reduce((s, c) => s + productsData[c].length, 0));
         console.log('🔐 كلمة المرور: YQ2026');
         console.log('🌐 رابط Worker:', VISITOR_WORKER_URL);
     </script>
