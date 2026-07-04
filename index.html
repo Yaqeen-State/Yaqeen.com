@@ -2800,7 +2800,7 @@
     </div>
 
     <!-- ================================================================ -->
-    <!-- ===== JAVASCRIPT – التعديلات النهائية ===== -->
+    <!-- ===== JAVASCRIPT – التعديلات النهائية (مع إصلاح الحفظ) ===== -->
     <!-- ================================================================ -->
     <script>
         // ================================================================
@@ -3013,7 +3013,14 @@
         }
 
         function saveToLocal(key, data) {
-            try { localStorage.setItem('yq_' + key, JSON.stringify(data)); } catch (e) {}
+            try {
+                localStorage.setItem('yq_' + key, JSON.stringify(data));
+                console.log('✅ تم حفظ البيانات في localStorage تحت مفتاح:', 'yq_' + key);
+                return true;
+            } catch (e) {
+                console.error('❌ فشل الحفظ في localStorage:', e);
+                return false;
+            }
         }
 
         function loadFromLocal(key) {
@@ -3046,9 +3053,11 @@
             let savedProducts = loadFromLocal('productsData');
             if (savedProducts && Object.keys(savedProducts).length > 0) {
                 productsData = savedProducts;
+                console.log('✅ تم تحميل المنتجات من localStorage');
             } else {
                 productsData = JSON.parse(JSON.stringify(defaultProductsData));
                 saveToLocal('productsData', productsData);
+                console.log('✅ تم تحميل المنتجات الافتراضية وحفظها');
             }
 
             collectionsData = loadFromLocal('collectionsData') || [
@@ -3679,7 +3688,7 @@
         }
 
         // ================================================================
-        //  ★★★ دالة التعديل (تم إصلاحها بالكامل) ★★★
+        //  ★★★ دالة التعديل (تم إصلاحها بالكامل – حفظ مضمون) ★★★
         // ================================================================
         function editProductFromDash(productId) {
             if (!isAdmin) return;
@@ -3694,51 +3703,61 @@
             }
             if (!found) { showToast('⚠️ المنتج غير موجود'); return; }
 
-            // 1. تعديل الاسم
+            // 1. اسم المنتج
             let newName = prompt('✏️ اسم المنتج:', found.name);
-            if (newName === null) return; // إلغاء
+            if (newName === null) return;
+            if (newName.trim() === '') { showToast('⚠️ الاسم لا يمكن أن يكون فارغاً'); return; }
 
-            // 2. تعديل السعر
+            // 2. السعر
             let newPrice = prompt('💰 السعر (ج.م):', found.price);
             if (newPrice === null) return;
-            if (isNaN(parseFloat(newPrice))) { showToast('⚠️ السعر غير صحيح'); return; }
+            let parsedPrice = parseFloat(newPrice);
+            if (isNaN(parsedPrice) || parsedPrice <= 0) { showToast('⚠️ السعر غير صحيح (أدخل رقماً موجباً)'); return; }
 
-            // 3. تعديل المخزون
+            // 3. المخزون
             let newStock = prompt('📦 المخزون:', found.stock);
             if (newStock === null) return;
-            if (isNaN(parseInt(newStock))) { showToast('⚠️ المخزون غير صحيح'); return; }
+            let parsedStock = parseInt(newStock);
+            if (isNaN(parsedStock) || parsedStock < 0) { showToast('⚠️ المخزون غير صحيح (أدخل عدداً صحيحاً غير سالب)'); return; }
 
-            // 4. تعديل المجموعة – نعرض قائمة بالمجموعات
+            // 4. المجموعة
             let colOptions = collectionsData.map(c => `${c.id} - ${c.name}`).join('\n');
             let newColId = prompt(`🏷️ المجموعة (أدخل الـ id من القائمة):\n${colOptions}`, found.collectionId);
             if (newColId === null) return;
             let colExists = collectionsData.some(c => c.id === newColId.trim());
             if (!colExists) { showToast('⚠️ معرف المجموعة غير صحيح'); return; }
 
-            // 5. تعديل الصورة (اختياري)
+            // 5. الصورة (اختياري)
             let newImg = prompt('🖼️ رابط الصورة (اترك فارغاً للإبقاء على الحالي):', found.img);
-            // إذا ترك فارغاً نبقى على القديم
-            if (newImg !== null && newImg.trim() !== '') found.img = newImg.trim();
+            // إذا كان الإدخال فارغاً أو null، نبقى على القديم، وإلا نستخدم الجديد
+            let finalImg = found.img;
+            if (newImg !== null && newImg.trim() !== '') finalImg = newImg.trim();
 
-            // 6. تعديل الوصف (اختياري)
+            // 6. الوصف (اختياري)
             let newDesc = prompt('📝 الوصف (اترك فارغاً للإبقاء على الحالي):', found.description || '');
-            if (newDesc !== null && newDesc.trim() !== '') found.description = newDesc.trim();
+            let finalDesc = found.description || '';
+            if (newDesc !== null && newDesc.trim() !== '') finalDesc = newDesc.trim();
 
-            // الآن نطبق التغييرات
+            // الآن نطبق التغييرات دفعة واحدة
             found.name = newName.trim();
-            found.price = parseFloat(newPrice);
-            found.stock = parseInt(newStock);
+            found.price = parsedPrice;
+            found.stock = parsedStock;
             found.collectionId = newColId.trim();
+            found.img = finalImg;
+            found.description = finalDesc;
 
-            // حفظ البيانات
-            saveToLocal('productsData', productsData);
-
-            // إعادة الرندر
-            renderAll();
-            updateDashStats();
-            renderDashProducts();
-
-            showToast('✅ تم تعديل المنتج بنجاح');
+            // حفظ البيانات في localStorage
+            let saved = saveToLocal('productsData', productsData);
+            if (saved) {
+                // إعادة رسم جميع العناصر
+                renderAll();
+                updateDashStats();
+                renderDashProducts();
+                showToast('✅ تم تعديل المنتج وحفظه بنجاح');
+                console.log('✅ المنتج بعد التعديل:', found);
+            } else {
+                showToast('❌ فشل الحفظ، حاول مرة أخرى', 'fa-times-circle');
+            }
         }
 
         // 10.6 إضافة مجموعة جديدة
