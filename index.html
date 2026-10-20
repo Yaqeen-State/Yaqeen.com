@@ -15,6 +15,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
@@ -2515,6 +2519,7 @@
             <div class="dashboard-tab-content" id="tab-images">
                 <div style="background:var(--white);border-radius:24px;padding:24px;border:1px solid var(--cream-dark);box-shadow:var(--shadow-soft);">
                     <h3 style="margin-bottom:16px;font-family:var(--font-serif);">🖼️ مكتبة الصور</h3>
+                    <p style="color:var(--error);font-size:13px;margin-bottom:12px;">⚠️ تحذير: فايربيز المجاني يسمح بـ 1 ميجا فقط. يفضل استخدام لينكات الصور (postimg) بدلاً من الرفع المباشر.</p>
                     <div class="image-library" id="imageLibrary">
                         <div class="img-upload-area" onclick="document.getElementById('imageUploadInput').click()">
                             <i class="fas fa-cloud-upload-alt"></i>
@@ -2557,12 +2562,7 @@
                 <div style="background:var(--white);border-radius:24px;padding:24px;border:1px solid var(--cream-dark);box-shadow:var(--shadow-soft);">
                     <h3 style="margin-bottom:16px;font-family:var(--font-serif);">⚙️ إعدادات الموقع</h3>
                     <div class="dashboard-form" style="max-width:100%;margin:0;">
-                        <div class="form-group"><label>رابط اللوجو</label><input type="text" id="dashSettingLogo" placeholder="https://i.postimg.cc/..."></div>
                         <div class="form-group"><label>اسم البراند</label><input type="text" id="dashSettingBrand" placeholder="يقين | YQ STATE"></div>
-                        <div class="form-group"><label>إنستغرام</label><input type="text" id="dashSettingInstagram" placeholder="https://instagram.com/yaqeen.state"></div>
-                        <div class="form-group"><label>تيك توك</label><input type="text" id="dashSettingTiktok" placeholder="https://tiktok.com/@yaqeen.state"></div>
-                        <div class="form-group"><label>واتساب</label><input type="text" id="dashSettingWhatsapp" placeholder="https://wa.me/201027515725"></div>
-                        <div class="form-group"><label>الإيميل</label><input type="email" id="dashSettingEmail" placeholder="info@yaqeen-state.com"></div>
                         <div class="form-group"><label>نص الفوتر</label><input type="text" id="dashSettingFooter" placeholder="© 2026 يقين — جميع الحقوق محفوظة"></div>
                         <button class="submit-btn" onclick="saveSettings()">💾 حفظ الإعدادات</button>
                         <button class="submit-btn" style="margin-top:12px;background:var(--gold);color:white;" onclick="manualSave()">💾 حفظ جميع البيانات الآن</button>
@@ -2676,10 +2676,28 @@
          ============================================================ -->
     <script>
         // ================================================================
-        //  0. الإعدادات العامة
+        //  0. الإعدادات العامة و Firebase
         // ================================================================
-        const VISITOR_WORKER_URL = 'https://visitor-analytics.xxxxxxxx.workers.dev';
+        const VISITOR_WORKER_URL = ''; // تم تعطيله مؤقتاً لتجنب الأخطاء
         const ADMIN_PASSWORD = 'YQ2026';
+
+        // 🔴🔴🔴 ضع كود الـ firebaseConfig الخاص بك هنا 🔴🔴🔴
+        const firebaseConfig = {
+            apiKey: "AIzaSyCo3vjPmGopgjGQlCxEZ3UnMGz9PVOPXrY",
+            authDomain: "yaqeenstate-d0cb4.firebaseapp.com",
+            projectId: "yaqeenstate-d0cb4",
+            storageBucket: "yaqeenstate-d0cb4.firebasestorage.app",
+            messagingSenderId: "541171606345",
+            appId: "1:541171606345:web:561cc0fd9b3dedf3db7098"
+        };
+
+        // تهيئة فايربيز
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+        // 🔴🔴🔴 نهاية كود Firebase 🔴🔴🔴
+
 
         // ================================================================
         //  1. البيانات الافتراضية
@@ -2842,6 +2860,18 @@
             ]
         };
 
+        const defaultCollectionsData = [
+            { id: 'c1', name: 'YQ Summer Drop', description: 'Summer Code', image: 'https://i.postimg.cc/wBz49DW1/IMG-8950.png' },
+            { id: 'c2', name: 'YQ Winter Drop', description: 'Winter Code 2025', image: 'https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg' },
+            { id: 'c3', name: 'YQ Women Wear', description: 'Women Summer Code 2026', image: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg' },
+            { id: 'c4', name: 'YQ SweetPants', description: 'State Pants Collection', image: 'https://i.postimg.cc/k4qRGQKn/IMG-8977.jpg' }
+        ];
+
+        const defaultCoupons = [
+            { id: 'cp1', code: 'YAQEEN15', discount_percent: 15, expiry: null },
+            { id: 'cp2', code: 'FIRST20', discount_percent: 20, expiry: null }
+        ];
+
         // ================================================================
         //  2. المتغيرات العامة
         // ================================================================
@@ -2886,28 +2916,48 @@
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
         }
 
+        // الحفظ في فايربيز للسحابة + الحفظ المحلي للسلة والمفضلة
         function saveAllData() {
+            // 1. حفظ بيانات العميل الخاصة (السلة، المفضلة، المشاهدات) في المتصفح
             try {
-                localStorage.setItem('yq_productsData', JSON.stringify(productsData));
-                localStorage.setItem('yq_collectionsData', JSON.stringify(collectionsData));
-                localStorage.setItem('yq_coupons', JSON.stringify(coupons));
-                localStorage.setItem('yq_announcement', JSON.stringify(announcement));
-                localStorage.setItem('yq_settings', JSON.stringify(settings));
-                localStorage.setItem('yq_orders', JSON.stringify(orders));
-                localStorage.setItem('yq_allImages', JSON.stringify(allImages));
-                localStorage.setItem('yq_reviews', JSON.stringify(reviews));
-                localStorage.setItem('yq_bestsellerIds', JSON.stringify(bestsellerIds));
                 localStorage.setItem('yq_cart', JSON.stringify(cart));
                 localStorage.setItem('yq_total', String(total));
                 localStorage.setItem('yq_wishlist', JSON.stringify(wishlist));
                 localStorage.setItem('yq_recent', JSON.stringify(recentProducts));
-                console.log('✅ تم حفظ جميع البيانات');
-                return true;
             } catch (e) {
-                console.error('❌ فشل الحفظ:', e);
-                showToast('❌ فشل الحفظ، حاول مرة أخرى', 'fa-times-circle');
-                return false;
+                console.warn('Local storage is full or disabled', e);
             }
+
+            // 2. حفظ بيانات الموقع العامة (المنتجات، الكوليكشنز، الإعدادات) في فايربيز
+            const globalData = {
+                productsData: productsData,
+                collectionsData: collectionsData,
+                coupons: coupons,
+                announcement: announcement,
+                settings: settings,
+                orders: orders,
+                allImages: allImages,
+                reviews: reviews,
+                bestsellerIds: bestsellerIds
+            };
+
+            if (typeof db !== 'undefined') {
+                return db.collection('store').doc('main').set(globalData)
+                    .then(() => {
+                        console.log('✅ تم حفظ البيانات في Firebase بنجاح');
+                        return true;
+                    })
+                    .catch((e) => {
+                        console.error('❌ فشل الحفظ في Firebase:', e);
+                        if(e.message && e.message.includes('exceeds the maximum')) {
+                            showToast('❌ حجم البيانات كبير جداً (صور Base64). استخدم روابط خارجية.', 'fa-exclamation-triangle');
+                        } else {
+                            showToast('❌ فشل الحفظ، تأكد من اتصالك بالإنترنت', 'fa-times-circle');
+                        }
+                        return false;
+                    });
+            }
+            return true;
         }
 
         function loadFromLocal(key) {
@@ -2918,65 +2968,69 @@
         }
 
         // ================================================================
-        //  4. تحميل البيانات
+        //  4. تحميل البيانات من Firebase
         // ================================================================
         function loadAllData() {
-            let savedProducts = loadFromLocal('productsData');
-            if (savedProducts && Object.keys(savedProducts).length > 0) {
-                productsData = savedProducts;
-            } else {
-                productsData = JSON.parse(JSON.stringify(defaultProductsData));
-                saveAllData();
-            }
-
-            let savedCollections = loadFromLocal('collectionsData');
-            if (savedCollections && Array.isArray(savedCollections) && savedCollections.length > 0) {
-                collectionsData = savedCollections;
-            } else {
-                collectionsData = [
-                    { id: 'c1', name: 'YQ Summer Drop', description: 'Summer Code', image: 'https://i.postimg.cc/wBz49DW1/IMG-8950.png' },
-                    { id: 'c2', name: 'YQ Winter Drop', description: 'Winter Code 2025', image: 'https://i.postimg.cc/RhXbD2SK/IMG-8087.jpg' },
-                    { id: 'c3', name: 'YQ Women Wear', description: 'Women Summer Code 2026', image: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg' },
-                    { id: 'c4', name: 'YQ SweetPants', description: 'State Pants Collection', image: 'https://i.postimg.cc/k4qRGQKn/IMG-8977.jpg' }
-                ];
-                saveAllData();
-            }
-
-            console.log('📦 Collections loaded:', collectionsData.length, 'collections');
-
-            coupons = loadFromLocal('coupons') || [
-                { id: 'cp1', code: 'YAQEEN15', discount_percent: 15, expiry: null },
-                { id: 'cp2', code: 'FIRST20', discount_percent: 20, expiry: null }
-            ];
-            let savedAnnouncement = loadFromLocal('announcement');
-            if (savedAnnouncement && typeof savedAnnouncement === 'object') {
-                announcement = savedAnnouncement;
-            } else {
-                announcement = { text: '🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات', active: true };
-                saveAllData();
-            }
-            settings = loadFromLocal('settings') || { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
-            orders = loadFromLocal('orders') || [];
-            allImages = loadFromLocal('allImages') || [];
-            reviews = loadFromLocal('reviews') || {};
-            bestsellerIds = loadFromLocal('bestsellerIds') || [];
+            // تحميل البيانات المحلية أولاً
             wishlist = loadFromLocal('wishlist') || [];
             recentProducts = loadFromLocal('recent') || [];
-            let savedCart = loadFromLocal('cart');
-            if (savedCart) { cart = savedCart;
-                total = parseFloat(localStorage.getItem('yq_total')) || 0; }
+            cart = loadFromLocal('cart') || [];
+            total = parseFloat(localStorage.getItem('yq_total')) || 0;
 
-            for (let cat in productsData) {
-                productsData[cat].forEach(p => {
-                    if (!p.id) p.id = generateId();
-                    if (!p.collectionId) {
-                        let found = collectionsData.find(c => c.name === cat);
-                        if (found) p.collectionId = found.id;
-                        else p.collectionId = collectionsData[0]?.id || 'c1';
+            if (typeof db !== 'undefined') {
+                db.collection('store').doc('main').get().then((doc) => {
+                    if (doc.exists) {
+                        let data = doc.data();
+                        productsData = data.productsData || JSON.parse(JSON.stringify(defaultProductsData));
+                        collectionsData = data.collectionsData || defaultCollectionsData;
+                        coupons = data.coupons || defaultCoupons;
+                        announcement = data.announcement || { text: '🔥 تخفيضات الصيف — خصم 15%', active: true };
+                        settings = data.settings || { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
+                        orders = data.orders || [];
+                        allImages = data.allImages || [];
+                        reviews = data.reviews || {};
+                        bestsellerIds = data.bestsellerIds || [];
+                    } else {
+                        // أول مرة يفتح فيها الموقع، نضع البيانات الافتراضية ونحفظها
+                        productsData = JSON.parse(JSON.stringify(defaultProductsData));
+                        collectionsData = defaultCollectionsData;
+                        coupons = defaultCoupons;
+                        announcement = { text: '🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات', active: true };
+                        settings = { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
+                        saveAllData(); // رفع البيانات للسحابة
                     }
+
+                    // تأمين الـ IDs
+                    for (let cat in productsData) {
+                        productsData[cat].forEach(p => {
+                            if (!p.id) p.id = generateId();
+                        });
+                    }
+
+                    // تحديث الواجهة بالبيانات
+                    initUIAfterLoad();
+                    console.log('✅ تم تحميل البيانات من Firebase');
+                }).catch((error) => {
+                    console.error("❌ خطأ في جلب البيانات من Firebase: ", error);
+                    showToast('⚠️ فشل الاتصال بقاعدة البيانات. يتم عرض البيانات الافتراضية.', 'fa-exclamation-triangle');
+                    
+                    // في حالة فشل الاتصال (مثلاً مفيش إنترنت)، نعرض البيانات الافتراضية
+                    productsData = JSON.parse(JSON.stringify(defaultProductsData));
+                    collectionsData = defaultCollectionsData;
+                    coupons = defaultCoupons;
+                    announcement = { text: '🔥 تخفيضات الصيف — خصم 15%', active: true };
+                    settings = { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
+                    initUIAfterLoad();
                 });
+            } else {
+                // لو فايربيز مش متظبط
+                productsData = JSON.parse(JSON.stringify(defaultProductsData));
+                collectionsData = defaultCollectionsData;
+                initUIAfterLoad();
             }
-            saveAllData();
+        }
+
+        function initUIAfterLoad() {
             applySettingsToUI();
             applyAnnouncement();
             renderAll();
@@ -2984,7 +3038,8 @@
             initSlider();
             updateCartUI();
             updateAnnouncementPosition();
-            document.getElementById('wishlistCount').textContent = wishlist.length;
+            let wc = document.getElementById('wishlistCount');
+            if (wc) wc.textContent = wishlist.length;
             updateDashStats();
         }
 
@@ -3157,12 +3212,8 @@
         // ================================================================
         function renderCollections() {
             let grid = document.getElementById('collectionsGrid');
-            if (!grid) {
-                console.warn('⚠️ collectionsGrid element not found');
-                return;
-            }
+            if (!grid) return;
             if (!collectionsData || !Array.isArray(collectionsData) || collectionsData.length === 0) {
-                console.warn('⚠️ collectionsData is empty or invalid');
                 grid.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-light);width:100%;">لا توجد مجموعات. أضف مجموعة من لوحة التحكم.</p>';
                 return;
             }
@@ -3181,7 +3232,6 @@
             grid.innerHTML = html;
             let dashTotal = document.getElementById('dashTotalCollections');
             if (dashTotal) dashTotal.textContent = collectionsData.length;
-            console.log('✅ Rendered collections:', collectionsData.length);
         }
 
         function showCollection(id) {
@@ -3335,7 +3385,11 @@
             let tooltip = document.getElementById('cartTooltip');
             if (tooltip) tooltip.textContent = count ? `🛒 ${count} منتج - ${total} ج.م` : 'السلة فارغة';
             if (document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
-            saveAllData();
+            // لا نحفظ في فايربيز هنا، لأن السلة خاصة بالعميل
+            try {
+                localStorage.setItem('yq_cart', JSON.stringify(cart));
+                localStorage.setItem('yq_total', String(total));
+            } catch(e) {}
         }
 
         function addToCart(product, size) {
@@ -3349,7 +3403,6 @@
                 cart.push({ name: product.name, price: product.price, img: product.img, size: size, quantity: 1 });
                 total += product.price;
             }
-            saveAllData();
             showToast('✅ تمت الإضافة إلى السلة');
             updateCartUI();
             return true;
@@ -3409,7 +3462,6 @@
         function removeFromCart(idx) {
             total -= cart[idx].price * cart[idx].quantity;
             cart.splice(idx, 1);
-            saveAllData();
             renderCartPage();
             updateCartUI();
         }
@@ -3429,7 +3481,6 @@
                 removeFromCart(idx);
                 return;
             }
-            saveAllData();
             renderCartPage();
             updateCartUI();
         }
@@ -3441,7 +3492,7 @@
                 wishlist.push(productName);
                 showToast('❤️ أضيف إلى المفضلة', 'fa-heart');
             }
-            saveAllData();
+            try { localStorage.setItem('yq_wishlist', JSON.stringify(wishlist)); } catch(e){}
             let wc = document.getElementById('wishlistCount');
             if (wc) wc.textContent = wishlist.length;
             renderWishlistPage();
@@ -3548,7 +3599,7 @@
             if (!text) { showToast('⚠️ اكتب رأيك'); return; }
             if (!reviews[currentModalProduct.name]) reviews[currentModalProduct.name] = [];
             reviews[currentModalProduct.name].push({ stars, text, author: 'عميل', date: new Date().toLocaleDateString() });
-            saveAllData();
+            saveAllData(); // حفظ التقييم في فايربيز
             showToast('✅ تم إرسال التقييم', 'fa-star');
             document.getElementById('reviewText').value = '';
             renderReviews(currentModalProduct.name);
@@ -3578,7 +3629,7 @@
             recentProducts = recentProducts.filter(r => r.name !== productName);
             recentProducts.unshift({ name: p.name, img: p.img, price: p.price });
             if (recentProducts.length > 4) recentProducts.pop();
-            saveAllData();
+            try { localStorage.setItem('yq_recent', JSON.stringify(recentProducts)); } catch(e){}
             renderRecent();
         }
 
@@ -3620,13 +3671,11 @@
                 status: 'pending'
             };
             orders.push(order);
-            saveAllData();
+            saveAllData(); // حفظ الطلب في فايربيز عشان يظهر في لوحة التحكم
             window.open(`https://wa.me/201027515725?text=${encodeURIComponent(msg)}`, '_blank');
             cart = [];
             total = 0;
             appliedCoupon = null;
-            saveAllData();
-            renderCartPage();
             updateCartUI();
             showToast('✅ تم إرسال الطلب');
         }
@@ -3779,16 +3828,18 @@
             let cat = collectionId;
             if (!productsData[cat]) productsData[cat] = [];
             productsData[cat].push(p);
-            if (saveAllData()) {
-                renderAll();
-                updateDashStats();
-                renderDashProducts();
-                renderBestsellerManager();
-                initSlider();
-                showToast('✅ تمت الإضافة');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            
+            // حفظ في فايربيز
+            saveAllData().then(success => {
+                if (success) {
+                    renderAll();
+                    updateDashStats();
+                    renderDashProducts();
+                    renderBestsellerManager();
+                    initSlider();
+                    showToast('✅ تمت الإضافة وحفظها في السحابة');
+                }
+            });
         }
 
         function deleteProductFromDash(productId) {
@@ -3798,16 +3849,17 @@
                 if (idx > -1) {
                     productsData[cat].splice(idx, 1);
                     bestsellerIds = bestsellerIds.filter(id => id !== productId);
-                    if (saveAllData()) {
-                        renderAll();
-                        updateDashStats();
-                        renderDashProducts();
-                        renderBestsellerManager();
-                        initSlider();
-                        showToast('🗑️ تم الحذف');
-                    } else {
-                        showToast('❌ فشل الحذف', 'fa-times-circle');
-                    }
+                    
+                    saveAllData().then(success => {
+                        if (success) {
+                            renderAll();
+                            updateDashStats();
+                            renderDashProducts();
+                            renderBestsellerManager();
+                            initSlider();
+                            showToast('🗑️ تم الحذف من السحابة');
+                        }
+                    });
                     return;
                 }
             }
@@ -3860,16 +3912,16 @@
             found.img = finalImg;
             found.description = finalDesc;
 
-            if (saveAllData()) {
-                renderAll();
-                updateDashStats();
-                renderDashProducts();
-                renderBestsellerManager();
-                initSlider();
-                showToast('✅ تم تعديل المنتج وحفظه بنجاح');
-            } else {
-                showToast('❌ فشل الحفظ، حاول مرة أخرى', 'fa-times-circle');
-            }
+            saveAllData().then(success => {
+                if (success) {
+                    renderAll();
+                    updateDashStats();
+                    renderDashProducts();
+                    renderBestsellerManager();
+                    initSlider();
+                    showToast('✅ تم تعديل المنتج وحفظه في السحابة');
+                }
+            });
         }
 
         function addCollectionFromDash() {
@@ -3883,15 +3935,16 @@
                 description: document.getElementById('dashCollectionDesc').value.trim(),
                 image: document.getElementById('dashCollectionImg').value.trim() || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'
             });
-            if (saveAllData()) {
-                renderCollections();
-                renderDashProducts();
-                renderDashCollections();
-                populateCollectionSelect();
-                showToast('✅ تمت إضافة المجموعة');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    renderCollections();
+                    renderDashProducts();
+                    renderDashCollections();
+                    populateCollectionSelect();
+                    showToast('✅ تمت إضافة المجموعة للسحابة');
+                }
+            });
         }
 
         function renderDashCollections() {
@@ -3930,13 +3983,14 @@
             if (newDesc !== null) c.description = newDesc.trim();
             let newImg = prompt('🖼️ رابط الصورة:', c.image || '');
             if (newImg !== null) c.image = newImg.trim();
-            if (saveAllData()) {
-                renderCollections();
-                renderDashCollections();
-                showToast('✅ تم تعديل المجموعة بنجاح');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    renderCollections();
+                    renderDashCollections();
+                    showToast('✅ تم تعديل المجموعة في السحابة');
+                }
+            });
         }
 
         function deleteCollectionFromDash(id) {
@@ -3945,16 +3999,17 @@
                 productsData[cat] = productsData[cat].filter(p => p.collectionId !== id);
             }
             collectionsData = collectionsData.filter(c => c.id !== id);
-            if (saveAllData()) {
-                renderAll();
-                renderDashCollections();
-                renderDashProducts();
-                renderBestsellerManager();
-                initSlider();
-                showToast('🗑️ تم حذف المجموعة ومنتجاتها');
-            } else {
-                showToast('❌ فشل الحذف', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    renderAll();
+                    renderDashCollections();
+                    renderDashProducts();
+                    renderBestsellerManager();
+                    initSlider();
+                    showToast('🗑️ تم حذف المجموعة من السحابة');
+                }
+            });
         }
 
         function addCouponFromDash() {
@@ -3965,23 +4020,25 @@
             if (coupons.find(c => c.code === code)) { showToast('⚠️ الكود موجود'); return; }
             coupons.push({ id: generateId(), code, discount_percent: discount, expiry: document.getElementById(
                     'dashCouponExpiry').value || null });
-            if (saveAllData()) {
-                updateCouponsList();
-                showToast('✅ تمت إضافة الكوبون');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    updateCouponsList();
+                    showToast('✅ تمت إضافة الكوبون للسحابة');
+                }
+            });
         }
 
         function deleteCouponFromDash(id) {
             if (!isAdmin || !confirm('حذف الكوبون؟')) return;
             coupons = coupons.filter(c => c.id !== id);
-            if (saveAllData()) {
-                updateCouponsList();
-                showToast('🗑️ تم الحذف');
-            } else {
-                showToast('❌ فشل الحذف', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    updateCouponsList();
+                    showToast('🗑️ تم الحذف من السحابة');
+                }
+            });
         }
 
         function updateCouponsList() {
@@ -4003,24 +4060,26 @@
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             announcement.text = document.getElementById('dashAnnouncementText').value.trim();
             announcement.active = document.getElementById('dashAnnouncementStatus').value === 'active';
-            if (saveAllData()) {
-                applyAnnouncement();
-                showToast('✅ تم حفظ الإعلان');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    applyAnnouncement();
+                    showToast('✅ تم حفظ الإعلان في السحابة');
+                }
+            });
         }
 
         function saveSettings() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             settings.brand = document.getElementById('dashSettingBrand').value.trim();
             settings.footer = document.getElementById('dashSettingFooter').value.trim();
-            if (saveAllData()) {
-                applySettingsToUI();
-                showToast('✅ تم حفظ الإعدادات');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            
+            saveAllData().then(success => {
+                if (success) {
+                    applySettingsToUI();
+                    showToast('✅ تم حفظ الإعدادات في السحابة');
+                }
+            });
         }
 
         function manualSave() {
@@ -4029,7 +4088,7 @@
                 return;
             }
             if (saveAllData()) {
-                showToast('✅ تم حفظ جميع البيانات بنجاح', 'fa-check-circle');
+                showToast('✅ تم حفظ جميع البيانات بنجاح في السحابة', 'fa-check-circle');
             } else {
                 showToast('❌ فشل الحفظ', 'fa-times-circle');
             }
@@ -4073,58 +4132,11 @@
             let vToday = document.getElementById('dashVisitorsToday');
             let vWeek = document.getElementById('dashVisitorsWeek');
             let vMonth = document.getElementById('dashVisitorsMonth');
-            if (vToday) vToday.textContent = '⏳';
-            if (vWeek) vWeek.textContent = '⏳';
-            if (vMonth) vMonth.textContent = '⏳';
-
-            try {
-                const data = await fetch(VISITOR_WORKER_URL).then(r => r.json());
-                if (data && !data.error) {
-                    if (vToday) vToday.textContent = data.today || 0;
-                    if (vWeek) vWeek.textContent = data.week || 0;
-                    if (vMonth) vMonth.textContent = data.month || 0;
-
-                    if (document.getElementById('visitorsChart') && data.chart && data.chart.length) {
-                        const ctx = document.getElementById('visitorsChart').getContext('2d');
-                        if (chartInstance) chartInstance.destroy();
-                        chartInstance = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: data.chart.map(d => d.date.slice(5)),
-                                datasets: [{
-                                    label: 'الزيارات',
-                                    data: data.chart.map(d => d.visits),
-                                    borderColor: '#c9a96e',
-                                    backgroundColor: 'rgba(201,169,110,0.10)',
-                                    fill: true,
-                                    tension: 0.4,
-                                    pointBackgroundColor: '#c9a96e',
-                                    pointRadius: 4
-                                }]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                plugins: {
-                                    legend: { labels: { color: '#6b6560', font: { family: 'Cairo' } } }
-                                },
-                                scales: {
-                                    x: { ticks: { color: '#9a9490', font: { family: 'Cairo' } }, grid: { color: 'rgba(0,0,0,0.04)' } },
-                                    y: { ticks: { color: '#9a9490', font: { family: 'Cairo' } }, grid: { color: 'rgba(0,0,0,0.04)' }, beginAtZero: true }
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    if (vToday) vToday.textContent = '0';
-                    if (vWeek) vWeek.textContent = '0';
-                    if (vMonth) vMonth.textContent = '0';
-                }
-            } catch (e) {
-                if (vToday) vToday.textContent = '0';
-                if (vWeek) vWeek.textContent = '0';
-                if (vMonth) vMonth.textContent = '0';
-            }
+            
+            // تعطيل جلب الزوار لأننا مسحنا اللينك الوهمي
+            if (vToday) vToday.textContent = '0';
+            if (vWeek) vWeek.textContent = '0';
+            if (vMonth) vMonth.textContent = '0';
         }
 
         function updateDashOrders() {
@@ -4202,12 +4214,12 @@
                 let reader = new FileReader();
                 reader.onload = function(ev) {
                     allImages.push({ id: generateId(), url: ev.target.result, name: file.name });
-                    if (saveAllData()) {
-                        renderImageLibrary();
-                        showToast('✅ تم رفع الصورة');
-                    } else {
-                        showToast('❌ فشل رفع الصورة', 'fa-times-circle');
-                    }
+                    saveAllData().then(success => {
+                        if (success) {
+                            renderImageLibrary();
+                            showToast('✅ تم رفع الصورة');
+                        }
+                    });
                 };
                 reader.readAsDataURL(file);
             });
@@ -4236,9 +4248,16 @@
                 let reader = new FileReader();
                 reader.onload = function(ev) {
                     let img = allImages.find(i => i.id === id);
-                    if (img) { img.url = ev.target.result;
-                        img.name = file.name; if (saveAllData()) { renderImageLibrary();
-                            showToast('✅ تم الاستبدال'); } else showToast('❌ فشل الاستبدال', 'fa-times-circle'); }
+                    if (img) { 
+                        img.url = ev.target.result;
+                        img.name = file.name; 
+                        saveAllData().then(success => {
+                            if (success) {
+                                renderImageLibrary();
+                                showToast('✅ تم الاستبدال');
+                            }
+                        });
+                    }
                 };
                 reader.readAsDataURL(file);
             };
@@ -4248,12 +4267,12 @@
         function deleteImage(id) {
             if (!confirm('حذف الصورة؟')) return;
             allImages = allImages.filter(i => i.id !== id);
-            if (saveAllData()) {
-                renderImageLibrary();
-                showToast('🗑️ تم الحذف');
-            } else {
-                showToast('❌ فشل الحذف', 'fa-times-circle');
-            }
+            saveAllData().then(success => {
+                if (success) {
+                    renderImageLibrary();
+                    showToast('🗑️ تم الحذف');
+                }
+            });
         }
 
         // ================================================================
@@ -4364,7 +4383,7 @@
         //  17. التهيئة النهائية
         // ================================================================
         checkAdminSession();
-        loadAllData();
+        loadAllData(); // هذه الدالة الآن تجلب البيانات من فايربيز
 
         // تحديث موضع شريط الإعلان عند تغيير حجم النافذة أو التمرير
         window.addEventListener('resize', updateAnnouncementPosition);
@@ -4416,10 +4435,6 @@
             }
         });
 
-        window.addEventListener('beforeunload', function() {
-            saveAllData();
-        });
-
         window.toggleMobileMenu = toggleMobileMenu;
         window.openModalByName = openModalByName;
         window.closeModal = closeModal;
@@ -4456,11 +4471,8 @@
         window.saveBestsellerSelection = saveBestsellerSelection;
         window.initSlider = initSlider;
 
-        console.log('✅ الموقع يعمل بكامل وظائفه');
+        console.log('✅ الموقع يعمل بكامل وظائفه ومربوط بـ Firebase');
         console.log('🔐 كلمة المرور: YQ2026');
-        console.log('📦 عدد المنتجات:', Object.values(productsData).reduce((acc, arr) => acc + arr.length, 0));
-        console.log('🏷️ عدد المجموعات:', collectionsData.length);
-        console.log('🛒 السلة:', cart.length, 'عناصر');
     </script>
 
 </body>
