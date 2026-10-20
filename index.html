@@ -13,15 +13,14 @@
     <meta property="og:image" content="https://i.postimg.cc/c4brqmLB/Final-Logo.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
         /* ============================================================
-           جميع الأنماط (تم دمجها كاملة)
+           الأنماط الكاملة
            ============================================================ */
         @font-face {
             font-family: 'Another Danger';
@@ -61,6 +60,7 @@
             --success: #4caf50;
             --warning: #e8a838;
             --error: #e45858;
+            --nav-height: 68px;
         }
 
         * {
@@ -79,45 +79,7 @@
             line-height: 1.6;
         }
 
-        /* ===== شريط الإعلان ===== */
-        .announcement-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: var(--gold);
-            color: white;
-            padding: 8px 16px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 1001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            transform: translateY(-100%);
-            transition: transform 0.4s ease;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-        }
-        .announcement-bar.show {
-            transform: translateY(0);
-        }
-        .announcement-bar .close-announce {
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: 700;
-            padding: 0 8px;
-            transition: var(--transition);
-            border-radius: 50%;
-            line-height: 1;
-        }
-        .announcement-bar .close-announce:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        /* ===== شريط التنقل ===== */
+        /* ===== شريط التنقل (فوق) ===== */
         nav {
             position: fixed;
             top: 0;
@@ -126,11 +88,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            z-index: 1001;
             background: rgba(247, 243, 238, 0.92);
             backdrop-filter: blur(18px);
             border-bottom: 1px solid rgba(201, 169, 110, 0.2);
             transition: var(--transition);
+            min-height: var(--nav-height);
         }
         nav.scrolled {
             padding: 8px 5%;
@@ -210,12 +173,12 @@
         }
         .mobile-nav {
             position: fixed;
-            top: 72px;
+            top: var(--nav-height);
             right: 0;
             width: 100%;
             background: rgba(247, 243, 238, 0.98);
             backdrop-filter: blur(14px);
-            z-index: 999;
+            z-index: 998;
             transform: translateY(-150%);
             transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
             border-bottom: 1px solid rgba(201, 169, 110, 0.2);
@@ -322,6 +285,48 @@
             top: 110%;
         }
 
+        /* ===== شريط الإعلان (تحت الـ nav) ===== */
+        .announcement-bar {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            width: 100%;
+            background: var(--gold);
+            color: white;
+            padding: 10px 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+        .announcement-bar.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .announcement-bar .close-announce {
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 0 8px;
+            transition: var(--transition);
+            border-radius: 50%;
+            line-height: 1;
+        }
+        .announcement-bar .close-announce:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
         /* ===== صفحات ===== */
         .page {
             position: fixed;
@@ -381,7 +386,7 @@
             justify-content: center;
             position: relative;
             z-index: 1;
-            padding: 0 5%;
+            padding: 80px 5% 0;
             gap: 40px;
             flex-wrap: wrap;
         }
@@ -572,13 +577,8 @@
             opacity: 1;
         }
         @keyframes bounceDown {
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                transform: translateX(-50%) translateY(12px);
-            }
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(12px); }
         }
 
         /* ===== الأكثر مبيعاً ===== */
@@ -703,6 +703,7 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
+            z-index: 3;
         }
         .badge {
             padding: 4px 14px;
@@ -713,18 +714,10 @@
             color: white;
             letter-spacing: 0.5px;
         }
-        .badge-new {
-            background: var(--gold);
-        }
-        .badge-best {
-            background: #e8a838;
-        }
-        .badge-limited {
-            background: #e45858;
-        }
-        .badge-sale {
-            background: #6b6560;
-        }
+        .badge-new { background: var(--gold); }
+        .badge-best { background: #e8a838; }
+        .badge-limited { background: #e45858; }
+        .badge-sale { background: #6b6560; }
         .low-stock-badge {
             position: absolute;
             top: 12px;
@@ -735,6 +728,7 @@
             border-radius: 40px;
             font-size: 11px;
             font-weight: 700;
+            z-index: 3;
         }
         .wishlist-btn {
             position: absolute;
@@ -753,7 +747,7 @@
             color: var(--text-muted);
             cursor: pointer;
             transition: var(--transition);
-            z-index: 2;
+            z-index: 4;
         }
         .wishlist-btn:hover {
             background: var(--gold);
@@ -782,7 +776,7 @@
             cursor: pointer;
             transition: var(--transition);
             opacity: 0;
-            z-index: 2;
+            z-index: 4;
         }
         .product-card:hover .quick-view-btn {
             opacity: 1;
@@ -816,12 +810,8 @@
             font-size: 13px;
             margin: 4px 0;
         }
-        .stock-info.in-stock {
-            color: var(--success);
-        }
-        .stock-info.out-of-stock {
-            color: var(--error);
-        }
+        .stock-info.in-stock { color: var(--success); }
+        .stock-info.out-of-stock { color: var(--error); }
         .size-options {
             display: flex;
             flex-wrap: wrap;
@@ -923,9 +913,11 @@
             overflow: hidden;
             cursor: pointer;
             aspect-ratio: 1/1;
+            min-height: 260px;
             border: 1px solid var(--cream-dark);
             transition: var(--transition);
             box-shadow: var(--shadow-soft);
+            background: var(--cream-dark);
         }
         .collection-card:hover {
             transform: scale(1.02);
@@ -936,6 +928,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
         .collection-overlay {
             position: absolute;
@@ -943,7 +936,7 @@
             left: 0;
             width: 100%;
             padding: 20px;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
             color: white;
             text-align: center;
         }
@@ -953,7 +946,7 @@
         }
         .collection-overlay p {
             font-size: 14px;
-            opacity: 0.8;
+            opacity: 0.9;
         }
 
         /* ===== فلتر ===== */
@@ -1269,14 +1262,8 @@
             box-shadow: 0 40px 80px rgba(0, 0, 0, 0.2);
         }
         @keyframes modalIn {
-            from {
-                transform: scale(0.9) translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1) translateY(0);
-                opacity: 1;
-            }
+            from { transform: scale(0.9) translateY(30px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
         .modal-close,
         .admin-close,
@@ -1793,18 +1780,10 @@
             text-transform: capitalize;
             color: white;
         }
-        .status-badge.processing {
-            background: var(--warning);
-        }
-        .status-badge.packed {
-            background: #2196f3;
-        }
-        .status-badge.shipping {
-            background: #9c27b0;
-        }
-        .status-badge.delivered {
-            background: var(--success);
-        }
+        .status-badge.processing { background: var(--warning); }
+        .status-badge.packed { background: #2196f3; }
+        .status-badge.shipping { background: #9c27b0; }
+        .status-badge.delivered { background: var(--success); }
 
         .image-library {
             display: grid;
@@ -2028,6 +2007,9 @@
             .menu-icon {
                 display: block;
             }
+            .hero {
+                padding: 100px 5% 40px;
+            }
             .hero-title .yq {
                 font-size: 56px;
             }
@@ -2194,15 +2176,8 @@
 </head>
 <body>
 
-    <!-- ===== شريط الإعلان ===== -->
-    <div class="announcement-bar" id="announcementBar">
-        <span id="announcementText">🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات</span>
-        <span class="close-announce" onclick="closeAnnouncement()">✕</span>
-    </div>
-
-    <!-- ===== التنقل ===== -->
+    <!-- ===== شريط التنقل ===== -->
     <nav id="mainNav">
-        <div class="menu-icon" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
         <a href="#" class="logo" onclick="showPage('hero'); return false;">Y<span>Q</span></a>
         <ul class="nav-links" id="navLinks">
             <li><a href="#" onclick="showPage('hero'); return false;">الرئيسية</a></li>
@@ -2233,6 +2208,12 @@
         </div>
     </nav>
 
+    <!-- ===== شريط الإعلان (تحت الـ nav) ===== -->
+    <div class="announcement-bar" id="announcementBar">
+        <span id="announcementText">🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات</span>
+        <span class="close-announce" onclick="closeAnnouncement()">✕</span>
+    </div>
+
     <!-- ===== موبايل ناف ===== -->
     <div class="mobile-nav" id="mobileNav">
         <ul class="nav-links-mobile" id="mobileNavLinks">
@@ -2251,8 +2232,8 @@
     <div id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">تم!</span></div>
 
     <!-- ============================================================
-    جميع الصفحات
-    ============================================================ -->
+         الصفحات
+         ============================================================ -->
 
     <!-- الهيرو -->
     <div class="page hero-page active" id="hero">
@@ -2691,8 +2672,8 @@
     </div>
 
     <!-- ============================================================
-    الجافاسكريبت الكامل
-    ============================================================ -->
+         الجافاسكريبت الكامل
+         ============================================================ -->
     <script>
         // ================================================================
         //  0. الإعدادات العامة
@@ -2961,6 +2942,8 @@
                 saveAllData();
             }
 
+            console.log('📦 Collections loaded:', collectionsData.length, 'collections');
+
             coupons = loadFromLocal('coupons') || [
                 { id: 'cp1', code: 'YAQEEN15', discount_percent: 15, expiry: null },
                 { id: 'cp2', code: 'FIRST20', discount_percent: 20, expiry: null }
@@ -3000,6 +2983,7 @@
             renderBestsellers();
             initSlider();
             updateCartUI();
+            updateAnnouncementPosition();
             document.getElementById('wishlistCount').textContent = wishlist.length;
             updateDashStats();
         }
@@ -3013,18 +2997,29 @@
                     ' <span style="color:var(--gold);">') + '</span>';
             }
             if (settings.footer) {
-                document.getElementById('footerText').textContent = settings.footer;
+                let ft = document.getElementById('footerText');
+                if (ft) ft.textContent = settings.footer;
             }
         }
 
         function applyAnnouncement() {
             let bar = document.getElementById('announcementBar');
             let text = document.getElementById('announcementText');
+            if (!bar || !text) return;
             if (announcement && announcement.active && announcement.text) {
                 text.textContent = announcement.text;
                 bar.classList.add('show');
+                updateAnnouncementPosition();
             } else {
                 bar.classList.remove('show');
+            }
+        }
+
+        function updateAnnouncementPosition() {
+            const nav = document.getElementById('mainNav');
+            const ann = document.getElementById('announcementBar');
+            if (nav && ann) {
+                ann.style.top = nav.offsetHeight + 'px';
             }
         }
 
@@ -3065,6 +3060,8 @@
                 loadSettingsToForm();
                 renderDashCollections();
                 renderBestsellerManager();
+                updateCouponsList();
+                renderImageLibrary();
             }
             if (id === 'collections') renderCollections();
             if (id === 'hero') {
@@ -3089,7 +3086,7 @@
             let html = '';
             sliderImages.forEach(p => {
                 html += `<div class="hero-slider-slide">
-                            <img src="${p.img}" alt="${p.name}" loading="lazy" onclick="openModalByName('${p.name}')">
+                            <img src="${p.img}" alt="${p.name}" loading="lazy" onclick="openModalByName('${p.name}')" onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
                         </div>`;
             });
             track.innerHTML = html;
@@ -3100,8 +3097,8 @@
             dotsContainer.innerHTML = dotsHtml;
             const prevBtn = document.getElementById('sliderPrev');
             const nextBtn = document.getElementById('sliderNext');
-            prevBtn.onclick = () => slideTo(sliderCurrent - 1);
-            nextBtn.onclick = () => slideTo(sliderCurrent + 1);
+            if (prevBtn) prevBtn.onclick = () => slideTo(sliderCurrent - 1);
+            if (nextBtn) nextBtn.onclick = () => slideTo(sliderCurrent + 1);
             document.querySelectorAll('.slider-dot').forEach(dot => {
                 dot.onclick = function() {
                     slideTo(parseInt(this.dataset.index));
@@ -3110,9 +3107,11 @@
             sliderCurrent = 0;
             updateSlider();
             if (sliderInterval) clearInterval(sliderInterval);
-            sliderInterval = setInterval(() => {
-                slideTo(sliderCurrent + 1);
-            }, 4000);
+            if (sliderImages.length > 1) {
+                sliderInterval = setInterval(() => {
+                    slideTo(sliderCurrent + 1);
+                }, 4000);
+            }
         }
 
         function slideTo(index) {
@@ -3158,19 +3157,31 @@
         // ================================================================
         function renderCollections() {
             let grid = document.getElementById('collectionsGrid');
-            if (!grid) return;
+            if (!grid) {
+                console.warn('⚠️ collectionsGrid element not found');
+                return;
+            }
+            if (!collectionsData || !Array.isArray(collectionsData) || collectionsData.length === 0) {
+                console.warn('⚠️ collectionsData is empty or invalid');
+                grid.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-light);width:100%;">لا توجد مجموعات. أضف مجموعة من لوحة التحكم.</p>';
+                return;
+            }
             let html = '';
             collectionsData.forEach(c => {
-                html += `<div class="collection-card" onclick="showCollection('${c.id}')">
-                            <img src="${c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'}" loading="lazy">
+                if (!c) return;
+                const imgUrl = c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png';
+                html += `<div class="collection-card" data-id="${c.id}" onclick="showCollection('${c.id}')">
+                            <img src="${imgUrl}" alt="${c.name || ''}" loading="lazy" onerror="this.src='https://i.postimg.cc/c4brqmLB/Final-Logo.png';">
                             <div class="collection-overlay">
-                                <h3>${c.name}</h3>
+                                <h3>${c.name || 'مجموعة'}</h3>
                                 <p>${c.description || ''}</p>
                             </div>
                         </div>`;
             });
             grid.innerHTML = html;
-            document.getElementById('dashTotalCollections').textContent = collectionsData.length;
+            let dashTotal = document.getElementById('dashTotalCollections');
+            if (dashTotal) dashTotal.textContent = collectionsData.length;
+            console.log('✅ Rendered collections:', collectionsData.length);
         }
 
         function showCollection(id) {
@@ -3248,8 +3259,8 @@
                 let oldPriceHtml = p.old_price ? `<span class="old-price">${p.old_price} ج.م</span>` : '';
                 html += `<div class="product-card" data-product-name="${p.name}">
                             <div class="card-img-wrapper">
-                                <img src="${p.img}" loading="lazy">
-                                ${p.hoverImg && p.hoverImg !== p.img ? `<img src="${p.hoverImg}" class="hover-img" loading="lazy">` : ''}
+                                <img src="${p.img}" loading="lazy" onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
+                                ${p.hoverImg && p.hoverImg !== p.img ? `<img src="${p.hoverImg}" class="hover-img" loading="lazy" onerror="this.style.display='none';">` : ''}
                             </div>
                             <div class="card-badges">${badgeHtml}</div>
                             ${lowStock}
@@ -3319,10 +3330,11 @@
         // ================================================================
         function updateCartUI() {
             let count = cart.reduce((s, i) => s + i.quantity, 0);
-            document.getElementById('cartCount').textContent = count;
+            let cc = document.getElementById('cartCount');
+            if (cc) cc.textContent = count;
             let tooltip = document.getElementById('cartTooltip');
-            tooltip.textContent = count ? `🛒 ${count} منتج - ${total} ج.م` : 'السلة فارغة';
-            if (document.getElementById('cart-page').classList.contains('active')) renderCartPage();
+            if (tooltip) tooltip.textContent = count ? `🛒 ${count} منتج - ${total} ج.م` : 'السلة فارغة';
+            if (document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
             saveAllData();
         }
 
@@ -3346,6 +3358,7 @@
         function renderCartPage() {
             let container = document.getElementById('cartItemsContainer');
             let summary = document.getElementById('cartSummary');
+            if (!container || !summary) return;
             if (cart.length === 0) {
                 container.innerHTML =
                     `<div class="cart-empty-state"><i class="fas fa-shopping-bag"></i><h3>السلة فارغة</h3><p>ابدأ التسوق الآن</p><button onclick="showPage('collections')" style="margin-top:16px;background:var(--gold);border:none;padding:12px 32px;border-radius:40px;font-weight:700;color:white;cursor:pointer;transition:var(--transition);">تسوق الآن</button></div>`;
@@ -3356,7 +3369,7 @@
             let html = '';
             cart.forEach((item, idx) => {
                 html += `<div class="cart-item">
-                            <img src="${item.img}" onclick="openModalByName('${item.name}')" loading="lazy">
+                            <img src="${item.img}" onclick="openModalByName('${item.name}')" loading="lazy" onerror="this.style.opacity='0.3';">
                             <div class="cart-item-details">
                                 <h4>${item.name}</h4>
                                 <div class="item-size">المقاس: ${item.size}</div>
@@ -3429,7 +3442,8 @@
                 showToast('❤️ أضيف إلى المفضلة', 'fa-heart');
             }
             saveAllData();
-            document.getElementById('wishlistCount').textContent = wishlist.length;
+            let wc = document.getElementById('wishlistCount');
+            if (wc) wc.textContent = wishlist.length;
             renderWishlistPage();
             renderAll();
         }
@@ -3447,7 +3461,7 @@
                 let p = findProductByName(name);
                 if (!p) return;
                 html += `<div class="product-card" onclick="openModalByName('${p.name}')">
-                            <div class="card-img-wrapper"><img src="${p.img}" loading="lazy"></div>
+                            <div class="card-img-wrapper"><img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';"></div>
                             <h3>${p.name}</h3>
                             <div class="product-price">${p.price} ج.م</div>
                             <button class="wishlist-btn liked" style="position:static;margin:8px auto;width:auto;padding:8px 20px;border-radius:40px;background:var(--gold);color:white;border:none;cursor:pointer;transition:var(--transition);" onclick="event.stopPropagation();toggleWishlist('${p.name}')">
@@ -3513,6 +3527,7 @@
                 if (!size) { showToast('⚠️ اختر المقاس'); return; }
                 if (addToCart(p, size)) closeModal();
             };
+            renderReviews(p.name);
             modal.style.display = 'flex';
             addToRecent(p.name);
         }
@@ -3576,7 +3591,7 @@
             let html = '';
             recentProducts.forEach(p => {
                 html += `<div class="recent-item" onclick="openModalByName('${p.name}')">
-                            <img src="${p.img}" loading="lazy">
+                            <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
                             <p>${p.name}</p>
                             <div class="recent-price">${p.price} ج.م</div>
                         </div>`;
@@ -3644,7 +3659,7 @@
             let html = '';
             products.forEach(p => {
                 html += `<div class="bestseller-item" onclick="openModalByName('${p.name}')">
-                            <img src="${p.img}" loading="lazy">
+                            <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
                             <h4>${p.name}</h4>
                             <div class="price">${p.price} ج.م</div>
                         </div>`;
@@ -3705,7 +3720,7 @@
                     if (c) collectionName = c.name;
                     html += `<div class="dash-product-item">
                                 <div class="dash-product-info">
-                                    <img src="${p.img}" loading="lazy">
+                                    <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
                                     <div>
                                         <div class="dash-product-name">${p.name}</div>
                                         <div class="dash-product-price">${p.price} ج.م</div>
@@ -3720,10 +3735,12 @@
                 });
             }
             container.innerHTML = html || '<p style="color:var(--text-light);text-align:center;padding:30px;">لا توجد منتجات</p>';
-            document.getElementById('dashTotalProducts').textContent = totalCount;
+            let tp = document.getElementById('dashTotalProducts');
+            if (tp) tp.textContent = totalCount;
             let low = 0;
             for (let cat in productsData) productsData[cat].forEach(p => { if (p.stock > 0 && p.stock <= 2) low++; });
-            document.getElementById('dashLowStock').textContent = low;
+            let ls = document.getElementById('dashLowStock');
+            if (ls) ls.textContent = low;
             populateCollectionSelect();
         }
 
@@ -3888,7 +3905,7 @@
             collectionsData.forEach(c => {
                 html += `<div class="dash-product-item" style="margin-bottom:10px;">
                             <div class="dash-product-info">
-                                <img src="${c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'}" style="width:50px;height:50px;object-fit:cover;border-radius:12px;">
+                                <img src="${c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'}" style="width:50px;height:50px;object-fit:cover;border-radius:12px;" onerror="this.style.opacity='0.3';">
                                 <div>
                                     <div class="dash-product-name">${c.name}</div>
                                     <div style="font-size:13px;color:var(--text-light);">${c.description || 'بدون وصف'}</div>
@@ -4020,40 +4037,52 @@
         window.manualSave = manualSave;
 
         function loadAnnouncementToForm() {
-            document.getElementById('dashAnnouncementText').value = announcement.text || '';
-            document.getElementById('dashAnnouncementStatus').value = announcement.active ? 'active' : 'inactive';
+            let t = document.getElementById('dashAnnouncementText');
+            let s = document.getElementById('dashAnnouncementStatus');
+            if (t) t.value = announcement.text || '';
+            if (s) s.value = announcement.active ? 'active' : 'inactive';
         }
 
         function loadSettingsToForm() {
-            document.getElementById('dashSettingBrand').value = settings.brand || '';
-            document.getElementById('dashSettingFooter').value = settings.footer || '';
+            let b = document.getElementById('dashSettingBrand');
+            let f = document.getElementById('dashSettingFooter');
+            if (b) b.value = settings.brand || '';
+            if (f) f.value = settings.footer || '';
         }
 
         // ================================================================
         //  13. إحصائيات الزوار
         // ================================================================
         async function updateDashStats() {
-            let total = 0,
+            let tot = 0,
                 low = 0;
             for (let cat in productsData) {
-                productsData[cat].forEach(p => { total++; if (p.stock > 0 && p.stock <= 2) low++; });
+                productsData[cat].forEach(p => { tot++; if (p.stock > 0 && p.stock <= 2) low++; });
             }
-            document.getElementById('dashTotalProducts').textContent = total;
-            document.getElementById('dashLowStock').textContent = low;
-            document.getElementById('dashTotalOrders').textContent = orders.length;
-            document.getElementById('dashTotalRevenue').textContent = orders.reduce((s, o) => s + (o.total || 0), 0);
-            document.getElementById('dashTotalCollections').textContent = collectionsData.length;
+            let tp = document.getElementById('dashTotalProducts');
+            if (tp) tp.textContent = tot;
+            let ls = document.getElementById('dashLowStock');
+            if (ls) ls.textContent = low;
+            let to = document.getElementById('dashTotalOrders');
+            if (to) to.textContent = orders.length;
+            let tr = document.getElementById('dashTotalRevenue');
+            if (tr) tr.textContent = orders.reduce((s, o) => s + (o.total || 0), 0);
+            let tc = document.getElementById('dashTotalCollections');
+            if (tc) tc.textContent = collectionsData.length;
 
-            document.getElementById('dashVisitorsToday').textContent = '⏳';
-            document.getElementById('dashVisitorsWeek').textContent = '⏳';
-            document.getElementById('dashVisitorsMonth').textContent = '⏳';
+            let vToday = document.getElementById('dashVisitorsToday');
+            let vWeek = document.getElementById('dashVisitorsWeek');
+            let vMonth = document.getElementById('dashVisitorsMonth');
+            if (vToday) vToday.textContent = '⏳';
+            if (vWeek) vWeek.textContent = '⏳';
+            if (vMonth) vMonth.textContent = '⏳';
 
             try {
                 const data = await fetch(VISITOR_WORKER_URL).then(r => r.json());
                 if (data && !data.error) {
-                    document.getElementById('dashVisitorsToday').textContent = data.today || 0;
-                    document.getElementById('dashVisitorsWeek').textContent = data.week || 0;
-                    document.getElementById('dashVisitorsMonth').textContent = data.month || 0;
+                    if (vToday) vToday.textContent = data.today || 0;
+                    if (vWeek) vWeek.textContent = data.week || 0;
+                    if (vMonth) vMonth.textContent = data.month || 0;
 
                     if (document.getElementById('visitorsChart') && data.chart && data.chart.length) {
                         const ctx = document.getElementById('visitorsChart').getContext('2d');
@@ -4087,14 +4116,14 @@
                         });
                     }
                 } else {
-                    document.getElementById('dashVisitorsToday').textContent = '0';
-                    document.getElementById('dashVisitorsWeek').textContent = '0';
-                    document.getElementById('dashVisitorsMonth').textContent = '0';
+                    if (vToday) vToday.textContent = '0';
+                    if (vWeek) vWeek.textContent = '0';
+                    if (vMonth) vMonth.textContent = '0';
                 }
             } catch (e) {
-                document.getElementById('dashVisitorsToday').textContent = '0';
-                document.getElementById('dashVisitorsWeek').textContent = '0';
-                document.getElementById('dashVisitorsMonth').textContent = '0';
+                if (vToday) vToday.textContent = '0';
+                if (vWeek) vWeek.textContent = '0';
+                if (vMonth) vMonth.textContent = '0';
             }
         }
 
@@ -4126,6 +4155,7 @@
             steps.forEach((s, i) => {
                 let el = document.getElementById(s);
                 let lb = document.getElementById(labels[i]);
+                if (!el || !lb) return;
                 el.classList.remove('active', 'done');
                 lb.classList.remove('active', 'done');
                 if (i < idx) { el.classList.add('done');
@@ -4153,7 +4183,7 @@
                         </div>`;
             allImages.forEach(img => {
                 html += `<div class="img-item">
-                            <img src="${img.url}" loading="lazy">
+                            <img src="${img.url}" loading="lazy" onerror="this.style.opacity='0.3';">
                             <div class="img-actions">
                                 <button class="copy-btn" onclick="copyImageUrl('${img.url}')">📋</button>
                                 <button class="replace-btn" onclick="replaceImage('${img.id}')">🔄</button>
@@ -4273,16 +4303,17 @@
             let tooltip = document.getElementById('adminTooltip');
             let dashLink = document.getElementById('dashboardNavLink');
             let mobileDash = document.getElementById('mobileDashboardLink');
+            if (!icon || !tooltip) return;
             if (isAdmin) {
                 icon.innerHTML = '<i class="fas fa-user-cog"></i>';
                 tooltip.textContent = 'تسجيل الخروج';
-                dashLink.style.display = 'block';
-                mobileDash.style.display = 'block';
+                if (dashLink) dashLink.style.display = 'block';
+                if (mobileDash) mobileDash.style.display = 'block';
             } else {
                 icon.innerHTML = '<i class="fas fa-key"></i>';
                 tooltip.textContent = 'تسجيل الدخول كمدير';
-                dashLink.style.display = 'none';
-                mobileDash.style.display = 'none';
+                if (dashLink) dashLink.style.display = 'none';
+                if (mobileDash) mobileDash.style.display = 'none';
             }
         }
 
@@ -4332,19 +4363,18 @@
         // ================================================================
         //  17. التهيئة النهائية
         // ================================================================
-        if (localStorage.getItem('yqWishlist')) {
-            wishlist = JSON.parse(localStorage.getItem('yqWishlist')) || [];
-            document.getElementById('wishlistCount').textContent = wishlist.length;
-        }
-        if (localStorage.getItem('yqRecent')) {
-            recentProducts = JSON.parse(localStorage.getItem('yqRecent')) || [];
-            renderRecent();
-        }
-        if (localStorage.getItem('yqReviews')) reviews = JSON.parse(localStorage.getItem('yqReviews')) || {};
         checkAdminSession();
         loadAllData();
 
-        setTimeout(() => { updateDashStats(); }, 500);
+        // تحديث موضع شريط الإعلان عند تغيير حجم النافذة أو التمرير
+        window.addEventListener('resize', updateAnnouncementPosition);
+        window.addEventListener('scroll', updateAnnouncementPosition);
+        window.addEventListener('load', updateAnnouncementPosition);
+
+        setTimeout(() => {
+            updateDashStats();
+            updateAnnouncementPosition();
+        }, 500);
 
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = function() {
@@ -4422,17 +4452,15 @@
         window.deleteImage = deleteImage;
         window.editCollectionFromDash = editCollectionFromDash;
         window.deleteCollectionFromDash = deleteCollectionFromDash;
-        window.manualSave = manualSave;
         window.renderBestsellerManager = renderBestsellerManager;
         window.saveBestsellerSelection = saveBestsellerSelection;
         window.initSlider = initSlider;
 
-        console.log('✅ الموقع يعمل بكامل وظائفه، جميع الصفحات موجودة، والحفظ يعمل.');
+        console.log('✅ الموقع يعمل بكامل وظائفه');
         console.log('🔐 كلمة المرور: YQ2026');
         console.log('📦 عدد المنتجات:', Object.values(productsData).reduce((acc, arr) => acc + arr.length, 0));
         console.log('🏷️ عدد المجموعات:', collectionsData.length);
         console.log('🛒 السلة:', cart.length, 'عناصر');
-        console.log('📢 حالة الإعلان:', announcement.active ? 'نشط' : 'غير نشط', announcement.text);
     </script>
 
 </body>
