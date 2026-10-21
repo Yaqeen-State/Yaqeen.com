@@ -18,6 +18,7 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -2615,9 +2616,10 @@
         <div class="admin-content" onclick="event.stopPropagation()">
             <span class="admin-close" onclick="closeAdminLogin()">&times;</span>
             <h2>🔐 <span>مدير</span> الموقع</h2>
+            <div class="form-group"><label>البريد الإلكتروني</label><input type="email" id="adminEmail" placeholder="أدخل البريد الإلكتروني" onkeydown="if(event.key==='Enter')adminLogin()"></div>
             <div class="form-group"><label>كلمة المرور</label><input type="password" id="adminPassword" placeholder="أدخل كلمة المرور" onkeydown="if(event.key==='Enter')adminLogin()"></div>
             <button class="admin-btn" onclick="adminLogin()">تسجيل الدخول</button>
-            <div id="adminError" class="admin-error">❌ كلمة مرور غير صحيحة</div>
+            <div id="adminError" class="admin-error">❌ بيانات الدخول غير صحيحة</div>
         </div>
     </div>
 
@@ -2679,7 +2681,6 @@
         //  0. الإعدادات العامة و Firebase
         // ================================================================
         const VISITOR_WORKER_URL = ''; // تم تعطيله مؤقتاً لتجنب الأخطاء
-        const ADMIN_PASSWORD = 'YQ2026';
 
         // 🔴🔴🔴 ضع كود الـ firebaseConfig الخاص بك هنا 🔴🔴🔴
         const firebaseConfig = {
@@ -2696,6 +2697,7 @@
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.firestore();
+        const auth = firebase.auth();
         // 🔴🔴🔴 نهاية كود Firebase 🔴🔴🔴
 
 
@@ -2918,7 +2920,6 @@
 
         // الحفظ في فايربيز للسحابة + الحفظ المحلي للسلة والمفضلة
         function saveAllData() {
-            // 1. حفظ بيانات العميل الخاصة (السلة، المفضلة، المشاهدات) في المتصفح
             try {
                 localStorage.setItem('yq_cart', JSON.stringify(cart));
                 localStorage.setItem('yq_total', String(total));
@@ -2928,7 +2929,6 @@
                 console.warn('Local storage is full or disabled', e);
             }
 
-            // 2. حفظ بيانات الموقع العامة (المنتجات، الكوليكشنز، الإعدادات) في فايربيز
             const globalData = {
                 productsData: productsData,
                 collectionsData: collectionsData,
@@ -2951,6 +2951,8 @@
                         console.error('❌ فشل الحفظ في Firebase:', e);
                         if(e.message && e.message.includes('exceeds the maximum')) {
                             showToast('❌ حجم البيانات كبير جداً (صور Base64). استخدم روابط خارجية.', 'fa-exclamation-triangle');
+                        } else if (e.code === 'permission-denied') {
+                            showToast('❌ غير مصرح لك بالحفظ. تأكد من تسجيل الدخول.', 'fa-times-circle');
                         } else {
                             showToast('❌ فشل الحفظ، تأكد من اتصالك بالإنترنت', 'fa-times-circle');
                         }
@@ -2971,7 +2973,6 @@
         //  4. تحميل البيانات من Firebase
         // ================================================================
         function loadAllData() {
-            // تحميل البيانات المحلية أولاً
             wishlist = loadFromLocal('wishlist') || [];
             recentProducts = loadFromLocal('recent') || [];
             cart = loadFromLocal('cart') || [];
@@ -2991,30 +2992,26 @@
                         reviews = data.reviews || {};
                         bestsellerIds = data.bestsellerIds || [];
                     } else {
-                        // أول مرة يفتح فيها الموقع، نضع البيانات الافتراضية ونحفظها
                         productsData = JSON.parse(JSON.stringify(defaultProductsData));
                         collectionsData = defaultCollectionsData;
                         coupons = defaultCoupons;
                         announcement = { text: '🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات', active: true };
                         settings = { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
-                        saveAllData(); // رفع البيانات للسحابة
+                        saveAllData();
                     }
 
-                    // تأمين الـ IDs
                     for (let cat in productsData) {
                         productsData[cat].forEach(p => {
                             if (!p.id) p.id = generateId();
                         });
                     }
 
-                    // تحديث الواجهة بالبيانات
                     initUIAfterLoad();
                     console.log('✅ تم تحميل البيانات من Firebase');
                 }).catch((error) => {
                     console.error("❌ خطأ في جلب البيانات من Firebase: ", error);
                     showToast('⚠️ فشل الاتصال بقاعدة البيانات. يتم عرض البيانات الافتراضية.', 'fa-exclamation-triangle');
                     
-                    // في حالة فشل الاتصال (مثلاً مفيش إنترنت)، نعرض البيانات الافتراضية
                     productsData = JSON.parse(JSON.stringify(defaultProductsData));
                     collectionsData = defaultCollectionsData;
                     coupons = defaultCoupons;
@@ -3023,7 +3020,6 @@
                     initUIAfterLoad();
                 });
             } else {
-                // لو فايربيز مش متظبط
                 productsData = JSON.parse(JSON.stringify(defaultProductsData));
                 collectionsData = defaultCollectionsData;
                 initUIAfterLoad();
@@ -3385,7 +3381,6 @@
             let tooltip = document.getElementById('cartTooltip');
             if (tooltip) tooltip.textContent = count ? `🛒 ${count} منتج - ${total} ج.م` : 'السلة فارغة';
             if (document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
-            // لا نحفظ في فايربيز هنا، لأن السلة خاصة بالعميل
             try {
                 localStorage.setItem('yq_cart', JSON.stringify(cart));
                 localStorage.setItem('yq_total', String(total));
@@ -3829,7 +3824,6 @@
             if (!productsData[cat]) productsData[cat] = [];
             productsData[cat].push(p);
             
-            // حفظ في فايربيز
             saveAllData().then(success => {
                 if (success) {
                     renderAll();
@@ -4133,7 +4127,6 @@
             let vWeek = document.getElementById('dashVisitorsWeek');
             let vMonth = document.getElementById('dashVisitorsMonth');
             
-            // تعطيل جلب الزوار لأننا مسحنا اللينك الوهمي
             if (vToday) vToday.textContent = '0';
             if (vWeek) vWeek.textContent = '0';
             if (vMonth) vMonth.textContent = '0';
@@ -4276,45 +4269,66 @@
         }
 
         // ================================================================
-        //  15. المصادقة
+        //  15. المصادقة (Firebase Auth)
         // ================================================================
-        function toggleAdminLogin() { if (isAdmin) adminLogout();
-            else openAdminLogin(); }
+        function toggleAdminLogin() { 
+            if (isAdmin) adminLogout();
+            else openAdminLogin(); 
+        }
 
         function openAdminLogin() {
             document.getElementById('adminModal').style.display = 'flex';
+            document.getElementById('adminEmail').value = '';
             document.getElementById('adminPassword').value = '';
             document.getElementById('adminError').style.display = 'none';
         }
 
-        function closeAdminLogin() { document.getElementById('adminModal').style.display = 'none'; }
+        function closeAdminLogin() { 
+            document.getElementById('adminModal').style.display = 'none'; 
+        }
 
         function adminLogin() {
+            let email = document.getElementById('adminEmail').value.trim();
             let pass = document.getElementById('adminPassword').value.trim();
-            if (pass === ADMIN_PASSWORD) {
-                isAdmin = true;
-                localStorage.setItem('yqAdmin', 'true');
-                closeAdminLogin();
-                updateAdminUI();
-                showToast('✅ مرحباً مدير!', 'fa-user-cog');
-                showPage('dashboard');
-            } else {
-                document.getElementById('adminError').style.display = 'block';
-                showToast('❌ كلمة مرور غير صحيحة', 'fa-times-circle');
+            
+            if (!email || !pass) {
+                showToast('⚠️ أدخل الإيميل وكلمة المرور', 'fa-exclamation-circle');
+                return;
             }
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then((userCredential) => {
+                    isAdmin = true;
+                    closeAdminLogin();
+                    updateAdminUI();
+                    showToast('✅ مرحباً مدير!', 'fa-user-cog');
+                    showPage('dashboard');
+                })
+                .catch((error) => {
+                    document.getElementById('adminError').style.display = 'block';
+                    showToast('❌ إيميل أو كلمة مرور غير صحيحة', 'fa-times-circle');
+                });
         }
 
         function adminLogout() {
-            isAdmin = false;
-            localStorage.removeItem('yqAdmin');
-            updateAdminUI();
-            showToast('تم تسجيل الخروج', 'fa-sign-out-alt');
-            if (document.getElementById('dashboard').classList.contains('active')) showPage('collections');
+            auth.signOut().then(() => {
+                isAdmin = false;
+                updateAdminUI();
+                showToast('تم تسجيل الخروج', 'fa-sign-out-alt');
+                if (document.getElementById('dashboard').classList.contains('active')) showPage('collections');
+            });
         }
 
         function checkAdminSession() {
-            if (localStorage.getItem('yqAdmin') === 'true') { isAdmin = true;
-                updateAdminUI(); }
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    isAdmin = true;
+                    updateAdminUI();
+                } else {
+                    isAdmin = false;
+                    updateAdminUI();
+                }
+            });
         }
 
         function updateAdminUI() {
@@ -4383,9 +4397,8 @@
         //  17. التهيئة النهائية
         // ================================================================
         checkAdminSession();
-        loadAllData(); // هذه الدالة الآن تجلب البيانات من فايربيز
+        loadAllData(); 
 
-        // تحديث موضع شريط الإعلان عند تغيير حجم النافذة أو التمرير
         window.addEventListener('resize', updateAnnouncementPosition);
         window.addEventListener('scroll', updateAnnouncementPosition);
         window.addEventListener('load', updateAnnouncementPosition);
@@ -4471,8 +4484,7 @@
         window.saveBestsellerSelection = saveBestsellerSelection;
         window.initSlider = initSlider;
 
-        console.log('✅ الموقع يعمل بكامل وظائفه ومربوط بـ Firebase');
-        console.log('🔐 كلمة المرور: YQ2026');
+        console.log('✅ الموقع يعمل بكامل وظائفه، ومربوط بـ Firebase Auth');
     </script>
 
 </body>
