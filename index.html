@@ -2213,7 +2213,7 @@
         </div>
     </nav>
 
-    <!-- ===== شريط الإعلان (تحت الـ nav) ===== -->
+    <!-- ===== شريط الإعلان ===== -->
     <div class="announcement-bar" id="announcementBar">
         <span id="announcementText">🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات</span>
         <span class="close-announce" onclick="closeAnnouncement()">✕</span>
@@ -2233,14 +2233,12 @@
         </ul>
     </div>
 
-    <!-- ===== توست ===== -->
     <div id="toast"><i class="fas fa-check-circle"></i> <span id="toastMsg">تم!</span></div>
 
     <!-- ============================================================
          الصفحات
          ============================================================ -->
 
-    <!-- الهيرو -->
     <div class="page hero-page active" id="hero">
         <div class="hero-bg"></div>
         <div class="hero">
@@ -2282,7 +2280,6 @@
         </footer>
     </div>
 
-    <!-- القواعد -->
     <div class="page" id="philosophy">
         <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 24px;background:var(--cream-light);">
             <div class="philosophy-card">
@@ -2304,7 +2301,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- الكوليكشنز -->
     <div class="page" id="collections">
         <div class="collections-section">
             <div class="section-header">
@@ -2323,7 +2319,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- صفحة المجموعة -->
     <div class="page" id="collection-page">
         <div style="padding:110px 20px 60px;background:var(--cream-light);">
             <div style="max-width:1300px;margin:0 auto;">
@@ -2349,7 +2344,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- السلة -->
     <div class="page cart-page" id="cart-page">
         <div class="cart-container">
             <div class="cart-items-list">
@@ -2385,7 +2379,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- المفضلة -->
     <div class="page" id="wishlist-page">
         <div style="padding:110px 20px 60px;background:var(--cream-light);min-height:100vh;">
             <div style="max-width:1200px;margin:0 auto;">
@@ -2399,7 +2392,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- الهوية -->
     <div class="page" id="about">
         <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--cream-light);padding:100px 24px;">
             <div class="about-card">
@@ -2415,7 +2407,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- تواصل -->
     <div class="page" id="contact">
         <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--cream-light);padding:100px 24px;">
             <div style="text-align:center;width:100%;max-width:800px;">
@@ -2442,7 +2433,6 @@
         <footer>© 2026 يقين</footer>
     </div>
 
-    <!-- لوحة التحكم -->
     <div class="page dashboard-page" id="dashboard">
         <div class="dashboard-container">
             <div class="dashboard-header">
@@ -2611,7 +2601,6 @@
         <footer>© 2026 يقين — لوحة التحكم</footer>
     </div>
 
-    <!-- ===== المودالات ===== -->
     <div id="adminModal" class="admin-modal" onclick="if(event.target===this)closeAdminLogin()">
         <div class="admin-content" onclick="event.stopPropagation()">
             <span class="admin-close" onclick="closeAdminLogin()">&times;</span>
@@ -2678,11 +2667,10 @@
          ============================================================ -->
     <script>
         // ================================================================
-        //  0. الإعدادات العامة و Firebase
+        //  0. Firebase Init
         // ================================================================
-        const VISITOR_WORKER_URL = ''; // تم تعطيله مؤقتاً لتجنب الأخطاء
+        const VISITOR_WORKER_URL = '';
 
-        // 🔴🔴🔴 ضع كود الـ firebaseConfig الخاص بك هنا 🔴🔴🔴
         const firebaseConfig = {
             apiKey: "AIzaSyCo3vjPmGopgjGQlCxEZ3UnMGz9PVOPXrY",
             authDomain: "yaqeenstate-d0cb4.firebaseapp.com",
@@ -2692,14 +2680,16 @@
             appId: "1:541171606345:web:561cc0fd9b3dedf3db7098"
         };
 
-        // تهيئة فايربيز
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-        // 🔴🔴🔴 نهاية كود Firebase 🔴🔴🔴
 
+        // اختصارات المسارات الجديدة (بعد الفصل)
+        const CATALOG_REF = db.collection('store').doc('catalog');   // عام: products + collections + coupons
+        const CONFIG_REF  = db.collection('store').doc('config');    // عام: announcement + settings + bestseller
+        const IMAGES_COL  = db.collection('images');                 // عام قراءة
+        const REVIEWS_COL = db.collection('reviews');                // عام قراءة + create
+        const ORDERS_COL  = db.collection('orders');                 // أدمن فقط
 
         // ================================================================
         //  1. البيانات الافتراضية
@@ -2707,158 +2697,126 @@
         const defaultProductsData = {
             streetwear: [
                 { id: 'p1', name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg',
-                    hoverImg: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3,
-                    badge: 'new', description: 'تي شيرت Falling Man بتصميم مميز، خامة قطن فاخر.', collectionId: 'c1' },
+                  hoverImg: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3,
+                  badge: 'new', description: 'تي شيرت Falling Man بتصميم مميز، خامة قطن فاخر.', collectionId: 'c1' },
                 { id: 'p2', name: 'YQ Graphite White Tshirt', price: 500,
-                    img: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg',
-                    hoverImg: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg', sizes: ['XL', 'XXL'], stock: 2,
-                    description: 'تي شيرت جرافيت أبيض أنيق.', collectionId: 'c1' },
+                  img: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg', hoverImg: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg',
+                  sizes: ['XL', 'XXL'], stock: 2, description: 'تي شيرت جرافيت أبيض أنيق.', collectionId: 'c1' },
                 { id: 'p3', name: 'YQ Graphite Gray Tshirt', price: 500,
-                    img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png',
-                    hoverImg: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', sizes: [], stock: 0,
-                    badge: 'soldout', description: 'تي شيرت جرافيت رمادي — نفد المخزون.', collectionId: 'c1' },
+                  img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', hoverImg: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png',
+                  sizes: [], stock: 0, badge: 'soldout', description: 'تي شيرت جرافيت رمادي — نفد المخزون.', collectionId: 'c1' },
                 { id: 'p4', name: 'YQ Graphite Black Tshirt', price: 500,
-                    img: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg',
-                    hoverImg: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg', sizes: ['L', 'XL', 'XXL'], stock: 5,
-                    badge: 'best', description: 'تي شيرت جرافيت أسود، الأكثر مبيعاً.', collectionId: 'c1' },
+                  img: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg', hoverImg: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg',
+                  sizes: ['L', 'XL', 'XXL'], stock: 5, badge: 'best', description: 'تي شيرت جرافيت أسود، الأكثر مبيعاً.', collectionId: 'c1' },
                 { id: 'p5', name: 'YQ Black Blue Tshirt', price: 500,
-                    img: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg',
-                    hoverImg: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg', sizes: ['L', 'XXL'], stock: 2,
-                    description: 'تي شيرت أزرق غامق أنيق.', collectionId: 'c1' },
+                  img: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg', hoverImg: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg',
+                  sizes: ['L', 'XXL'], stock: 2, description: 'تي شيرت أزرق غامق أنيق.', collectionId: 'c1' },
                 { id: 'p6', name: 'YQ White Egale Tshirt', price: 500,
-                    img: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg',
-                    hoverImg: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg', sizes: [], stock: 0,
-                    badge: 'soldout', description: 'تي شيرت أبيض بنسر.', collectionId: 'c1' },
+                  img: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg', hoverImg: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg',
+                  sizes: [], stock: 0, badge: 'soldout', description: 'تي شيرت أبيض بنسر.', collectionId: 'c1' },
                 { id: 'p7', name: 'YQ White Eye Tshirt', price: 400, img: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg',
-                    hoverImg: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg', sizes: ['XXL'], stock: 1,
-                    badge: 'limited', description: 'تي شيرت عين — إصدار محدود.', collectionId: 'c1' },
+                  hoverImg: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg', sizes: ['XXL'], stock: 1, badge: 'limited',
+                  description: 'تي شيرت عين — إصدار محدود.', collectionId: 'c1' },
                 { id: 'p8', name: 'YQ Black Shadows Tshirt', price: 400,
-                    img: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg',
-                    hoverImg: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg', sizes: ['XL', 'XXL'], stock: 2,
-                    badge: 'limited', description: 'تي شيرت الظل — إصدار محدود.', collectionId: 'c1' }
+                  img: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg', hoverImg: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg',
+                  sizes: ['XL', 'XXL'], stock: 2, badge: 'limited', description: 'تي شيرت الظل — إصدار محدود.', collectionId: 'c1' }
             ],
             essentials: [
                 { id: 'p9', name: 'YQ More Self Love Hoodie', price: 650,
-                    img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png',
-                    hoverImg: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', sizes: ['XXL'], stock: 1,
-                    description: 'هودي More Self Love، رسالة حب للذات.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', hoverImg: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png',
+                  sizes: ['XXL'], stock: 1, description: 'هودي More Self Love، رسالة حب للذات.', collectionId: 'c2' },
                 { id: 'p10', name: 'YQ Welcome To World', price: 650,
-                    img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png',
-                    hoverImg: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', sizes: ['XL'], stock: 1,
-                    description: 'هودي Welcome To World.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', hoverImg: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png',
+                  sizes: ['XL'], stock: 1, description: 'هودي Welcome To World.', collectionId: 'c2' },
                 { id: 'p11', name: 'YQ Time Is Money', price: 650,
-                    img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png',
-                    hoverImg: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', sizes: ['L'], stock: 1,
-                    description: 'هودي Time Is Money.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', hoverImg: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png',
+                  sizes: ['L'], stock: 1, description: 'هودي Time Is Money.', collectionId: 'c2' },
                 { id: 'p12', name: 'YQ Protect Your Peace', price: 650,
-                    img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png',
-                    hoverImg: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', sizes: ['M'], stock: 1,
-                    description: 'هودي Protect Your Peace.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', hoverImg: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png',
+                  sizes: ['M'], stock: 1, description: 'هودي Protect Your Peace.', collectionId: 'c2' },
                 { id: 'p13', name: 'YQ Love Hoodie', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png',
-                    hoverImg: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', sizes: ['L'], stock: 1,
-                    description: 'هودي Love.', collectionId: 'c2' },
+                  hoverImg: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', sizes: ['L'], stock: 1,
+                  description: 'هودي Love.', collectionId: 'c2' },
                 { id: 'p14', name: 'YQ Pink Edition', price: 650,
-                    img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png',
-                    hoverImg: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', sizes: ['L'], stock: 1,
-                    description: 'هودي Pink Edition.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', hoverImg: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png',
+                  sizes: ['L'], stock: 1, description: 'هودي Pink Edition.', collectionId: 'c2' },
                 { id: 'p15', name: 'YQ All Eyes On Me', price: 650,
-                    img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png',
-                    hoverImg: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', sizes: ['XXL'], stock: 1,
-                    description: 'هودي All Eyes On Me.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', hoverImg: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png',
+                  sizes: ['XXL'], stock: 1, description: 'هودي All Eyes On Me.', collectionId: 'c2' },
                 { id: 'p16', name: 'YQ Show Me Your Feelings', price: 650,
-                    img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg',
-                    hoverImg: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', sizes: ['L'], stock: 1,
-                    description: 'هودي Show Me Your Feelings.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', hoverImg: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg',
+                  sizes: ['L'], stock: 1, description: 'هودي Show Me Your Feelings.', collectionId: 'c2' },
                 { id: 'p17', name: 'YQ YQ EDITION', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png',
-                    hoverImg: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', sizes: ['XXL'], stock: 1,
-                    badge: 'limited', description: 'هودي YQ EDITION — إصدار خاص.', collectionId: 'c2' },
+                  hoverImg: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', sizes: ['XXL'], stock: 1, badge: 'limited',
+                  description: 'هودي YQ EDITION — إصدار خاص.', collectionId: 'c2' },
                 { id: 'p18', name: 'YQ Black SweetShirt', price: 350,
-                    img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg',
-                    hoverImg: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', sizes: ['L', 'XL', 'XXL'], stock: 4,
-                    description: 'سويت شيرت أسود.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', hoverImg: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg',
+                  sizes: ['L', 'XL', 'XXL'], stock: 4, description: 'سويت شيرت أسود.', collectionId: 'c2' },
                 { id: 'p19', name: 'YQ Brown SweetShirt', price: 350,
-                    img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',
-                    hoverImg: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg', sizes: ['L', 'XXL'], stock: 2,
-                    description: 'سويت شيرت بني.', collectionId: 'c2' },
+                  img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg', hoverImg: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',
+                  sizes: ['L', 'XXL'], stock: 2, description: 'سويت شيرت بني.', collectionId: 'c2' },
                 { id: 'p20', name: 'YQ Baby Blue SweetShirt', price: 350,
-                    img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',
-                    hoverImg: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg', sizes: ['L', 'XL', 'XXL'], stock: 4,
-                    badge: 'new', description: 'سويت شيرت بيبي بلو.', collectionId: 'c2' }
+                  img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg', hoverImg: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',
+                  sizes: ['L', 'XL', 'XXL'], stock: 4, badge: 'new', description: 'سويت شيرت بيبي بلو.', collectionId: 'c2' }
             ],
             signature: [
                 { id: 'p21', name: 'YQ W Birgandi Basic Shirt', price: 350,
-                    img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg',
-                    hoverImg: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'قميص بيرغندي أساسي.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', hoverImg: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg',
+                  sizes: ['One Size'], stock: 2, description: 'قميص بيرغندي أساسي.', collectionId: 'c3' },
                 { id: 'p22', name: 'YQ W Brown Basic Shirt', price: 350,
-                    img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg',
-                    hoverImg: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'قميص بني أساسي.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', hoverImg: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg',
+                  sizes: ['One Size'], stock: 2, description: 'قميص بني أساسي.', collectionId: 'c3' },
                 { id: 'p23', name: 'YQ W Pink Basic Shirt', price: 350,
-                    img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg',
-                    hoverImg: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', sizes: ['One Size'], stock: 1,
-                    description: 'قميص وردي أساسي.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', hoverImg: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg',
+                  sizes: ['One Size'], stock: 1, description: 'قميص وردي أساسي.', collectionId: 'c3' },
                 { id: 'p24', name: 'YQ W Black Basic Shirt', price: 350,
-                    img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg',
-                    hoverImg: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'قميص أسود أساسي.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', hoverImg: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg',
+                  sizes: ['One Size'], stock: 2, description: 'قميص أسود أساسي.', collectionId: 'c3' },
                 { id: 'p25', name: 'YQ W Birgandi Shirt', price: 450,
-                    img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg',
-                    hoverImg: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', sizes: ['One Size'], stock: 0,
-                    badge: 'soldout', description: 'قميص بيرغندي — نفد المخزون.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', hoverImg: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg',
+                  sizes: ['One Size'], stock: 0, badge: 'soldout', description: 'قميص بيرغندي — نفد المخزون.', collectionId: 'c3' },
                 { id: 'p26', name: 'YQ W Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg',
-                    hoverImg: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0,
-                    badge: 'soldout', description: 'قميص وردي — نفد المخزون.', collectionId: 'c3' },
+                  hoverImg: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0, badge: 'soldout',
+                  description: 'قميص وردي — نفد المخزون.', collectionId: 'c3' },
                 { id: 'p27', name: 'YQ W Olive Shirt', price: 450,
-                    img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg',
-                    hoverImg: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', sizes: ['One Size'], stock: 1,
-                    description: 'قميص زيتوني.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', hoverImg: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg',
+                  sizes: ['One Size'], stock: 1, description: 'قميص زيتوني.', collectionId: 'c3' },
                 { id: 'p28', name: 'YQ W Pink Shimis', price: 470,
-                    img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg',
-                    hoverImg: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', sizes: ['One Size'], stock: 1,
-                    description: 'شيميز وردي.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', hoverImg: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg',
+                  sizes: ['One Size'], stock: 1, description: 'شيميز وردي.', collectionId: 'c3' },
                 { id: 'p29', name: 'YQ W White Shimis', price: 470,
-                    img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg',
-                    hoverImg: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'شيميز أبيض.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', hoverImg: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg',
+                  sizes: ['One Size'], stock: 2, description: 'شيميز أبيض.', collectionId: 'c3' },
                 { id: 'p30', name: 'YQ W Black Shimis', price: 470,
-                    img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg',
-                    hoverImg: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', sizes: ['One Size'], stock: 2,
-                    description: 'شيميز أسود.', collectionId: 'c3' },
+                  img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', hoverImg: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg',
+                  sizes: ['One Size'], stock: 2, description: 'شيميز أسود.', collectionId: 'c3' },
                 { id: 'p31', name: 'YQ W Birgandi Shirt New', price: 470,
-                    img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg',
-                    hoverImg: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', sizes: ['One Size'], stock: 2,
-                    badge: 'new', description: 'قميص بيرغندي جديد.', collectionId: 'c3' }
+                  img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', hoverImg: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg',
+                  sizes: ['One Size'], stock: 2, badge: 'new', description: 'قميص بيرغندي جديد.', collectionId: 'c3' }
             ],
             pants: [
                 { id: 'p32', name: 'Mint SweetPants', price: 500,
-                    img: 'https://i.postimg.cc/763RwV96/IMG-8971.png',
-                    hoverImg: 'https://i.postimg.cc/763RwV96/IMG-8971.png', sizes: ['M', 'L', 'XL'], stock: 3,
-                    description: 'بنطلون SweetPants نعناعي.', collectionId: 'c4' },
+                  img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', hoverImg: 'https://i.postimg.cc/763RwV96/IMG-8971.png',
+                  sizes: ['M', 'L', 'XL'], stock: 3, description: 'بنطلون SweetPants نعناعي.', collectionId: 'c4' },
                 { id: 'p33', name: 'Gray SweetPants', price: 500,
-                    img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png',
-                    hoverImg: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', sizes: ['XL'], stock: 1,
-                    description: 'بنطلون SweetPants رمادي.', collectionId: 'c4' },
+                  img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', hoverImg: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png',
+                  sizes: ['XL'], stock: 1, description: 'بنطلون SweetPants رمادي.', collectionId: 'c4' },
                 { id: 'p34', name: 'Brown SweetPants', price: 500,
-                    img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png',
-                    hoverImg: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 3,
-                    description: 'بنطلون SweetPants بني.', collectionId: 'c4' },
+                  img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', hoverImg: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png',
+                  sizes: ['M', 'L', 'XL', 'XXL'], stock: 3, description: 'بنطلون SweetPants بني.', collectionId: 'c4' },
                 { id: 'p35', name: 'Silver SweetPants', price: 500,
-                    img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png',
-                    hoverImg: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', sizes: ['M', 'L', 'XL', 'XXL'], stock: 8,
-                    badge: 'best', description: 'بنطلون SweetPants فضي — الأكثر مبيعاً.', collectionId: 'c4' },
+                  img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', hoverImg: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png',
+                  sizes: ['M', 'L', 'XL', 'XXL'], stock: 8, badge: 'best',
+                  description: 'بنطلون SweetPants فضي — الأكثر مبيعاً.', collectionId: 'c4' },
                 { id: 'p36', name: 'Black Sherwal', price: 350,
-                    img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg',
-                    hoverImg: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', sizes: ['XL'], stock: 1,
-                    description: 'شروال أسود.', collectionId: 'c4' },
+                  img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', hoverImg: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg',
+                  sizes: ['XL'], stock: 1, description: 'شروال أسود.', collectionId: 'c4' },
                 { id: 'p37', name: 'White Sherwal', price: 350,
-                    img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg',
-                    hoverImg: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3,
-                    description: 'شروال أبيض.', collectionId: 'c4' },
+                  img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', hoverImg: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg',
+                  sizes: ['L', 'XL', 'XXL'], stock: 3, description: 'شروال أبيض.', collectionId: 'c4' },
                 { id: 'p38', name: 'Beige Sherwal', price: 350,
-                    img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg',
-                    hoverImg: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', sizes: ['L', 'XXL'], stock: 2,
-                    description: 'شروال بيج.', collectionId: 'c4' }
+                  img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', hoverImg: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg',
+                  sizes: ['L', 'XXL'], stock: 2, description: 'شروال بيج.', collectionId: 'c4' }
             ]
         };
 
@@ -2873,6 +2831,9 @@
             { id: 'cp1', code: 'YAQEEN15', discount_percent: 15, expiry: null },
             { id: 'cp2', code: 'FIRST20', discount_percent: 20, expiry: null }
         ];
+
+        const defaultAnnouncement = { text: '🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات', active: true };
+        const defaultSettings = { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
 
         // ================================================================
         //  2. المتغيرات العامة
@@ -2891,8 +2852,8 @@
         let isAdmin = false;
         let allImages = [];
         let coupons = [];
-        let announcement = { text: '', active: false };
-        let settings = { logo: '', brand: '', instagram: '', tiktok: '', whatsapp: '', email: '', footer: '' };
+        let announcement = { ...defaultAnnouncement };
+        let settings = { ...defaultSettings };
         let chartInstance = null;
         let currentCollectionId = null;
         let bestsellerIds = [];
@@ -2901,12 +2862,12 @@
         let sliderInterval = null;
 
         // ================================================================
-        //  3. دوال مساعدة وحفظ البيانات
+        //  3. دوال مساعدة
         // ================================================================
         function showToast(msg, icon = 'fa-check-circle') {
-            let toast = document.getElementById('toast');
-            let msgEl = document.getElementById('toastMsg');
-            let iconEl = toast.querySelector('i');
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toastMsg');
+            const iconEl = toast.querySelector('i');
             iconEl.className = 'fas ' + icon;
             msgEl.textContent = msg;
             toast.classList.add('show');
@@ -2918,114 +2879,147 @@
             return Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
         }
 
-        // الحفظ في فايربيز للسحابة + الحفظ المحلي للسلة والمفضلة
-        function saveAllData() {
+        function loadFromLocal(key) {
+            try {
+                const d = localStorage.getItem('yq_' + key);
+                return d ? JSON.parse(d) : null;
+            } catch (e) { return null; }
+        }
+
+        function saveLocalCart() {
             try {
                 localStorage.setItem('yq_cart', JSON.stringify(cart));
                 localStorage.setItem('yq_total', String(total));
                 localStorage.setItem('yq_wishlist', JSON.stringify(wishlist));
                 localStorage.setItem('yq_recent', JSON.stringify(recentProducts));
-            } catch (e) {
-                console.warn('Local storage is full or disabled', e);
-            }
-
-            const globalData = {
-                productsData: productsData,
-                collectionsData: collectionsData,
-                coupons: coupons,
-                announcement: announcement,
-                settings: settings,
-                orders: orders,
-                allImages: allImages,
-                reviews: reviews,
-                bestsellerIds: bestsellerIds
-            };
-
-            if (typeof db !== 'undefined') {
-                return db.collection('store').doc('main').set(globalData)
-                    .then(() => {
-                        console.log('✅ تم حفظ البيانات في Firebase بنجاح');
-                        return true;
-                    })
-                    .catch((e) => {
-                        console.error('❌ فشل الحفظ في Firebase:', e);
-                        if(e.message && e.message.includes('exceeds the maximum')) {
-                            showToast('❌ حجم البيانات كبير جداً (صور Base64). استخدم روابط خارجية.', 'fa-exclamation-triangle');
-                        } else if (e.code === 'permission-denied') {
-                            showToast('❌ غير مصرح لك بالحفظ. تأكد من تسجيل الدخول.', 'fa-times-circle');
-                        } else {
-                            showToast('❌ فشل الحفظ، تأكد من اتصالك بالإنترنت', 'fa-times-circle');
-                        }
-                        return false;
-                    });
-            }
-            return true;
+            } catch (e) {}
         }
 
-        function loadFromLocal(key) {
+        function deepCopy(o) { return JSON.parse(JSON.stringify(o)); }
+
+        // ================================================================
+        //  4. حفظ البيانات العامة (أدمن فقط)
+        // ================================================================
+        async function saveAllData() {
+            saveLocalCart();
+            if (!isAdmin) {
+                console.warn('[saveAllData] Skipped — user is not admin');
+                return false;
+            }
             try {
-                let d = localStorage.getItem('yq_' + key);
-                return d ? JSON.parse(d) : null;
-            } catch (e) { return null; }
-        }
-
-        // ================================================================
-        //  4. تحميل البيانات من Firebase
-        // ================================================================
-        function loadAllData() {
-            wishlist = loadFromLocal('wishlist') || [];
-            recentProducts = loadFromLocal('recent') || [];
-            cart = loadFromLocal('cart') || [];
-            total = parseFloat(localStorage.getItem('yq_total')) || 0;
-
-            if (typeof db !== 'undefined') {
-                db.collection('store').doc('main').get().then((doc) => {
-                    if (doc.exists) {
-                        let data = doc.data();
-                        productsData = data.productsData || JSON.parse(JSON.stringify(defaultProductsData));
-                        collectionsData = data.collectionsData || defaultCollectionsData;
-                        coupons = data.coupons || defaultCoupons;
-                        announcement = data.announcement || { text: '🔥 تخفيضات الصيف — خصم 15%', active: true };
-                        settings = data.settings || { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
-                        orders = data.orders || [];
-                        allImages = data.allImages || [];
-                        reviews = data.reviews || {};
-                        bestsellerIds = data.bestsellerIds || [];
-                    } else {
-                        productsData = JSON.parse(JSON.stringify(defaultProductsData));
-                        collectionsData = defaultCollectionsData;
-                        coupons = defaultCoupons;
-                        announcement = { text: '🔥 تخفيضات الصيف — خصم 15% على جميع التشكيلات', active: true };
-                        settings = { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
-                        saveAllData();
-                    }
-
-                    for (let cat in productsData) {
-                        productsData[cat].forEach(p => {
-                            if (!p.id) p.id = generateId();
-                        });
-                    }
-
-                    initUIAfterLoad();
-                    console.log('✅ تم تحميل البيانات من Firebase');
-                }).catch((error) => {
-                    console.error("❌ خطأ في جلب البيانات من Firebase: ", error);
-                    showToast('⚠️ فشل الاتصال بقاعدة البيانات. يتم عرض البيانات الافتراضية.', 'fa-exclamation-triangle');
-                    
-                    productsData = JSON.parse(JSON.stringify(defaultProductsData));
-                    collectionsData = defaultCollectionsData;
-                    coupons = defaultCoupons;
-                    announcement = { text: '🔥 تخفيضات الصيف — خصم 15%', active: true };
-                    settings = { brand: 'يقين | YQ STATE', footer: '© 2026 يقين — جميع الحقوق محفوظة' };
-                    initUIAfterLoad();
-                });
-            } else {
-                productsData = JSON.parse(JSON.stringify(defaultProductsData));
-                collectionsData = defaultCollectionsData;
-                initUIAfterLoad();
+                await Promise.all([
+                    CATALOG_REF.set({ productsData, collectionsData, coupons }),
+                    CONFIG_REF.set({ announcement, settings, bestsellerIds })
+                ]);
+                console.log('✅ Public data saved to Firestore');
+                return true;
+            } catch (e) {
+                console.error('❌ Save failed:', e);
+                if (e.code === 'permission-denied') {
+                    showToast('❌ غير مصرح لك بالحفظ. تأكد من تسجيل الدخول كأدمن.', 'fa-times-circle');
+                } else if (e.message && e.message.includes('exceeds the maximum')) {
+                    showToast('❌ حجم البيانات كبير جداً.', 'fa-exclamation-triangle');
+                } else {
+                    showToast('❌ فشل الحفظ، تأكد من اتصالك بالإنترنت', 'fa-times-circle');
+                }
+                return false;
             }
         }
 
+        // ================================================================
+        //  5. تحميل البيانات العامة
+        // ================================================================
+        async function loadAllData() {
+            wishlist       = loadFromLocal('wishlist') || [];
+            recentProducts = loadFromLocal('recent')   || [];
+            cart           = loadFromLocal('cart')     || [];
+            total          = parseFloat(localStorage.getItem('yq_total')) || 0;
+
+            try {
+                const [catalogSnap, configSnap, imagesSnap, reviewsSnap] = await Promise.all([
+                    CATALOG_REF.get(),
+                    CONFIG_REF.get(),
+                    IMAGES_COL.get(),
+                    REVIEWS_COL.get()
+                ]);
+
+                if (catalogSnap.exists) {
+                    const d = catalogSnap.data();
+                    productsData    = d.productsData    || deepCopy(defaultProductsData);
+                    collectionsData = d.collectionsData || [...defaultCollectionsData];
+                    coupons         = d.coupons         || [...defaultCoupons];
+                } else {
+                    productsData    = deepCopy(defaultProductsData);
+                    collectionsData = [...defaultCollectionsData];
+                    coupons         = [...defaultCoupons];
+                    console.log('ℹ️ No catalog doc — using defaults');
+                }
+
+                if (configSnap.exists) {
+                    const d = configSnap.data();
+                    announcement = d.announcement || { ...defaultAnnouncement };
+                    settings     = d.settings     || { ...defaultSettings };
+                    bestsellerIds = d.bestsellerIds || [];
+                } else {
+                    announcement = { ...defaultAnnouncement };
+                    settings     = { ...defaultSettings };
+                    bestsellerIds = [];
+                }
+
+                allImages = imagesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                reviews = {};
+                reviewsSnap.docs.forEach(doc => {
+                    const r = doc.data();
+                    if (!r.productName) return;
+                    if (!reviews[r.productName]) reviews[r.productName] = [];
+                    reviews[r.productName].push(r);
+                });
+
+                console.log('✅ Public data loaded from Firestore');
+
+            } catch (e) {
+                console.error('❌ Load failed:', e);
+                showToast('⚠️ فشل الاتصال بقاعدة البيانات. يتم عرض البيانات الافتراضية.', 'fa-exclamation-triangle');
+                productsData    = deepCopy(defaultProductsData);
+                collectionsData = [...defaultCollectionsData];
+                coupons         = [...defaultCoupons];
+                announcement    = { ...defaultAnnouncement };
+                settings        = { ...defaultSettings };
+                bestsellerIds   = [];
+                allImages       = [];
+                reviews         = {};
+            }
+
+            for (const cat in productsData) {
+                productsData[cat].forEach(p => { if (!p.id) p.id = generateId(); });
+            }
+
+            initUIAfterLoad();
+        }
+
+        // ================================================================
+        //  6. الطلبات — أدمن فقط
+        // ================================================================
+        async function loadOrders() {
+            try {
+                const snap = await ORDERS_COL.limit(300).get();
+                orders = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                orders.sort((a, b) => {
+                    const ta = a.createdAt?.toDate?.() || new Date(a.date || 0);
+                    const tb = b.createdAt?.toDate?.() || new Date(b.date || 0);
+                    return tb - ta;
+                });
+                console.log('✅ Orders loaded:', orders.length);
+            } catch (e) {
+                console.warn('⚠️ Cannot load orders:', e.code || e.message);
+                orders = [];
+            }
+        }
+
+        // ================================================================
+        //  7. تهيئة الواجهة بعد التحميل
+        // ================================================================
         function initUIAfterLoad() {
             applySettingsToUI();
             applyAnnouncement();
@@ -3034,30 +3028,28 @@
             initSlider();
             updateCartUI();
             updateAnnouncementPosition();
-            let wc = document.getElementById('wishlistCount');
+            const wc = document.getElementById('wishlistCount');
             if (wc) wc.textContent = wishlist.length;
             updateDashStats();
         }
 
         // ================================================================
-        //  5. دوال تطبيق الإعدادات والإعلانات
+        //  8. الإعدادات والإعلانات
         // ================================================================
         function applySettingsToUI() {
-            if (settings.brand) {
-                document.querySelector('.logo').innerHTML = settings.brand.replace(/ /g,
-                    ' <span style="color:var(--gold);">') + '</span>';
+            const logo = document.querySelector('.logo');
+            if (logo && settings.brand) {
+                logo.innerHTML = settings.brand.replace(/ /g, ' <span style="color:var(--gold);">') + '</span>';
             }
-            if (settings.footer) {
-                let ft = document.getElementById('footerText');
-                if (ft) ft.textContent = settings.footer;
-            }
+            const ft = document.getElementById('footerText');
+            if (ft && settings.footer) ft.textContent = settings.footer;
         }
 
         function applyAnnouncement() {
-            let bar = document.getElementById('announcementBar');
-            let text = document.getElementById('announcementText');
+            const bar  = document.getElementById('announcementBar');
+            const text = document.getElementById('announcementText');
             if (!bar || !text) return;
-            if (announcement && announcement.active && announcement.text) {
+            if (announcement.active && announcement.text) {
                 text.textContent = announcement.text;
                 bar.classList.add('show');
                 updateAnnouncementPosition();
@@ -3069,18 +3061,16 @@
         function updateAnnouncementPosition() {
             const nav = document.getElementById('mainNav');
             const ann = document.getElementById('announcementBar');
-            if (nav && ann) {
-                ann.style.top = nav.offsetHeight + 'px';
-            }
+            if (nav && ann) ann.style.top = nav.offsetHeight + 'px';
         }
 
         function closeAnnouncement() {
-            document.getElementById('announcementBar').classList.remove('show');
+            document.getElementById('announcementBar')?.classList.remove('show');
         }
         window.closeAnnouncement = closeAnnouncement;
 
         // ================================================================
-        //  6. التنقل
+        //  9. التنقل
         // ================================================================
         window.showPage = function(id) {
             if (id === 'dashboard' && !isAdmin) {
@@ -3089,19 +3079,18 @@
                 return;
             }
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            let target = document.getElementById(id);
-            if (target) {
-                target.classList.add('active');
-                target.style.animation = 'none';
-                void target.offsetHeight;
-                target.style.animation = 'pageEnter 0.55s ease forwards';
-            } else {
-                showToast('⚠️ الصفحة غير موجودة', 'fa-exclamation-circle');
-                return;
-            }
+            const target = document.getElementById(id);
+            if (!target) { showToast('⚠️ الصفحة غير موجودة'); return; }
+            target.classList.add('active');
+            target.style.animation = 'none';
+            void target.offsetHeight;
+            target.style.animation = 'pageEnter 0.55s ease forwards';
             window.scrollTo(0, 0);
-            if (id === 'cart-page') renderCartPage();
+
+            if (id === 'cart-page')     renderCartPage();
             if (id === 'wishlist-page') renderWishlistPage();
+            if (id === 'collections')   renderCollections();
+            if (id === 'hero')          { renderBestsellers(); initSlider(); }
             if (id === 'dashboard') {
                 updateDashStats();
                 renderDashProducts();
@@ -3114,59 +3103,49 @@
                 updateCouponsList();
                 renderImageLibrary();
             }
-            if (id === 'collections') renderCollections();
-            if (id === 'hero') {
-                renderBestsellers();
-                initSlider();
-            }
             closeMobileMenu();
         };
 
         // ================================================================
-        //  7. السلايد شو
+        //  10. السلايدر
         // ================================================================
         function initSlider() {
-            let allProds = [];
-            for (let cat in productsData) {
-                productsData[cat].forEach(p => allProds.push(p));
-            }
+            const allProds = [];
+            for (const cat in productsData) productsData[cat].forEach(p => allProds.push(p));
             sliderImages = allProds.slice(0, 6);
+
             const track = document.getElementById('heroSliderTrack');
-            const dotsContainer = document.getElementById('sliderDots');
-            if (!track || !dotsContainer) return;
-            let html = '';
-            sliderImages.forEach(p => {
-                html += `<div class="hero-slider-slide">
-                            <img src="${p.img}" alt="${p.name}" loading="lazy" onclick="openModalByName('${p.name}')" onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
-                        </div>`;
-            });
-            track.innerHTML = html;
-            let dotsHtml = '';
-            sliderImages.forEach((_, i) => {
-                dotsHtml += `<button class="slider-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></button>`;
-            });
-            dotsContainer.innerHTML = dotsHtml;
+            const dots  = document.getElementById('sliderDots');
+            if (!track || !dots) return;
+
+            track.innerHTML = sliderImages.map(p =>
+                `<div class="hero-slider-slide">
+                    <img src="${p.img}" alt="${p.name}" loading="lazy"
+                         onclick="openModalByName('${p.name}')"
+                         onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
+                 </div>`).join('');
+
+            dots.innerHTML = sliderImages.map((_, i) =>
+                `<button class="slider-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></button>`).join('');
+
             const prevBtn = document.getElementById('sliderPrev');
             const nextBtn = document.getElementById('sliderNext');
             if (prevBtn) prevBtn.onclick = () => slideTo(sliderCurrent - 1);
             if (nextBtn) nextBtn.onclick = () => slideTo(sliderCurrent + 1);
             document.querySelectorAll('.slider-dot').forEach(dot => {
-                dot.onclick = function() {
-                    slideTo(parseInt(this.dataset.index));
-                };
+                dot.onclick = function() { slideTo(parseInt(this.dataset.index)); };
             });
+
             sliderCurrent = 0;
             updateSlider();
             if (sliderInterval) clearInterval(sliderInterval);
             if (sliderImages.length > 1) {
-                sliderInterval = setInterval(() => {
-                    slideTo(sliderCurrent + 1);
-                }, 4000);
+                sliderInterval = setInterval(() => slideTo(sliderCurrent + 1), 4000);
             }
         }
 
         function slideTo(index) {
-            if (sliderImages.length === 0) return;
+            if (!sliderImages.length) return;
             if (index < 0) index = sliderImages.length - 1;
             if (index >= sliderImages.length) index = 0;
             sliderCurrent = index;
@@ -3177,62 +3156,58 @@
             const track = document.getElementById('heroSliderTrack');
             if (!track) return;
             track.style.transform = `translateX(-${sliderCurrent * 100}%)`;
-            document.querySelectorAll('.slider-dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === sliderCurrent);
-            });
+            document.querySelectorAll('.slider-dot').forEach((d, i) =>
+                d.classList.toggle('active', i === sliderCurrent));
         }
 
         // ================================================================
-        //  8. دوال البحث عن المنتجات
+        //  11. البحث عن المنتجات
         // ================================================================
         function findProductByName(name) {
-            for (let cat in productsData) {
-                let found = productsData[cat].find(p => p.name === name);
-                if (found) return found;
+            for (const cat in productsData) {
+                const f = productsData[cat].find(p => p.name === name);
+                if (f) return f;
             }
             return null;
         }
-
         function findProductById(id) {
-            for (let cat in productsData) {
-                let found = productsData[cat].find(p => p.id === id);
-                if (found) return found;
+            for (const cat in productsData) {
+                const f = productsData[cat].find(p => p.id === id);
+                if (f) return f;
             }
             return null;
         }
-
         function isInWishlist(name) { return wishlist.includes(name); }
 
         // ================================================================
-        //  9. الرندر الأساسي
+        //  12. الكوليكشنز
         // ================================================================
         function renderCollections() {
-            let grid = document.getElementById('collectionsGrid');
+            const grid = document.getElementById('collectionsGrid');
             if (!grid) return;
-            if (!collectionsData || !Array.isArray(collectionsData) || collectionsData.length === 0) {
+            if (!Array.isArray(collectionsData) || !collectionsData.length) {
                 grid.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-light);width:100%;">لا توجد مجموعات. أضف مجموعة من لوحة التحكم.</p>';
                 return;
             }
-            let html = '';
-            collectionsData.forEach(c => {
-                if (!c) return;
+            grid.innerHTML = collectionsData.map(c => {
+                if (!c) return '';
                 const imgUrl = c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png';
-                html += `<div class="collection-card" data-id="${c.id}" onclick="showCollection('${c.id}')">
-                            <img src="${imgUrl}" alt="${c.name || ''}" loading="lazy" onerror="this.src='https://i.postimg.cc/c4brqmLB/Final-Logo.png';">
+                return `<div class="collection-card" data-id="${c.id}" onclick="showCollection('${c.id}')">
+                            <img src="${imgUrl}" alt="${c.name || ''}" loading="lazy"
+                                 onerror="this.src='https://i.postimg.cc/c4brqmLB/Final-Logo.png';">
                             <div class="collection-overlay">
                                 <h3>${c.name || 'مجموعة'}</h3>
                                 <p>${c.description || ''}</p>
                             </div>
                         </div>`;
-            });
-            grid.innerHTML = html;
-            let dashTotal = document.getElementById('dashTotalCollections');
+            }).join('');
+            const dashTotal = document.getElementById('dashTotalCollections');
             if (dashTotal) dashTotal.textContent = collectionsData.length;
         }
 
         function showCollection(id) {
             currentCollectionId = id;
-            let c = collectionsData.find(col => col.id === id);
+            const c = collectionsData.find(col => col.id === id);
             if (!c) { showToast('⚠️ المجموعة غير موجودة'); return; }
             document.getElementById('collectionPageTitle').innerHTML =
                 `${c.name} <span style="color:var(--gold);">${c.description || ''}</span>`;
@@ -3242,34 +3217,33 @@
         window.showCollection = showCollection;
 
         function renderCollectionPage() {
-            let container = document.getElementById('collectionProducts');
+            const container = document.getElementById('collectionProducts');
             if (!container) return;
-            let searchTerm = document.getElementById('collectionSearch')?.value?.toLowerCase() || '';
-            let activeFilter = document.querySelector('#collectionFilters .filter-btn.active')?.dataset?.filter || 'all';
+            const searchTerm = document.getElementById('collectionSearch')?.value?.toLowerCase() || '';
+            const activeFilter = document.querySelector('#collectionFilters .filter-btn.active')?.dataset?.filter || 'all';
+
             let products = [];
             if (currentCollectionId) {
-                for (let cat in productsData) {
+                for (const cat in productsData) {
                     productsData[cat].forEach(p => {
                         if (p.collectionId === currentCollectionId) products.push(p);
                     });
                 }
             }
             if (!products.length) {
-                container.innerHTML =
-                    `<div style="text-align:center;padding:40px;width:100%;color:var(--text-light);">لا توجد منتجات في هذه المجموعة</div>`;
+                container.innerHTML = `<div style="text-align:center;padding:40px;width:100%;color:var(--text-light);">لا توجد منتجات في هذه المجموعة</div>`;
                 return;
             }
             let filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm));
-            if (activeFilter === 'inStock') filtered = filtered.filter(p => p.stock > 0);
-            else if (activeFilter === 'soldOut') filtered = filtered.filter(p => p.stock === 0);
-            else if (activeFilter === 'lowStock') filtered = filtered.filter(p => p.stock > 0 && p.stock <= 2);
-            else if (activeFilter === 'new') filtered = filtered.filter(p => p.badge === 'new');
-            else if (activeFilter === 'best') filtered = filtered.filter(p => p.badge === 'best');
-            else if (activeFilter === 'limited') filtered = filtered.filter(p => p.badge === 'limited');
+            if (activeFilter === 'inStock')   filtered = filtered.filter(p => p.stock > 0);
+            if (activeFilter === 'soldOut')   filtered = filtered.filter(p => p.stock === 0);
+            if (activeFilter === 'lowStock')  filtered = filtered.filter(p => p.stock > 0 && p.stock <= 2);
+            if (activeFilter === 'new')       filtered = filtered.filter(p => p.badge === 'new');
+            if (activeFilter === 'best')      filtered = filtered.filter(p => p.badge === 'best');
+            if (activeFilter === 'limited')   filtered = filtered.filter(p => p.badge === 'limited');
 
             if (!filtered.length) {
-                container.innerHTML =
-                    `<div style="text-align:center;padding:40px;width:100%;color:var(--text-light);">لا توجد منتجات مطابقة</div>`;
+                container.innerHTML = `<div style="text-align:center;padding:40px;width:100%;color:var(--text-light);">لا توجد منتجات مطابقة</div>`;
                 return;
             }
             container.innerHTML = renderProductCards(filtered);
@@ -3277,63 +3251,60 @@
         }
 
         function renderProductCards(products) {
-            let html = '';
-            products.forEach(p => {
+            return products.map(p => {
                 let badgeHtml = '';
-                if (p.badge === 'new') badgeHtml = `<span class="badge badge-new">جديد</span>`;
-                else if (p.badge === 'best') badgeHtml = `<span class="badge badge-best">الأكثر مبيعاً</span>`;
+                if (p.badge === 'new')      badgeHtml = `<span class="badge badge-new">جديد</span>`;
+                else if (p.badge === 'best')    badgeHtml = `<span class="badge badge-best">الأكثر مبيعاً</span>`;
                 else if (p.badge === 'limited') badgeHtml = `<span class="badge badge-limited">محدود</span>`;
                 else if (p.badge === 'soldout') badgeHtml = `<span class="badge badge-sale">نفد</span>`;
-                let lowStock = (p.stock > 0 && p.stock <= 2) ?
-                    `<div class="low-stock-badge">🔥 محدود</div>` : '';
-                let stockClass = p.stock > 0 ? 'in-stock' : 'out-of-stock';
-                let stockText = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد المخزون';
+
+                const lowStock = (p.stock > 0 && p.stock <= 2)
+                    ? `<div class="low-stock-badge">🔥 محدود</div>` : '';
+                const stockClass = p.stock > 0 ? 'in-stock' : 'out-of-stock';
+                const stockText  = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد المخزون';
+
                 let sizeHtml = '';
                 if (p.sizes && p.sizes.length) {
-                    sizeHtml = '<div class="size-options">';
-                    p.sizes.forEach(s => {
-                        sizeHtml +=
-                            `<div class="size-option ${s === 'One Size' ? 'one-size' : ''}" data-size="${s}">${s}</div>`;
-                    });
-                    sizeHtml += '</div>';
+                    sizeHtml = '<div class="size-options">' +
+                        p.sizes.map(s => `<div class="size-option ${s === 'One Size' ? 'one-size' : ''}" data-size="${s}">${s}</div>`).join('') +
+                        '</div>';
                 }
-                let btnHtml = p.stock > 0 ?
-                    `<button class="add-btn" data-name="${p.name}" data-price="${p.price}" data-img="${p.img}">إضافة للسلة</button>` :
-                    `<button class="sold-out-btn" disabled>Sold Out</button>`;
-                let wishIcon = isInWishlist(p.name) ? 'fas fa-heart' : 'far fa-heart';
-                let wishClass = isInWishlist(p.name) ? 'liked' : '';
-                let oldPriceHtml = p.old_price ? `<span class="old-price">${p.old_price} ج.م</span>` : '';
-                html += `<div class="product-card" data-product-name="${p.name}">
-                            <div class="card-img-wrapper">
-                                <img src="${p.img}" loading="lazy" onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
-                                ${p.hoverImg && p.hoverImg !== p.img ? `<img src="${p.hoverImg}" class="hover-img" loading="lazy" onerror="this.style.display='none';">` : ''}
-                            </div>
-                            <div class="card-badges">${badgeHtml}</div>
-                            ${lowStock}
-                            <button class="wishlist-btn ${wishClass}" onclick="event.stopPropagation();toggleWishlist('${p.name}')">
-                                <i class="${wishIcon}"></i>
-                            </button>
-                            <button class="quick-view-btn" onclick="event.stopPropagation();openModalByName('${p.name}')">👁️ سريع</button>
-                            <h3>${p.name}</h3>
-                            <div class="product-price">${p.price} ج.م ${oldPriceHtml}</div>
-                            <div class="stock-info ${stockClass}">${stockText}</div>
-                            ${sizeHtml}
-                            <input type="text" class="custom-size" placeholder="مقاس خاص">
-                            ${btnHtml}
-                        </div>`;
-            });
-            return html;
+                const btnHtml = p.stock > 0
+                    ? `<button class="add-btn" data-name="${p.name}" data-price="${p.price}" data-img="${p.img}">إضافة للسلة</button>`
+                    : `<button class="sold-out-btn" disabled>Sold Out</button>`;
+                const wishIcon  = isInWishlist(p.name) ? 'fas fa-heart' : 'far fa-heart';
+                const wishClass = isInWishlist(p.name) ? 'liked' : '';
+                const oldPriceHtml = p.old_price ? `<span class="old-price">${p.old_price} ج.م</span>` : '';
+
+                return `<div class="product-card" data-product-name="${p.name}">
+                    <div class="card-img-wrapper">
+                        <img src="${p.img}" loading="lazy" onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
+                        ${p.hoverImg && p.hoverImg !== p.img ? `<img src="${p.hoverImg}" class="hover-img" loading="lazy" onerror="this.style.display='none';">` : ''}
+                    </div>
+                    <div class="card-badges">${badgeHtml}</div>
+                    ${lowStock}
+                    <button class="wishlist-btn ${wishClass}" onclick="event.stopPropagation();toggleWishlist('${p.name}')">
+                        <i class="${wishIcon}"></i>
+                    </button>
+                    <button class="quick-view-btn" onclick="event.stopPropagation();openModalByName('${p.name}')">👁️ سريع</button>
+                    <h3>${p.name}</h3>
+                    <div class="product-price">${p.price} ج.م ${oldPriceHtml}</div>
+                    <div class="stock-info ${stockClass}">${stockText}</div>
+                    ${sizeHtml}
+                    <input type="text" class="custom-size" placeholder="مقاس خاص">
+                    ${btnHtml}
+                </div>`;
+            }).join('');
         }
 
         function bindProductCardEvents(container) {
             container.querySelectorAll('.add-btn').forEach(btn => {
                 btn.onclick = function(e) {
                     e.stopPropagation();
-                    let card = this.closest('.product-card');
-                    let name = card.dataset.productName;
-                    let p = findProductByName(name);
+                    const card = this.closest('.product-card');
+                    const p = findProductByName(card.dataset.productName);
                     if (!p) return;
-                    let size = card.dataset.selectedSize || card.querySelector('.custom-size')?.value.trim();
+                    const size = card.dataset.selectedSize || card.querySelector('.custom-size')?.value.trim();
                     if (!size) { showToast('⚠️ اختر المقاس'); return; }
                     addToCart(p, size);
                 };
@@ -3341,18 +3312,17 @@
             container.querySelectorAll('.size-option').forEach(opt => {
                 opt.onclick = function(e) {
                     e.stopPropagation();
-                    let parent = this.parentNode;
-                    parent.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
+                    this.parentNode.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
-                    let card = this.closest('.product-card');
+                    const card = this.closest('.product-card');
                     card.dataset.selectedSize = this.dataset.size;
-                    let custom = card.querySelector('.custom-size');
+                    const custom = card.querySelector('.custom-size');
                     if (custom) custom.value = '';
                 };
             });
             container.querySelectorAll('.custom-size').forEach(inp => {
                 inp.onchange = function() {
-                    let card = this.closest('.product-card');
+                    const card = this.closest('.product-card');
                     if (this.value.trim()) {
                         card.dataset.selectedSize = this.value.trim();
                         card.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
@@ -3364,38 +3334,34 @@
                     if (e.target.closest('.add-btn') || e.target.closest('.size-option') ||
                         e.target.closest('.custom-size') || e.target.closest('.wishlist-btn') ||
                         e.target.closest('.quick-view-btn')) return;
-                    let name = this.dataset.productName;
-                    openModalByName(name);
-                    addToRecent(name);
+                    openModalByName(this.dataset.productName);
+                    addToRecent(this.dataset.productName);
                 };
             });
         }
 
         // ================================================================
-        //  10. السلة والمفضلة والمودال
+        //  13. السلة
         // ================================================================
         function updateCartUI() {
-            let count = cart.reduce((s, i) => s + i.quantity, 0);
-            let cc = document.getElementById('cartCount');
+            const count = cart.reduce((s, i) => s + i.quantity, 0);
+            const cc = document.getElementById('cartCount');
             if (cc) cc.textContent = count;
-            let tooltip = document.getElementById('cartTooltip');
+            const tooltip = document.getElementById('cartTooltip');
             if (tooltip) tooltip.textContent = count ? `🛒 ${count} منتج - ${total} ج.م` : 'السلة فارغة';
             if (document.getElementById('cart-page')?.classList.contains('active')) renderCartPage();
-            try {
-                localStorage.setItem('yq_cart', JSON.stringify(cart));
-                localStorage.setItem('yq_total', String(total));
-            } catch(e) {}
+            saveLocalCart();
         }
 
         function addToCart(product, size) {
             if (product.stock <= 0) { showToast('⚠️ نفد المخزون'); return false; }
-            let existing = cart.find(i => i.name === product.name && i.size === size);
+            const existing = cart.find(i => i.name === product.name && i.size === size);
             if (existing) {
                 if (existing.quantity >= product.stock) { showToast('⚠️ الكمية المتاحة أقل'); return false; }
                 existing.quantity++;
                 total += product.price;
             } else {
-                cart.push({ name: product.name, price: product.price, img: product.img, size: size, quantity: 1 });
+                cart.push({ name: product.name, price: product.price, img: product.img, size, quantity: 1 });
                 total += product.price;
             }
             showToast('✅ تمت الإضافة إلى السلة');
@@ -3404,54 +3370,55 @@
         }
 
         function renderCartPage() {
-            let container = document.getElementById('cartItemsContainer');
-            let summary = document.getElementById('cartSummary');
+            const container = document.getElementById('cartItemsContainer');
+            const summary   = document.getElementById('cartSummary');
             if (!container || !summary) return;
-            if (cart.length === 0) {
-                container.innerHTML =
-                    `<div class="cart-empty-state"><i class="fas fa-shopping-bag"></i><h3>السلة فارغة</h3><p>ابدأ التسوق الآن</p><button onclick="showPage('collections')" style="margin-top:16px;background:var(--gold);border:none;padding:12px 32px;border-radius:40px;font-weight:700;color:white;cursor:pointer;transition:var(--transition);">تسوق الآن</button></div>`;
+
+            if (!cart.length) {
+                container.innerHTML = `
+                    <div class="cart-empty-state">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>السلة فارغة</h3>
+                        <p>ابدأ التسوق الآن</p>
+                        <button onclick="showPage('collections')" style="margin-top:16px;background:var(--gold);border:none;padding:12px 32px;border-radius:40px;font-weight:700;color:white;cursor:pointer;">تسوق الآن</button>
+                    </div>`;
                 summary.style.display = 'none';
                 return;
             }
             summary.style.display = 'block';
-            let html = '';
-            cart.forEach((item, idx) => {
-                html += `<div class="cart-item">
-                            <img src="${item.img}" onclick="openModalByName('${item.name}')" loading="lazy" onerror="this.style.opacity='0.3';">
-                            <div class="cart-item-details">
-                                <h4>${item.name}</h4>
-                                <div class="item-size">المقاس: ${item.size}</div>
-                                <div class="product-price">${item.price} ج.م</div>
-                                <div class="cart-item-quantity">
-                                    <button onclick="updateCartItemQuantity(${idx},-1)">−</button>
-                                    <span>${item.quantity}</span>
-                                    <button onclick="updateCartItemQuantity(${idx},1)">+</button>
-                                </div>
-                            </div>
-                            <button class="cart-item-remove" onclick="removeFromCart(${idx})">إزالة</button>
-                        </div>`;
-            });
-            container.innerHTML = html;
-            let subtotal = total;
-            let shipping = document.querySelector('input[name="delivery"]:checked')?.value === 'pickup' ? 0 : 60;
+
+            container.innerHTML = cart.map((item, idx) => `
+                <div class="cart-item">
+                    <img src="${item.img}" onclick="openModalByName('${item.name}')" loading="lazy" onerror="this.style.opacity='0.3';">
+                    <div class="cart-item-details">
+                        <h4>${item.name}</h4>
+                        <div class="item-size">المقاس: ${item.size}</div>
+                        <div class="product-price">${item.price} ج.م</div>
+                        <div class="cart-item-quantity">
+                            <button onclick="updateCartItemQuantity(${idx},-1)">−</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateCartItemQuantity(${idx},1)">+</button>
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${idx})">إزالة</button>
+                </div>`).join('');
+
+            const subtotal = total;
+            const shipping = document.querySelector('input[name="delivery"]:checked')?.value === 'pickup' ? 0 : 60;
             let discount = 0;
-            if (appliedCoupon) {
-                discount = (subtotal * appliedCoupon.discount_percent) / 100;
-            }
-            let finalTotal = subtotal + shipping - discount;
-            document.getElementById('cartSubtotal').textContent = subtotal + ' ج.م';
+            if (appliedCoupon) discount = (subtotal * appliedCoupon.discount_percent) / 100;
+            const finalTotal = subtotal + shipping - discount;
+
+            document.getElementById('cartSubtotal').textContent  = subtotal + ' ج.م';
             document.getElementById('shippingAmount').textContent = shipping + ' ج.م';
-            document.getElementById('cartTotalPage').textContent = Math.round(finalTotal) + ' ج.م';
-            let msg = document.getElementById('couponMessage');
-            if (appliedCoupon) {
-                msg.innerHTML =
-                    `<div style="color:var(--success);margin-top:6px;">✅ خصم ${appliedCoupon.discount_percent}% مطبق</div>`;
-            } else {
-                msg.innerHTML = '';
-            }
-            document.querySelectorAll('input[name="delivery"]').forEach(radio => {
-                radio.onchange = renderCartPage;
-            });
+            document.getElementById('cartTotalPage').textContent  = Math.round(finalTotal) + ' ج.م';
+
+            const msg = document.getElementById('couponMessage');
+            msg.innerHTML = appliedCoupon
+                ? `<div style="color:var(--success);margin-top:6px;">✅ خصم ${appliedCoupon.discount_percent}% مطبق</div>`
+                : '';
+
+            document.querySelectorAll('input[name="delivery"]').forEach(r => r.onchange = renderCartPage);
         }
 
         function removeFromCart(idx) {
@@ -3462,74 +3429,73 @@
         }
 
         function updateCartItemQuantity(idx, delta) {
-            let item = cart[idx];
+            const item = cart[idx];
             if (!item) return;
-            let product = findProductByName(item.name);
+            const product = findProductByName(item.name);
             if (delta > 0) {
                 if (product && item.quantity >= product.stock) { showToast('⚠️ الكمية المتاحة أقل'); return; }
-                item.quantity++;
-                total += item.price;
+                item.quantity++; total += item.price;
             } else if (delta < 0 && item.quantity > 1) {
-                item.quantity--;
-                total -= item.price;
+                item.quantity--; total -= item.price;
             } else if (delta < 0 && item.quantity === 1) {
-                removeFromCart(idx);
-                return;
+                removeFromCart(idx); return;
             }
             renderCartPage();
             updateCartUI();
         }
 
         function toggleWishlist(productName) {
-            let idx = wishlist.indexOf(productName);
-            if (idx > -1) { wishlist.splice(idx, 1);
-                showToast('تمت الإزالة من المفضلة', 'fa-heart-broken'); } else {
-                wishlist.push(productName);
-                showToast('❤️ أضيف إلى المفضلة', 'fa-heart');
-            }
-            try { localStorage.setItem('yq_wishlist', JSON.stringify(wishlist)); } catch(e){}
-            let wc = document.getElementById('wishlistCount');
+            const idx = wishlist.indexOf(productName);
+            if (idx > -1) { wishlist.splice(idx, 1); showToast('تمت الإزالة من المفضلة', 'fa-heart-broken'); }
+            else { wishlist.push(productName); showToast('❤️ أضيف إلى المفضلة', 'fa-heart'); }
+            try { localStorage.setItem('yq_wishlist', JSON.stringify(wishlist)); } catch (e) {}
+            const wc = document.getElementById('wishlistCount');
             if (wc) wc.textContent = wishlist.length;
             renderWishlistPage();
             renderAll();
         }
 
         function renderWishlistPage() {
-            let container = document.getElementById('wishlistContainer');
+            const container = document.getElementById('wishlistContainer');
             if (!container) return;
-            if (wishlist.length === 0) {
-                container.innerHTML =
-                    `<div style="text-align:center;padding:60px 20px;width:100%;"><i class="fas fa-heart" style="font-size:60px;color:var(--gold);opacity:0.3;"></i><h3 style="margin-top:16px;font-family:var(--font-serif);">لا توجد منتجات</h3><button onclick="showPage('collections')" style="margin-top:16px;background:var(--gold);border:none;padding:12px 32px;border-radius:40px;font-weight:700;color:white;cursor:pointer;transition:var(--transition);">تسوق الآن</button></div>`;
+            if (!wishlist.length) {
+                container.innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;width:100%;">
+                        <i class="fas fa-heart" style="font-size:60px;color:var(--gold);opacity:0.3;"></i>
+                        <h3 style="margin-top:16px;font-family:var(--font-serif);">لا توجد منتجات</h3>
+                        <button onclick="showPage('collections')" style="margin-top:16px;background:var(--gold);border:none;padding:12px 32px;border-radius:40px;font-weight:700;color:white;cursor:pointer;">تسوق الآن</button>
+                    </div>`;
                 return;
             }
-            let html = '';
-            wishlist.forEach(name => {
-                let p = findProductByName(name);
-                if (!p) return;
-                html += `<div class="product-card" onclick="openModalByName('${p.name}')">
-                            <div class="card-img-wrapper"><img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';"></div>
-                            <h3>${p.name}</h3>
-                            <div class="product-price">${p.price} ج.م</div>
-                            <button class="wishlist-btn liked" style="position:static;margin:8px auto;width:auto;padding:8px 20px;border-radius:40px;background:var(--gold);color:white;border:none;cursor:pointer;transition:var(--transition);" onclick="event.stopPropagation();toggleWishlist('${p.name}')">
-                                <i class="fas fa-heart"></i> إزالة
-                            </button>
-                        </div>`;
-            });
-            container.innerHTML = html;
+            container.innerHTML = wishlist.map(name => {
+                const p = findProductByName(name);
+                if (!p) return '';
+                return `<div class="product-card" onclick="openModalByName('${p.name}')">
+                    <div class="card-img-wrapper"><img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';"></div>
+                    <h3>${p.name}</h3>
+                    <div class="product-price">${p.price} ج.م</div>
+                    <button class="wishlist-btn liked" style="position:static;margin:8px auto;width:auto;padding:8px 20px;border-radius:40px;background:var(--gold);color:white;border:none;cursor:pointer;" onclick="event.stopPropagation();toggleWishlist('${p.name}')">
+                        <i class="fas fa-heart"></i> إزالة
+                    </button>
+                </div>`;
+            }).join('');
         }
 
+        // ================================================================
+        //  14. المودال
+        // ================================================================
         function openModalByName(name) {
-            let p = findProductByName(name);
+            const p = findProductByName(name);
             if (!p) return;
             currentModalProduct = p;
             currentModalSelectedSize = null;
-            let modal = document.getElementById('productModal');
-            document.getElementById('modalImg').src = p.img;
-            document.getElementById('modalName').textContent = p.name;
+
+            document.getElementById('modalImg').src   = p.img;
+            document.getElementById('modalName').textContent  = p.name;
             document.getElementById('modalPrice').textContent = p.price + ' ج.م';
             document.getElementById('modalStock').textContent = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد المخزون';
-            document.getElementById('modalDesc').innerHTML = p.description || 'خامة عالية الجودة';
-            let thumbContainer = document.getElementById('modalThumbnails');
+            document.getElementById('modalDesc').innerHTML    = p.description || 'خامة عالية الجودة';
+
             let thumbHtml = '';
             if (p.hoverImg && p.hoverImg !== p.img) {
                 thumbHtml += `<img src="${p.hoverImg}" onclick="document.getElementById('modalImg').src='${p.hoverImg}'">`;
@@ -3537,367 +3503,362 @@
             allImages.slice(0, 3).forEach(img => {
                 thumbHtml += `<img src="${img.url}" onclick="document.getElementById('modalImg').src='${img.url}'">`;
             });
-            thumbContainer.innerHTML = thumbHtml;
+            document.getElementById('modalThumbnails').innerHTML = thumbHtml;
+
             let sizesHtml = '';
             if (p.sizes && p.sizes.length) {
-                sizesHtml = '<div class="size-options" id="modalSizeOptions">';
-                p.sizes.forEach(s => {
-                    sizesHtml +=
-                        `<div class="size-option ${s === 'One Size' ? 'one-size' : ''}" data-size="${s}">${s}</div>`;
-                });
-                sizesHtml += '</div><input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
+                sizesHtml = '<div class="size-options" id="modalSizeOptions">' +
+                    p.sizes.map(s => `<div class="size-option ${s === 'One Size' ? 'one-size' : ''}" data-size="${s}">${s}</div>`).join('') +
+                    '</div><input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
             } else {
                 sizesHtml = '<input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
             }
             document.getElementById('modalSizesContainer').innerHTML = sizesHtml;
+
             document.querySelectorAll('#modalSizeOptions .size-option').forEach(opt => {
                 opt.onclick = function(e) {
                     e.stopPropagation();
-                    document.querySelectorAll('#modalSizeOptions .size-option').forEach(o => o.classList.remove(
-                        'selected'));
+                    document.querySelectorAll('#modalSizeOptions .size-option').forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
                     currentModalSelectedSize = this.dataset.size;
                     document.getElementById('modalCustomSize').value = '';
                 };
             });
-            document.getElementById('modalCustomSize').oninput = function() {
-                if (this.value.trim()) {
-                    document.querySelectorAll('#modalSizeOptions .size-option').forEach(o => o.classList.remove(
-                        'selected'));
-                    currentModalSelectedSize = this.value.trim();
-                } else currentModalSelectedSize = null;
-            };
+            const customInput = document.getElementById('modalCustomSize');
+            if (customInput) {
+                customInput.oninput = function() {
+                    if (this.value.trim()) {
+                        document.querySelectorAll('#modalSizeOptions .size-option').forEach(o => o.classList.remove('selected'));
+                        currentModalSelectedSize = this.value.trim();
+                    } else currentModalSelectedSize = null;
+                };
+            }
+
             document.getElementById('modalAddToCartBtn').onclick = function() {
                 if (p.stock <= 0) { showToast('⚠️ نفد المخزون'); return; }
-                let size = currentModalSelectedSize || document.getElementById('modalCustomSize').value.trim();
+                const size = currentModalSelectedSize || document.getElementById('modalCustomSize').value.trim();
                 if (!size) { showToast('⚠️ اختر المقاس'); return; }
                 if (addToCart(p, size)) closeModal();
             };
+
             renderReviews(p.name);
-            modal.style.display = 'flex';
+            document.getElementById('productModal').style.display = 'flex';
             addToRecent(p.name);
         }
+        window.openModalByName = openModalByName;
 
-        function closeModal() { document.getElementById('productModal').style.display = 'none';
-            currentModalProduct = null; }
-
-        function closeModalOnBackground(e) { if (e.target === document.getElementById('productModal')) closeModal(); }
-
-        function openSizeGuide() { document.getElementById('sizeGuideModal').style.display = 'flex'; }
-
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+            currentModalProduct = null;
+        }
+        function closeModalOnBackground(e) {
+            if (e.target === document.getElementById('productModal')) closeModal();
+        }
+        function openSizeGuide()  { document.getElementById('sizeGuideModal').style.display = 'flex'; }
         function closeSizeGuide() { document.getElementById('sizeGuideModal').style.display = 'none'; }
 
-        function submitReview() {
+        // ================================================================
+        //  15. التقييمات
+        // ================================================================
+        async function submitReview() {
             if (!currentModalProduct) { showToast('⚠️ اختر منتجاً'); return; }
-            let stars = parseInt(document.getElementById('reviewStars').value);
-            let text = document.getElementById('reviewText').value.trim();
+            const stars = parseInt(document.getElementById('reviewStars').value);
+            const text  = document.getElementById('reviewText').value.trim();
             if (!text) { showToast('⚠️ اكتب رأيك'); return; }
-            if (!reviews[currentModalProduct.name]) reviews[currentModalProduct.name] = [];
-            reviews[currentModalProduct.name].push({ stars, text, author: 'عميل', date: new Date().toLocaleDateString() });
-            saveAllData(); // حفظ التقييم في فايربيز
-            showToast('✅ تم إرسال التقييم', 'fa-star');
-            document.getElementById('reviewText').value = '';
-            renderReviews(currentModalProduct.name);
+
+            const review = {
+                productName: currentModalProduct.name,
+                stars,
+                text,
+                author: 'عميل',
+                date: new Date().toLocaleDateString(),
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                await REVIEWS_COL.add(review);
+                if (!reviews[currentModalProduct.name]) reviews[currentModalProduct.name] = [];
+                reviews[currentModalProduct.name].push(review);
+                document.getElementById('reviewText').value = '';
+                renderReviews(currentModalProduct.name);
+                showToast('✅ تم إرسال التقييم', 'fa-star');
+            } catch (e) {
+                console.error('Review failed:', e);
+                showToast('❌ فشل إرسال التقييم، حاول لاحقاً', 'fa-times-circle');
+            }
         }
+        window.submitReview = submitReview;
 
         function renderReviews(productName) {
-            let container = document.getElementById('modalReviewsList');
+            const container = document.getElementById('modalReviewsList');
             if (!container) return;
-            let revs = reviews[productName] || [];
-            if (!revs.length) { container.innerHTML =
-                '<p style="color:var(--text-light);font-size:14px;">لا توجد تقييمات حتى الآن</p>'; return; }
-            let html = '';
-            revs.slice().reverse().forEach(r => {
-                let stars = '⭐'.repeat(r.stars);
-                html += `<div style="border-bottom:1px solid var(--cream-dark);padding:8px 0;">
-                            <div style="font-weight:600;">${stars}</div>
-                            <div style="font-size:14px;color:var(--text-muted);">${r.text}</div>
-                            <div style="font-size:12px;color:var(--text-light);">${r.author} - ${r.date || ''}</div>
-                        </div>`;
-            });
-            container.innerHTML = html;
+            const revs = reviews[productName] || [];
+            if (!revs.length) {
+                container.innerHTML = '<p style="color:var(--text-light);font-size:14px;">لا توجد تقييمات حتى الآن</p>';
+                return;
+            }
+            container.innerHTML = revs.slice().reverse().map(r => `
+                <div style="border-bottom:1px solid var(--cream-dark);padding:8px 0;">
+                    <div style="font-weight:600;">${'⭐'.repeat(r.stars)}</div>
+                    <div style="font-size:14px;color:var(--text-muted);">${r.text}</div>
+                    <div style="font-size:12px;color:var(--text-light);">${r.author} - ${r.date || ''}</div>
+                </div>`).join('');
         }
 
         function addToRecent(productName) {
-            let p = findProductByName(productName);
+            const p = findProductByName(productName);
             if (!p) return;
             recentProducts = recentProducts.filter(r => r.name !== productName);
             recentProducts.unshift({ name: p.name, img: p.img, price: p.price });
             if (recentProducts.length > 4) recentProducts.pop();
-            try { localStorage.setItem('yq_recent', JSON.stringify(recentProducts)); } catch(e){}
+            try { localStorage.setItem('yq_recent', JSON.stringify(recentProducts)); } catch (e) {}
             renderRecent();
         }
 
         function renderRecent() {
-            let section = document.getElementById('recentSection');
-            let grid = document.getElementById('recentGrid');
+            const section = document.getElementById('recentSection');
+            const grid = document.getElementById('recentGrid');
             if (!section || !grid) return;
             if (!recentProducts.length) { section.style.display = 'none'; return; }
             section.style.display = 'block';
-            let html = '';
-            recentProducts.forEach(p => {
-                html += `<div class="recent-item" onclick="openModalByName('${p.name}')">
-                            <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
-                            <p>${p.name}</p>
-                            <div class="recent-price">${p.price} ج.م</div>
-                        </div>`;
-            });
-            grid.innerHTML = html;
+            grid.innerHTML = recentProducts.map(p => `
+                <div class="recent-item" onclick="openModalByName('${p.name}')">
+                    <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
+                    <p>${p.name}</p>
+                    <div class="recent-price">${p.price} ج.م</div>
+                </div>`).join('');
         }
 
-        function sendOrderWhatsApp() {
+        // ================================================================
+        //  16. إنشاء طلب
+        // ================================================================
+        async function sendOrderWhatsApp() {
             if (!cart.length) { showToast('⚠️ السلة فارغة'); return; }
+
             let msg = '🛍️ طلب جديد من يقين:\n';
-            cart.forEach(i => msg += `${i.name} (${i.size}) x${i.quantity} = ${i.price*i.quantity} ج.م\n`);
-            let subtotal = total;
-            let shipping = document.querySelector('input[name="delivery"]:checked')?.value === 'pickup' ? 0 : 60;
+            cart.forEach(i => msg += `${i.name} (${i.size}) x${i.quantity} = ${i.price * i.quantity} ج.م\n`);
+
+            const subtotal = total;
+            const shipping = document.querySelector('input[name="delivery"]:checked')?.value === 'pickup' ? 0 : 60;
             let discount = 0;
             if (appliedCoupon) discount = (subtotal * appliedCoupon.discount_percent) / 100;
-            let finalTotal = subtotal + shipping - discount;
+            const finalTotal = subtotal + shipping - discount;
+
             msg += `\nالمجموع الفرعي: ${subtotal} ج.م`;
             msg += `\nرسوم التوصيل: ${shipping} ج.م`;
             if (appliedCoupon) msg += `\nخصم: ${discount} ج.م`;
             msg += `\nالإجمالي: ${Math.round(finalTotal)} ج.م`;
-            let order = {
-                id: '#YQ-' + Date.now().toString(36).toUpperCase(),
+
+            const orderId = '#YQ-' + Date.now().toString(36).toUpperCase();
+            const order = {
+                id: orderId,
                 items: cart.map(i => ({ name: i.name, size: i.size, quantity: i.quantity })),
                 total: Math.round(finalTotal),
                 date: new Date().toISOString(),
-                status: 'pending'
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            orders.push(order);
-            saveAllData(); // حفظ الطلب في فايربيز عشان يظهر في لوحة التحكم
+
+            try {
+                await ORDERS_COL.doc(orderId).set(order);
+                console.log('✅ Order saved:', orderId);
+                if (isAdmin) {
+                    orders.unshift({ ...order, createdAt: { toDate: () => new Date() } });
+                    updateDashOrders();
+                    updateDashStats();
+                }
+            } catch (e) {
+                console.warn('⚠️ Order save failed:', e.code || e.message);
+            }
+
             window.open(`https://wa.me/201027515725?text=${encodeURIComponent(msg)}`, '_blank');
-            cart = [];
-            total = 0;
-            appliedCoupon = null;
+
+            cart = []; total = 0; appliedCoupon = null;
             updateCartUI();
             showToast('✅ تم إرسال الطلب');
         }
+        window.sendOrderWhatsApp = sendOrderWhatsApp;
 
         // ================================================================
-        //  11. الأكثر مبيعاً
+        //  17. الأكثر مبيعاً
         // ================================================================
         function renderBestsellers() {
             const container = document.getElementById('bestsellerGrid');
             if (!container) return;
             let products = [];
             bestsellerIds.forEach(id => {
-                let p = findProductById(id);
+                const p = findProductById(id);
                 if (p) products.push(p);
             });
-            if (products.length === 0) {
-                for (let cat in productsData) {
-                    productsData[cat].forEach(p => {
-                        if (p.badge === 'best' && products.length < 4) products.push(p);
-                    });
+            if (!products.length) {
+                for (const cat in productsData) {
+                    productsData[cat].forEach(p => { if (p.badge === 'best' && products.length < 4) products.push(p); });
                 }
-                if (products.length === 0) {
-                    for (let cat in productsData) {
-                        productsData[cat].forEach(p => {
-                            if (products.length < 4) products.push(p);
-                        });
+                if (!products.length) {
+                    for (const cat in productsData) {
+                        productsData[cat].forEach(p => { if (products.length < 4) products.push(p); });
                     }
                 }
             }
-            let html = '';
-            products.forEach(p => {
-                html += `<div class="bestseller-item" onclick="openModalByName('${p.name}')">
-                            <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
-                            <h4>${p.name}</h4>
-                            <div class="price">${p.price} ج.م</div>
-                        </div>`;
-            });
-            container.innerHTML = html || '<p style="text-align:center;color:var(--text-muted);padding:20px;">لا توجد منتجات</p>';
+            container.innerHTML = products.map(p => `
+                <div class="bestseller-item" onclick="openModalByName('${p.name}')">
+                    <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
+                    <h4>${p.name}</h4>
+                    <div class="price">${p.price} ج.م</div>
+                </div>`).join('') || '<p style="text-align:center;color:var(--text-muted);padding:20px;">لا توجد منتجات</p>';
         }
 
         function renderBestsellerManager() {
             const container = document.getElementById('bestsellerSelection');
             if (!container) return;
-            let allProducts = [];
-            for (let cat in productsData) {
-                productsData[cat].forEach(p => allProducts.push(p));
-            }
-            let html = '';
-            allProducts.forEach(p => {
-                const checked = bestsellerIds.includes(p.id) ? 'checked' : '';
-                html += `
-                    <label style="display:flex;align-items:center;gap:8px;background:var(--cream);padding:6px 14px;border-radius:40px;cursor:pointer;border:1px solid var(--cream-dark);">
-                        <input type="checkbox" value="${p.id}" ${checked} class="bestseller-checkbox">
-                        <span>${p.name}</span>
-                    </label>
-                `;
-            });
-            container.innerHTML = html;
+            const all = [];
+            for (const cat in productsData) productsData[cat].forEach(p => all.push(p));
+            container.innerHTML = all.map(p => `
+                <label style="display:flex;align-items:center;gap:8px;background:var(--cream);padding:6px 14px;border-radius:40px;cursor:pointer;border:1px solid var(--cream-dark);">
+                    <input type="checkbox" value="${p.id}" ${bestsellerIds.includes(p.id) ? 'checked' : ''} class="bestseller-checkbox">
+                    <span>${p.name}</span>
+                </label>`).join('');
         }
 
-        function saveBestsellerSelection() {
-            if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير', 'fa-exclamation-circle'); return; }
-            const checkboxes = document.querySelectorAll('.bestseller-checkbox');
+        async function saveBestsellerSelection() {
+            if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             const newIds = [];
-            checkboxes.forEach(cb => {
-                if (cb.checked) newIds.push(cb.value);
-            });
+            document.querySelectorAll('.bestseller-checkbox').forEach(cb => { if (cb.checked) newIds.push(cb.value); });
             bestsellerIds = newIds;
-            if (saveAllData()) {
-                renderBestsellers();
-                showToast('✅ تم تحديث قائمة الأكثر مبيعاً', 'fa-check-circle');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+            const ok = await saveAllData();
+            if (ok) { renderBestsellers(); showToast('✅ تم تحديث الأكثر مبيعاً'); }
+            else showToast('❌ فشل الحفظ', 'fa-times-circle');
         }
         window.saveBestsellerSelection = saveBestsellerSelection;
 
         // ================================================================
-        //  12. لوحة التحكم – دوال الإدارة
+        //  18. المنتجات
         // ================================================================
         function renderDashProducts() {
-            let container = document.getElementById('dashProductsList');
+            const container = document.getElementById('dashProductsList');
             if (!container) return;
-            let html = '';
             let totalCount = 0;
-            for (let cat in productsData) {
+            let html = '';
+            for (const cat in productsData) {
                 productsData[cat].forEach(p => {
                     totalCount++;
-                    let collectionName = 'غير معروف';
-                    let c = collectionsData.find(col => col.id === p.collectionId);
-                    if (c) collectionName = c.name;
+                    const c = collectionsData.find(col => col.id === p.collectionId);
                     html += `<div class="dash-product-item">
-                                <div class="dash-product-info">
-                                    <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
-                                    <div>
-                                        <div class="dash-product-name">${p.name}</div>
-                                        <div class="dash-product-price">${p.price} ج.م</div>
-                                        <div style="font-size:13px;color:var(--text-light);">المخزون: ${p.stock} | المجموعة: ${collectionName}</div>
-                                    </div>
-                                </div>
-                                <div class="dash-product-actions">
-                                    <button class="edit-btn" onclick="editProductFromDash('${p.id}')">✏️</button>
-                                    <button class="delete-btn" onclick="deleteProductFromDash('${p.id}')">🗑️</button>
-                                </div>
-                            </div>`;
+                        <div class="dash-product-info">
+                            <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
+                            <div>
+                                <div class="dash-product-name">${p.name}</div>
+                                <div class="dash-product-price">${p.price} ج.م</div>
+                                <div style="font-size:13px;color:var(--text-light);">المخزون: ${p.stock} | المجموعة: ${c?.name || 'غير معروف'}</div>
+                            </div>
+                        </div>
+                        <div class="dash-product-actions">
+                            <button class="edit-btn" onclick="editProductFromDash('${p.id}')">✏️</button>
+                            <button class="delete-btn" onclick="deleteProductFromDash('${p.id}')">🗑️</button>
+                        </div>
+                    </div>`;
                 });
             }
             container.innerHTML = html || '<p style="color:var(--text-light);text-align:center;padding:30px;">لا توجد منتجات</p>';
-            let tp = document.getElementById('dashTotalProducts');
+            const tp = document.getElementById('dashTotalProducts');
             if (tp) tp.textContent = totalCount;
             let low = 0;
-            for (let cat in productsData) productsData[cat].forEach(p => { if (p.stock > 0 && p.stock <= 2) low++; });
-            let ls = document.getElementById('dashLowStock');
+            for (const cat in productsData) productsData[cat].forEach(p => { if (p.stock > 0 && p.stock <= 2) low++; });
+            const ls = document.getElementById('dashLowStock');
             if (ls) ls.textContent = low;
             populateCollectionSelect();
         }
 
         function populateCollectionSelect() {
-            let select = document.getElementById('dashProductCollection');
+            const select = document.getElementById('dashProductCollection');
             if (!select) return;
-            let val = select.value;
-            select.innerHTML = '<option value="">اختر مجموعة...</option>';
-            collectionsData.forEach(c => {
-                select.innerHTML += `<option value="${c.id}">${c.name}</option>`;
-            });
+            const val = select.value;
+            select.innerHTML = '<option value="">اختر مجموعة...</option>' +
+                collectionsData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
             if (val) select.value = val;
         }
 
-        function addProductFromDash() {
+        async function addProductFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
-            let name = document.getElementById('dashProductName').value.trim();
-            let price = parseFloat(document.getElementById('dashProductPrice').value);
-            let img = document.getElementById('dashProductImg').value.trim();
-            let collectionId = document.getElementById('dashProductCollection').value;
-            let stock = parseInt(document.getElementById('dashProductStock').value) || 0;
+            const name = document.getElementById('dashProductName').value.trim();
+            const price = parseFloat(document.getElementById('dashProductPrice').value);
+            const img = document.getElementById('dashProductImg').value.trim();
+            const collectionId = document.getElementById('dashProductCollection').value;
+            const stock = parseInt(document.getElementById('dashProductStock').value) || 0;
             if (!name || !price || !img || !collectionId) { showToast('⚠️ املأ الحقول الأساسية'); return; }
-            let p = {
-                id: generateId(),
-                name,
-                price,
-                img,
-                stock,
-                collectionId,
+
+            const p = {
+                id: generateId(), name, price, img, stock, collectionId,
                 sizes: document.getElementById('dashProductSizes').value.split(',').map(s => s.trim()).filter(Boolean),
                 badge: document.getElementById('dashProductBadge').value || '',
                 description: document.getElementById('dashProductDesc').value.trim(),
                 hoverImg: document.getElementById('dashProductHoverImg').value.trim(),
                 old_price: parseFloat(document.getElementById('dashProductOldPrice').value) || 0
             };
-            let cat = collectionId;
-            if (!productsData[cat]) productsData[cat] = [];
-            productsData[cat].push(p);
-            
-            saveAllData().then(success => {
-                if (success) {
-                    renderAll();
-                    updateDashStats();
-                    renderDashProducts();
-                    renderBestsellerManager();
-                    initSlider();
-                    showToast('✅ تمت الإضافة وحفظها في السحابة');
-                }
-            });
-        }
+            if (!productsData[collectionId]) productsData[collectionId] = [];
+            productsData[collectionId].push(p);
 
-        function deleteProductFromDash(productId) {
+            const ok = await saveAllData();
+            if (ok) {
+                renderAll(); updateDashStats(); renderDashProducts();
+                renderBestsellerManager(); initSlider();
+                showToast('✅ تمت إضافة المنتج');
+            }
+        }
+        window.addProductFromDash = addProductFromDash;
+
+        async function deleteProductFromDash(productId) {
             if (!isAdmin || !confirm('⚠️ هل أنت متأكد من حذف المنتج؟')) return;
-            for (let cat in productsData) {
-                let idx = productsData[cat].findIndex(p => p.id === productId);
+            for (const cat in productsData) {
+                const idx = productsData[cat].findIndex(p => p.id === productId);
                 if (idx > -1) {
                     productsData[cat].splice(idx, 1);
                     bestsellerIds = bestsellerIds.filter(id => id !== productId);
-                    
-                    saveAllData().then(success => {
-                        if (success) {
-                            renderAll();
-                            updateDashStats();
-                            renderDashProducts();
-                            renderBestsellerManager();
-                            initSlider();
-                            showToast('🗑️ تم الحذف من السحابة');
-                        }
-                    });
+                    const ok = await saveAllData();
+                    if (ok) {
+                        renderAll(); updateDashStats(); renderDashProducts();
+                        renderBestsellerManager(); initSlider();
+                        showToast('🗑️ تم حذف المنتج');
+                    }
                     return;
                 }
             }
             showToast('⚠️ المنتج غير موجود');
         }
 
-        function editProductFromDash(productId) {
+        async function editProductFromDash(productId) {
             if (!isAdmin) return;
-            let found = null,
-                cat = null;
-            for (let c in productsData) {
-                let p = productsData[c].find(pr => pr.id === productId);
-                if (p) { found = p;
-                    cat = c; break; }
+            let found = null;
+            for (const c in productsData) {
+                const p = productsData[c].find(pr => pr.id === productId);
+                if (p) { found = p; break; }
             }
             if (!found) { showToast('⚠️ المنتج غير موجود'); return; }
 
-            let newName = prompt('✏️ اسم المنتج:', found.name);
+            const newName = prompt('✏️ اسم المنتج:', found.name);
             if (newName === null) return;
-            if (newName.trim() === '') { showToast('⚠️ الاسم لا يمكن أن يكون فارغاً'); return; }
+            if (!newName.trim()) { showToast('⚠️ الاسم فارغ'); return; }
 
-            let newPrice = prompt('💰 السعر (ج.م):', found.price);
+            const newPrice = prompt('💰 السعر (ج.م):', found.price);
             if (newPrice === null) return;
-            let parsedPrice = parseFloat(newPrice);
+            const parsedPrice = parseFloat(newPrice);
             if (isNaN(parsedPrice) || parsedPrice <= 0) { showToast('⚠️ السعر غير صحيح'); return; }
 
-            let newStock = prompt('📦 المخزون:', found.stock);
+            const newStock = prompt('📦 المخزون:', found.stock);
             if (newStock === null) return;
-            let parsedStock = parseInt(newStock);
+            const parsedStock = parseInt(newStock);
             if (isNaN(parsedStock) || parsedStock < 0) { showToast('⚠️ المخزون غير صحيح'); return; }
 
-            let colOptions = collectionsData.map(c => `${c.id} - ${c.name}`).join('\n');
-            let newColId = prompt(`🏷️ المجموعة (أدخل الـ id من القائمة):\n${colOptions}`, found.collectionId);
+            const colOptions = collectionsData.map(c => `${c.id} - ${c.name}`).join('\n');
+            const newColId = prompt(`🏷️ معرف المجموعة:\n${colOptions}`, found.collectionId);
             if (newColId === null) return;
-            let colExists = collectionsData.some(c => c.id === newColId.trim());
-            if (!colExists) { showToast('⚠️ معرف المجموعة غير صحيح'); return; }
+            if (!collectionsData.some(c => c.id === newColId.trim())) { showToast('⚠️ معرف المجموعة غير صحيح'); return; }
 
-            let newImg = prompt('🖼️ رابط الصورة (اترك فارغاً للإبقاء على الحالي):', found.img);
-            let finalImg = found.img;
-            if (newImg !== null && newImg.trim() !== '') finalImg = newImg.trim();
+            const newImg = prompt('🖼️ رابط الصورة (فارغ = احتفاظ):', found.img);
+            const finalImg = (newImg !== null && newImg.trim()) ? newImg.trim() : found.img;
 
-            let newDesc = prompt('📝 الوصف (اترك فارغاً للإبقاء على الحالي):', found.description || '');
-            let finalDesc = found.description || '';
-            if (newDesc !== null && newDesc.trim() !== '') finalDesc = newDesc.trim();
+            const newDesc = prompt('📝 الوصف (فارغ = احتفاظ):', found.description || '');
+            const finalDesc = (newDesc !== null && newDesc.trim()) ? newDesc.trim() : (found.description || '');
 
             found.name = newName.trim();
             found.price = parsedPrice;
@@ -3906,375 +3867,341 @@
             found.img = finalImg;
             found.description = finalDesc;
 
-            saveAllData().then(success => {
-                if (success) {
-                    renderAll();
-                    updateDashStats();
-                    renderDashProducts();
-                    renderBestsellerManager();
-                    initSlider();
-                    showToast('✅ تم تعديل المنتج وحفظه في السحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) {
+                renderAll(); updateDashStats(); renderDashProducts();
+                renderBestsellerManager(); initSlider();
+                showToast('✅ تم تعديل المنتج');
+            }
         }
 
-        function addCollectionFromDash() {
+        // ================================================================
+        //  19. المجموعات
+        // ================================================================
+        async function addCollectionFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
-            let name = document.getElementById('dashCollectionName').value.trim();
+            const name = document.getElementById('dashCollectionName').value.trim();
             if (!name) { showToast('⚠️ أدخل اسم المجموعة'); return; }
             if (collectionsData.find(c => c.name === name)) { showToast('⚠️ موجودة'); return; }
             collectionsData.push({
-                id: generateId(),
-                name,
+                id: generateId(), name,
                 description: document.getElementById('dashCollectionDesc').value.trim(),
                 image: document.getElementById('dashCollectionImg').value.trim() || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'
             });
-            
-            saveAllData().then(success => {
-                if (success) {
-                    renderCollections();
-                    renderDashProducts();
-                    renderDashCollections();
-                    populateCollectionSelect();
-                    showToast('✅ تمت إضافة المجموعة للسحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) {
+                renderCollections(); renderDashProducts(); renderDashCollections(); populateCollectionSelect();
+                showToast('✅ تمت إضافة المجموعة');
+            }
         }
+        window.addCollectionFromDash = addCollectionFromDash;
 
         function renderDashCollections() {
-            let container = document.getElementById('dashCollectionsList');
+            const container = document.getElementById('dashCollectionsList');
             if (!container) return;
             if (!collectionsData.length) {
                 container.innerHTML = '<p style="color:var(--text-light);text-align:center;padding:20px;">لا توجد مجموعات</p>';
                 return;
             }
-            let html = '';
-            collectionsData.forEach(c => {
-                html += `<div class="dash-product-item" style="margin-bottom:10px;">
-                            <div class="dash-product-info">
-                                <img src="${c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'}" style="width:50px;height:50px;object-fit:cover;border-radius:12px;" onerror="this.style.opacity='0.3';">
-                                <div>
-                                    <div class="dash-product-name">${c.name}</div>
-                                    <div style="font-size:13px;color:var(--text-light);">${c.description || 'بدون وصف'}</div>
-                                </div>
-                            </div>
-                            <div class="dash-product-actions">
-                                <button class="edit-btn" onclick="editCollectionFromDash('${c.id}')">✏️ تعديل</button>
-                                <button class="delete-btn" onclick="deleteCollectionFromDash('${c.id}')">🗑️ حذف</button>
-                            </div>
-                        </div>`;
-            });
-            container.innerHTML = html;
+            container.innerHTML = collectionsData.map(c => `
+                <div class="dash-product-item" style="margin-bottom:10px;">
+                    <div class="dash-product-info">
+                        <img src="${c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'}" style="width:50px;height:50px;object-fit:cover;border-radius:12px;" onerror="this.style.opacity='0.3';">
+                        <div>
+                            <div class="dash-product-name">${c.name}</div>
+                            <div style="font-size:13px;color:var(--text-light);">${c.description || 'بدون وصف'}</div>
+                        </div>
+                    </div>
+                    <div class="dash-product-actions">
+                        <button class="edit-btn" onclick="editCollectionFromDash('${c.id}')">✏️ تعديل</button>
+                        <button class="delete-btn" onclick="deleteCollectionFromDash('${c.id}')">🗑️ حذف</button>
+                    </div>
+                </div>`).join('');
         }
 
-        function editCollectionFromDash(id) {
+        async function editCollectionFromDash(id) {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
-            let c = collectionsData.find(col => col.id === id);
+            const c = collectionsData.find(col => col.id === id);
             if (!c) return;
-            let newName = prompt('✏️ اسم المجموعة:', c.name);
+            const newName = prompt('✏️ اسم المجموعة:', c.name);
             if (newName !== null) c.name = newName.trim();
-            let newDesc = prompt('📝 الوصف:', c.description || '');
+            const newDesc = prompt('📝 الوصف:', c.description || '');
             if (newDesc !== null) c.description = newDesc.trim();
-            let newImg = prompt('🖼️ رابط الصورة:', c.image || '');
+            const newImg = prompt('🖼️ رابط الصورة:', c.image || '');
             if (newImg !== null) c.image = newImg.trim();
-            
-            saveAllData().then(success => {
-                if (success) {
-                    renderCollections();
-                    renderDashCollections();
-                    showToast('✅ تم تعديل المجموعة في السحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) { renderCollections(); renderDashCollections(); showToast('✅ تم تعديل المجموعة'); }
         }
+        window.editCollectionFromDash = editCollectionFromDash;
 
-        function deleteCollectionFromDash(id) {
-            if (!isAdmin || !confirm('⚠️ هل أنت متأكد من حذف المجموعة؟ سيتم حذف المنتجات المرتبطة بها أيضاً.')) return;
-            for (let cat in productsData) {
+        async function deleteCollectionFromDash(id) {
+            if (!isAdmin || !confirm('⚠️ حذف المجموعة ومنتجاتها؟')) return;
+            for (const cat in productsData) {
                 productsData[cat] = productsData[cat].filter(p => p.collectionId !== id);
             }
             collectionsData = collectionsData.filter(c => c.id !== id);
-            
-            saveAllData().then(success => {
-                if (success) {
-                    renderAll();
-                    renderDashCollections();
-                    renderDashProducts();
-                    renderBestsellerManager();
-                    initSlider();
-                    showToast('🗑️ تم حذف المجموعة من السحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) {
+                renderAll(); renderDashCollections(); renderDashProducts();
+                renderBestsellerManager(); initSlider();
+                showToast('🗑️ تم حذف المجموعة');
+            }
         }
+        window.deleteCollectionFromDash = deleteCollectionFromDash;
 
-        function addCouponFromDash() {
+        // ================================================================
+        //  20. الكوبونات
+        // ================================================================
+        async function addCouponFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
-            let code = document.getElementById('dashCouponCode').value.trim().toUpperCase();
-            let discount = parseFloat(document.getElementById('dashCouponDiscount').value);
+            const code = document.getElementById('dashCouponCode').value.trim().toUpperCase();
+            const discount = parseFloat(document.getElementById('dashCouponDiscount').value);
             if (!code || !discount) { showToast('⚠️ املأ الكود والخصم'); return; }
             if (coupons.find(c => c.code === code)) { showToast('⚠️ الكود موجود'); return; }
-            coupons.push({ id: generateId(), code, discount_percent: discount, expiry: document.getElementById(
-                    'dashCouponExpiry').value || null });
-            
-            saveAllData().then(success => {
-                if (success) {
-                    updateCouponsList();
-                    showToast('✅ تمت إضافة الكوبون للسحابة');
-                }
+            coupons.push({
+                id: generateId(), code, discount_percent: discount,
+                expiry: document.getElementById('dashCouponExpiry').value || null
             });
+            const ok = await saveAllData();
+            if (ok) { updateCouponsList(); showToast('✅ تمت إضافة الكوبون'); }
         }
+        window.addCouponFromDash = addCouponFromDash;
 
-        function deleteCouponFromDash(id) {
+        async function deleteCouponFromDash(id) {
             if (!isAdmin || !confirm('حذف الكوبون؟')) return;
             coupons = coupons.filter(c => c.id !== id);
-            
-            saveAllData().then(success => {
-                if (success) {
-                    updateCouponsList();
-                    showToast('🗑️ تم الحذف من السحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) { updateCouponsList(); showToast('🗑️ تم الحذف'); }
         }
+        window.deleteCouponFromDash = deleteCouponFromDash;
 
         function updateCouponsList() {
-            let container = document.getElementById('dashCouponsList');
+            const container = document.getElementById('dashCouponsList');
             if (!container) return;
-            if (!coupons.length) { container.innerHTML =
-                '<p style="color:var(--text-light);text-align:center;padding:20px;">لا توجد أكواد</p>'; return; }
-            let html = '';
-            coupons.forEach(c => {
-                html += `<div class="coupon-card">
-                            <div><div class="coupon-code">${c.code}</div><div class="coupon-details">🔻 ${c.discount_percent}%</div></div>
-                            <div class="coupon-actions"><button class="delete-coupon-btn" onclick="deleteCouponFromDash('${c.id}')">🗑️</button></div>
-                        </div>`;
-            });
-            container.innerHTML = html;
+            if (!coupons.length) {
+                container.innerHTML = '<p style="color:var(--text-light);text-align:center;padding:20px;">لا توجد أكواد</p>';
+                return;
+            }
+            container.innerHTML = coupons.map(c => `
+                <div class="coupon-card">
+                    <div><div class="coupon-code">${c.code}</div><div class="coupon-details">🔻 ${c.discount_percent}%</div></div>
+                    <button class="delete-coupon-btn" onclick="deleteCouponFromDash('${c.id}')">🗑️</button>
+                </div>`).join('');
         }
 
-        function saveAnnouncement() {
+        // ================================================================
+        //  21. الإعلانات والإعدادات
+        // ================================================================
+        async function saveAnnouncement() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
             announcement.text = document.getElementById('dashAnnouncementText').value.trim();
             announcement.active = document.getElementById('dashAnnouncementStatus').value === 'active';
-            
-            saveAllData().then(success => {
-                if (success) {
-                    applyAnnouncement();
-                    showToast('✅ تم حفظ الإعلان في السحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) { applyAnnouncement(); showToast('✅ تم حفظ الإعلان'); }
         }
+        window.saveAnnouncement = saveAnnouncement;
 
-        function saveSettings() {
+        async function saveSettings() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
-            settings.brand = document.getElementById('dashSettingBrand').value.trim();
+            settings.brand  = document.getElementById('dashSettingBrand').value.trim();
             settings.footer = document.getElementById('dashSettingFooter').value.trim();
-            
-            saveAllData().then(success => {
-                if (success) {
-                    applySettingsToUI();
-                    showToast('✅ تم حفظ الإعدادات في السحابة');
-                }
-            });
+            const ok = await saveAllData();
+            if (ok) { applySettingsToUI(); showToast('✅ تم حفظ الإعدادات'); }
         }
+        window.saveSettings = saveSettings;
 
-        function manualSave() {
-            if (!isAdmin) {
-                showToast('⚠️ يجب تسجيل الدخول كمدير', 'fa-exclamation-circle');
-                return;
-            }
-            if (saveAllData()) {
-                showToast('✅ تم حفظ جميع البيانات بنجاح في السحابة', 'fa-check-circle');
-            } else {
-                showToast('❌ فشل الحفظ', 'fa-times-circle');
-            }
+        async function manualSave() {
+            if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
+            const ok = await saveAllData();
+            if (ok) showToast('✅ تم حفظ جميع البيانات بنجاح');
+            else showToast('❌ فشل الحفظ', 'fa-times-circle');
         }
         window.manualSave = manualSave;
 
         function loadAnnouncementToForm() {
-            let t = document.getElementById('dashAnnouncementText');
-            let s = document.getElementById('dashAnnouncementStatus');
+            const t = document.getElementById('dashAnnouncementText');
+            const s = document.getElementById('dashAnnouncementStatus');
             if (t) t.value = announcement.text || '';
             if (s) s.value = announcement.active ? 'active' : 'inactive';
         }
-
         function loadSettingsToForm() {
-            let b = document.getElementById('dashSettingBrand');
-            let f = document.getElementById('dashSettingFooter');
+            const b = document.getElementById('dashSettingBrand');
+            const f = document.getElementById('dashSettingFooter');
             if (b) b.value = settings.brand || '';
             if (f) f.value = settings.footer || '';
         }
 
         // ================================================================
-        //  13. إحصائيات الزوار
+        //  22. الإحصائيات والطلبات
         // ================================================================
-        async function updateDashStats() {
-            let tot = 0,
-                low = 0;
-            for (let cat in productsData) {
+        function updateDashStats() {
+            let tot = 0, low = 0;
+            for (const cat in productsData) {
                 productsData[cat].forEach(p => { tot++; if (p.stock > 0 && p.stock <= 2) low++; });
             }
-            let tp = document.getElementById('dashTotalProducts');
-            if (tp) tp.textContent = tot;
-            let ls = document.getElementById('dashLowStock');
-            if (ls) ls.textContent = low;
-            let to = document.getElementById('dashTotalOrders');
-            if (to) to.textContent = orders.length;
-            let tr = document.getElementById('dashTotalRevenue');
-            if (tr) tr.textContent = orders.reduce((s, o) => s + (o.total || 0), 0);
-            let tc = document.getElementById('dashTotalCollections');
-            if (tc) tc.textContent = collectionsData.length;
-
-            let vToday = document.getElementById('dashVisitorsToday');
-            let vWeek = document.getElementById('dashVisitorsWeek');
-            let vMonth = document.getElementById('dashVisitorsMonth');
-            
-            if (vToday) vToday.textContent = '0';
-            if (vWeek) vWeek.textContent = '0';
-            if (vMonth) vMonth.textContent = '0';
+            const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+            setText('dashTotalProducts', tot);
+            setText('dashLowStock', low);
+            setText('dashTotalOrders', orders.length);
+            setText('dashTotalRevenue', orders.reduce((s, o) => s + (o.total || 0), 0));
+            setText('dashTotalCollections', collectionsData.length);
+            setText('dashVisitorsToday', '0');
+            setText('dashVisitorsWeek', '0');
+            setText('dashVisitorsMonth', '0');
         }
 
         function updateDashOrders() {
-            let container = document.getElementById('dashOrdersList');
+            const container = document.getElementById('dashOrdersList');
             if (!container) return;
-            if (!orders.length) { container.innerHTML =
-                '<p style="color:var(--text-light);text-align:center;padding:30px;">لا توجد طلبات</p>'; return; }
-            let html = '';
-            orders.forEach(o => {
-                html +=
-                    `<div style="background:var(--cream);padding:14px;border-radius:16px;margin-bottom:12px;border-right:3px solid var(--gold);">
-                                <div style="font-weight:600;">${o.id} — ${o.total || 0} ج.م</div>
-                                <div style="font-size:13px;color:var(--text-light);">${o.date ? new Date(o.date).toLocaleDateString() : ''}</div>
-                            </div>`;
-            });
-            container.innerHTML = html;
+            if (!orders.length) {
+                container.innerHTML = '<p style="color:var(--text-light);text-align:center;padding:30px;">لا توجد طلبات</p>';
+                return;
+            }
+            container.innerHTML = orders.map(o => `
+                <div style="background:var(--cream);padding:14px;border-radius:16px;margin-bottom:12px;border-right:3px solid var(--gold);">
+                    <div style="font-weight:600;">${o.id} — ${o.total || 0} ج.م</div>
+                    <div style="font-size:13px;color:var(--text-light);">${o.date ? new Date(o.date).toLocaleDateString() : ''}</div>
+                    <div style="font-size:13px;color:var(--text-muted);margin-top:6px;">
+                        ${(o.items || []).map(i => `• ${i.name} (${i.size}) × ${i.quantity}`).join('<br>')}
+                    </div>
+                </div>`).join('');
         }
 
         function trackOrder() {
-            let id = document.getElementById('trackingOrderId').value.trim();
+            const id = document.getElementById('trackingOrderId').value.trim();
             if (!id) { showToast('⚠️ أدخل رقم الطلب'); return; }
             document.getElementById('trackingResult').style.display = 'block';
-            let statuses = ['processing', 'packed', 'shipping', 'delivered'];
-            let randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-            let steps = ['step1', 'step2', 'step3', 'step4'];
-            let labels = ['label1', 'label2', 'label3', 'label4'];
-            let idx = statuses.indexOf(randomStatus);
-            steps.forEach((s, i) => {
-                let el = document.getElementById(s);
-                let lb = document.getElementById(labels[i]);
+            const statuses = ['processing', 'packed', 'shipping', 'delivered'];
+            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+            const idx = statuses.indexOf(randomStatus);
+            ['step1','step2','step3','step4'].forEach((s, i) => {
+                const el = document.getElementById(s);
+                const lb = document.getElementById('label' + (i + 1));
                 if (!el || !lb) return;
                 el.classList.remove('active', 'done');
                 lb.classList.remove('active', 'done');
-                if (i < idx) { el.classList.add('done');
-                    lb.classList.add('done');
-                    lb.textContent = statuses[i]; } else if (i === idx) { el.classList.add('active');
-                    lb.classList.add('active');
-                    lb.textContent = statuses[i]; } else lb.textContent = statuses[i];
+                if (i < idx)         { el.classList.add('done');   lb.classList.add('done');   lb.textContent = statuses[i]; }
+                else if (i === idx)  { el.classList.add('active'); lb.classList.add('active'); lb.textContent = statuses[i]; }
+                else                 { lb.textContent = statuses[i]; }
             });
-            document.getElementById('trackingStatusBadge').textContent = randomStatus;
-            document.getElementById('trackingStatusBadge').className = 'status-badge ' + randomStatus;
-            showToast(`📦 تم العثور على الطلب: ${randomStatus}`, 'fa-truck');
+            const badge = document.getElementById('trackingStatusBadge');
+            badge.textContent = randomStatus;
+            badge.className = 'status-badge ' + randomStatus;
+            showToast(`📦 الحالة: ${randomStatus}`, 'fa-truck');
         }
+        window.trackOrder = trackOrder;
 
         // ================================================================
-        //  14. مكتبة الصور
+        //  23. مكتبة الصور
         // ================================================================
         function renderImageLibrary() {
-            let container = document.getElementById('imageLibrary');
+            const container = document.getElementById('imageLibrary');
             if (!container) return;
-            let html =
-                `<div class="img-upload-area" onclick="document.getElementById('imageUploadInput').click()">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>اضغط للرفع</p>
-                            <input type="file" id="imageUploadInput" accept="image/*" multiple onchange="handleImageUpload(event)">
-                        </div>`;
+            let html = `
+                <div class="img-upload-area" onclick="document.getElementById('imageUploadInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>اضغط للرفع</p>
+                    <input type="file" id="imageUploadInput" accept="image/*" multiple onchange="handleImageUpload(event)">
+                </div>`;
             allImages.forEach(img => {
                 html += `<div class="img-item">
-                            <img src="${img.url}" loading="lazy" onerror="this.style.opacity='0.3';">
-                            <div class="img-actions">
-                                <button class="copy-btn" onclick="copyImageUrl('${img.url}')">📋</button>
-                                <button class="replace-btn" onclick="replaceImage('${img.id}')">🔄</button>
-                                <button class="delete-img-btn" onclick="deleteImage('${img.id}')">🗑️</button>
-                            </div>
-                        </div>`;
+                    <img src="${img.url}" loading="lazy" onerror="this.style.opacity='0.3';">
+                    <div class="img-actions">
+                        <button class="copy-btn" onclick="copyImageUrl('${img.url}')">📋</button>
+                        <button class="replace-btn" onclick="replaceImage('${img.id}')">🔄</button>
+                        <button class="delete-img-btn" onclick="deleteImage('${img.id}')">🗑️</button>
+                    </div>
+                </div>`;
             });
             container.innerHTML = html;
         }
 
-        function handleImageUpload(e) {
-            let files = e.target.files;
+        async function handleImageUpload(e) {
+            if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
+            const files = e.target.files;
             if (!files.length) return;
             Array.from(files).forEach(file => {
                 if (!file.type.startsWith('image/')) return;
-                let reader = new FileReader();
-                reader.onload = function(ev) {
-                    allImages.push({ id: generateId(), url: ev.target.result, name: file.name });
-                    saveAllData().then(success => {
-                        if (success) {
-                            renderImageLibrary();
-                            showToast('✅ تم رفع الصورة');
-                        }
-                    });
+                const reader = new FileReader();
+                reader.onload = async function(ev) {
+                    const img = { id: generateId(), url: ev.target.result, name: file.name };
+                    try {
+                        await IMAGES_COL.doc(img.id).set(img);
+                        allImages.push(img);
+                        renderImageLibrary();
+                        showToast('✅ تم رفع الصورة');
+                    } catch (err) {
+                        console.error('Image upload failed:', err);
+                        showToast('❌ فشل الرفع — قد تكون الصورة أكبر من 1MB', 'fa-times-circle');
+                    }
                 };
                 reader.readAsDataURL(file);
             });
             e.target.value = '';
         }
+        window.handleImageUpload = handleImageUpload;
 
         function copyImageUrl(url) {
-            if (navigator.clipboard) { navigator.clipboard.writeText(url).then(() => showToast('📋 تم نسخ الرابط')); } else {
-                let ta = document.createElement('textarea');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => showToast('📋 تم نسخ الرابط'));
+            } else {
+                const ta = document.createElement('textarea');
                 ta.value = url;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand('copy');
-                document.body.removeChild(ta);
+                document.body.appendChild(ta); ta.select();
+                document.execCommand('copy'); document.body.removeChild(ta);
                 showToast('📋 تم نسخ الرابط');
             }
         }
+        window.copyImageUrl = copyImageUrl;
 
         function replaceImage(id) {
-            let input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
+            if (!isAdmin) return;
+            const input = document.createElement('input');
+            input.type = 'file'; input.accept = 'image/*';
             input.onchange = function(e) {
-                let file = e.target.files[0];
+                const file = e.target.files[0];
                 if (!file) return;
-                let reader = new FileReader();
-                reader.onload = function(ev) {
-                    let img = allImages.find(i => i.id === id);
-                    if (img) { 
+                const reader = new FileReader();
+                reader.onload = async function(ev) {
+                    const img = allImages.find(i => i.id === id);
+                    if (!img) return;
+                    try {
+                        await IMAGES_COL.doc(id).update({ url: ev.target.result, name: file.name });
                         img.url = ev.target.result;
-                        img.name = file.name; 
-                        saveAllData().then(success => {
-                            if (success) {
-                                renderImageLibrary();
-                                showToast('✅ تم الاستبدال');
-                            }
-                        });
+                        img.name = file.name;
+                        renderImageLibrary();
+                        showToast('✅ تم الاستبدال');
+                    } catch (err) {
+                        showToast('❌ فشل الاستبدال', 'fa-times-circle');
                     }
                 };
                 reader.readAsDataURL(file);
             };
             input.click();
         }
+        window.replaceImage = replaceImage;
 
-        function deleteImage(id) {
-            if (!confirm('حذف الصورة؟')) return;
-            allImages = allImages.filter(i => i.id !== id);
-            saveAllData().then(success => {
-                if (success) {
-                    renderImageLibrary();
-                    showToast('🗑️ تم الحذف');
-                }
-            });
+        async function deleteImage(id) {
+            if (!isAdmin || !confirm('حذف الصورة؟')) return;
+            try {
+                await IMAGES_COL.doc(id).delete();
+                allImages = allImages.filter(i => i.id !== id);
+                renderImageLibrary();
+                showToast('🗑️ تم الحذف');
+            } catch (e) {
+                showToast('❌ فشل الحذف', 'fa-times-circle');
+            }
         }
+        window.deleteImage = deleteImage;
 
         // ================================================================
-        //  15. المصادقة (Firebase Auth)
+        //  24. المصادقة
         // ================================================================
-        function toggleAdminLogin() { 
+        function toggleAdminLogin() {
             if (isAdmin) adminLogout();
-            else openAdminLogin(); 
+            else openAdminLogin();
         }
+        window.toggleAdminLogin = toggleAdminLogin;
 
         function openAdminLogin() {
             document.getElementById('adminModal').style.display = 'flex';
@@ -4282,81 +4209,86 @@
             document.getElementById('adminPassword').value = '';
             document.getElementById('adminError').style.display = 'none';
         }
+        window.openAdminLogin = openAdminLogin;
 
-        function closeAdminLogin() { 
-            document.getElementById('adminModal').style.display = 'none'; 
+        function closeAdminLogin() {
+            document.getElementById('adminModal').style.display = 'none';
         }
+        window.closeAdminLogin = closeAdminLogin;
 
         function adminLogin() {
-            let email = document.getElementById('adminEmail').value.trim();
-            let pass = document.getElementById('adminPassword').value.trim();
-            
-            if (!email || !pass) {
-                showToast('⚠️ أدخل الإيميل وكلمة المرور', 'fa-exclamation-circle');
-                return;
-            }
+            const email = document.getElementById('adminEmail').value.trim();
+            const pass  = document.getElementById('adminPassword').value.trim();
+            if (!email || !pass) { showToast('⚠️ أدخل الإيميل وكلمة المرور'); return; }
 
             auth.signInWithEmailAndPassword(email, pass)
-                .then((userCredential) => {
-                    isAdmin = true;
+                .then(() => {
                     closeAdminLogin();
-                    updateAdminUI();
                     showToast('✅ مرحباً مدير!', 'fa-user-cog');
                     showPage('dashboard');
                 })
-                .catch((error) => {
+                .catch(() => {
                     document.getElementById('adminError').style.display = 'block';
                     showToast('❌ إيميل أو كلمة مرور غير صحيحة', 'fa-times-circle');
                 });
         }
+        window.adminLogin = adminLogin;
 
         function adminLogout() {
             auth.signOut().then(() => {
                 isAdmin = false;
+                orders = [];
                 updateAdminUI();
                 showToast('تم تسجيل الخروج', 'fa-sign-out-alt');
-                if (document.getElementById('dashboard').classList.contains('active')) showPage('collections');
-            });
-        }
-
-        function checkAdminSession() {
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    isAdmin = true;
-                    updateAdminUI();
-                } else {
-                    isAdmin = false;
-                    updateAdminUI();
+                if (document.getElementById('dashboard')?.classList.contains('active')) {
+                    showPage('collections');
                 }
             });
         }
+        window.adminLogout = adminLogout;
 
         function updateAdminUI() {
-            let icon = document.getElementById('adminIcon');
-            let tooltip = document.getElementById('adminTooltip');
-            let dashLink = document.getElementById('dashboardNavLink');
-            let mobileDash = document.getElementById('mobileDashboardLink');
+            const icon    = document.getElementById('adminIcon');
+            const tooltip = document.getElementById('adminTooltip');
+            const dashLink = document.getElementById('dashboardNavLink');
+            const mobileDash = document.getElementById('mobileDashboardLink');
             if (!icon || !tooltip) return;
             if (isAdmin) {
                 icon.innerHTML = '<i class="fas fa-user-cog"></i>';
                 tooltip.textContent = 'تسجيل الخروج';
-                if (dashLink) dashLink.style.display = 'block';
+                if (dashLink)   dashLink.style.display   = 'block';
                 if (mobileDash) mobileDash.style.display = 'block';
             } else {
                 icon.innerHTML = '<i class="fas fa-key"></i>';
                 tooltip.textContent = 'تسجيل الدخول كمدير';
-                if (dashLink) dashLink.style.display = 'none';
+                if (dashLink)   dashLink.style.display   = 'none';
                 if (mobileDash) mobileDash.style.display = 'none';
             }
+        }
+
+        function checkAdminSession() {
+            auth.onAuthStateChanged(async (user) => {
+                isAdmin = !!user;
+                updateAdminUI();
+                if (user) {
+                    await loadOrders();
+                    if (document.getElementById('dashboard')?.classList.contains('active')) {
+                        updateDashStats();
+                        updateDashOrders();
+                    }
+                } else {
+                    orders = [];
+                }
+            });
         }
 
         function toggleMobileMenu() {
             document.getElementById('mobileNav').classList.toggle('open');
         }
-
         function closeMobileMenu() {
             document.getElementById('mobileNav').classList.remove('open');
         }
+        window.toggleMobileMenu = toggleMobileMenu;
 
         function renderAll() {
             renderCollections();
@@ -4374,12 +4306,12 @@
         }
 
         // ================================================================
-        //  16. أكواد الخصم على السلة
+        //  25. كوبونات السلة
         // ================================================================
         document.getElementById('applyCouponBtn')?.addEventListener('click', function() {
-            let code = document.getElementById('couponCodeInput').value.trim().toUpperCase();
+            const code = document.getElementById('couponCodeInput').value.trim().toUpperCase();
             if (!code) { showToast('⚠️ أدخل كود الخصم'); return; }
-            let coupon = coupons.find(c => c.code === code);
+            const coupon = coupons.find(c => c.code === code);
             if (!coupon) { showToast('⚠️ كود غير صحيح'); return; }
             if (coupon.expiry && new Date(coupon.expiry) < new Date()) { showToast('⚠️ انتهت صلاحية الكود'); return; }
             appliedCoupon = coupon;
@@ -4394,47 +4326,39 @@
         });
 
         // ================================================================
-        //  17. التهيئة النهائية
+        //  26. التهيئة النهائية
         // ================================================================
         checkAdminSession();
-        loadAllData(); 
+        loadAllData();
 
         window.addEventListener('resize', updateAnnouncementPosition);
         window.addEventListener('scroll', updateAnnouncementPosition);
-        window.addEventListener('load', updateAnnouncementPosition);
-
-        setTimeout(() => {
-            updateDashStats();
-            updateAnnouncementPosition();
-        }, 500);
+        window.addEventListener('load',  updateAnnouncementPosition);
+        setTimeout(() => { updateDashStats(); updateAnnouncementPosition(); }, 500);
 
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = function() {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 document.querySelectorAll('.dashboard-tab-content').forEach(c => c.classList.remove('active'));
-                let target = document.getElementById(this.dataset.tab);
+                const target = document.getElementById(this.dataset.tab);
                 if (target) target.classList.add('active');
-                if (this.dataset.tab === 'tab-images') renderImageLibrary();
-                if (this.dataset.tab === 'tab-coupons') updateCouponsList();
-                if (this.dataset.tab === 'tab-collections') {
-                    renderCollections();
-                    populateCollectionSelect();
-                    renderDashCollections();
-                }
-                if (this.dataset.tab === 'tab-announcement') loadAnnouncementToForm();
-                if (this.dataset.tab === 'tab-settings') loadSettingsToForm();
-                if (this.dataset.tab === 'tab-orders') updateDashOrders();
-                if (this.dataset.tab === 'tab-products') renderDashProducts();
-                if (this.dataset.tab === 'tab-bestseller') renderBestsellerManager();
+                const tab = this.dataset.tab;
+                if (tab === 'tab-images')       renderImageLibrary();
+                if (tab === 'tab-coupons')      updateCouponsList();
+                if (tab === 'tab-collections')  { renderCollections(); populateCollectionSelect(); renderDashCollections(); }
+                if (tab === 'tab-announcement') loadAnnouncementToForm();
+                if (tab === 'tab-settings')     loadSettingsToForm();
+                if (tab === 'tab-orders')       updateDashOrders();
+                if (tab === 'tab-products')     renderDashProducts();
+                if (tab === 'tab-bestseller')   renderBestsellerManager();
             };
         });
 
         document.getElementById('collectionSearch')?.addEventListener('input', renderCollectionPage);
         document.querySelectorAll('#collectionFilters .filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('#collectionFilters .filter-btn').forEach(b => b.classList.remove(
-                    'active'));
+                document.querySelectorAll('#collectionFilters .filter-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 renderCollectionPage();
             });
@@ -4448,43 +4372,20 @@
             }
         });
 
-        window.toggleMobileMenu = toggleMobileMenu;
-        window.openModalByName = openModalByName;
-        window.closeModal = closeModal;
-        window.closeModalOnBackground = closeModalOnBackground;
-        window.openSizeGuide = openSizeGuide;
-        window.closeSizeGuide = closeSizeGuide;
-        window.toggleWishlist = toggleWishlist;
-        window.removeFromCart = removeFromCart;
-        window.updateCartItemQuantity = updateCartItemQuantity;
-        window.sendOrderWhatsApp = sendOrderWhatsApp;
-        window.addProductFromDash = addProductFromDash;
-        window.deleteProductFromDash = deleteProductFromDash;
-        window.editProductFromDash = editProductFromDash;
-        window.trackOrder = trackOrder;
-        window.submitReview = submitReview;
-        window.toggleAdminLogin = toggleAdminLogin;
-        window.openAdminLogin = openAdminLogin;
-        window.closeAdminLogin = closeAdminLogin;
-        window.adminLogin = adminLogin;
-        window.adminLogout = adminLogout;
-        window.showToast = showToast;
-        window.addCollectionFromDash = addCollectionFromDash;
-        window.addCouponFromDash = addCouponFromDash;
-        window.deleteCouponFromDash = deleteCouponFromDash;
-        window.saveAnnouncement = saveAnnouncement;
-        window.saveSettings = saveSettings;
-        window.handleImageUpload = handleImageUpload;
-        window.copyImageUrl = copyImageUrl;
-        window.replaceImage = replaceImage;
-        window.deleteImage = deleteImage;
-        window.editCollectionFromDash = editCollectionFromDash;
-        window.deleteCollectionFromDash = deleteCollectionFromDash;
-        window.renderBestsellerManager = renderBestsellerManager;
-        window.saveBestsellerSelection = saveBestsellerSelection;
-        window.initSlider = initSlider;
+        Object.assign(window, {
+            closeModal, closeModalOnBackground, openSizeGuide, closeSizeGuide,
+            toggleWishlist, removeFromCart, updateCartItemQuantity,
+            addProductFromDash, deleteProductFromDash, editProductFromDash,
+            addCollectionFromDash, editCollectionFromDash, deleteCollectionFromDash,
+            addCouponFromDash, deleteCouponFromDash,
+            saveAnnouncement, saveSettings, manualSave,
+            handleImageUpload, copyImageUrl, replaceImage, deleteImage,
+            renderBestsellerManager, saveBestsellerSelection,
+            toggleAdminLogin, openAdminLogin, closeAdminLogin, adminLogin, adminLogout,
+            showToast, initSlider
+        });
 
-        console.log('✅ الموقع يعمل بكامل وظائفه، ومربوط بـ Firebase Auth');
+        console.log('✅ YQ STATE — Public/Private data separation active');
     </script>
 
 </body>
