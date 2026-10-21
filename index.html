@@ -457,29 +457,24 @@
             box-shadow: 0 12px 40px rgba(201, 169, 110, 0.35);
         }
 
-        /* ===== سلايدر ===== */
+        /* ===== سلايدر أبسط ===== */
         .hero-slider-wrapper {
-            flex: 1 1 500px;
-            max-width: 580px;
+            flex: 1 1 400px;
+            max-width: 450px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.55);
-            backdrop-filter: blur(8px);
-            border-radius: 32px;
-            padding: 16px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: transparent;
+            border-radius: 24px;
+            padding: 0;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
             transition: var(--transition);
-        }
-        .hero-slider-wrapper:hover {
-            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08), var(--shadow-gold);
         }
         .hero-slider-container {
             position: relative;
             width: 100%;
             overflow: hidden;
-            border-radius: 20px;
-            aspect-ratio: 4/3;
-            background: rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            aspect-ratio: 4/5;
+            background: var(--cream);
         }
         .hero-slider-track {
             display: flex;
@@ -493,20 +488,16 @@
             align-items: center;
             justify-content: center;
             background: transparent;
-            padding: 6px;
         }
         .hero-slider-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 14px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
             cursor: pointer;
             transition: var(--transition);
         }
         .hero-slider-slide img:hover {
-            transform: scale(1.01);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+            transform: scale(1.02);
         }
 
         .slider-btn {
@@ -1577,20 +1568,23 @@
             flex-direction: column;
             gap: 12px;
         }
+        
+        /* تنسيق كارت المنتج في لوحة التحكم */
         .dash-product-item {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
+            padding: 16px;
             background: var(--cream);
             border-radius: 16px;
             border: 1px solid var(--cream-dark);
             transition: var(--transition);
-            flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
         }
         .dash-product-item:hover {
             border-color: var(--gold);
+            background: var(--white);
+            box-shadow: var(--shadow-soft);
         }
         .dash-product-info {
             display: flex;
@@ -1598,8 +1592,8 @@
             gap: 14px;
         }
         .dash-product-info img {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             object-fit: cover;
             border-radius: 12px;
         }
@@ -1613,15 +1607,22 @@
         .dash-product-actions {
             display: flex;
             gap: 8px;
+            border-top: 1px dashed var(--mid-gray);
+            padding-top: 12px;
+            justify-content: flex-end;
         }
         .edit-btn,
         .delete-btn {
-            padding: 6px 12px;
+            padding: 6px 16px;
             border-radius: 30px;
             border: none;
             cursor: pointer;
             transition: var(--transition);
             font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .edit-btn {
             background: var(--gold-light);
@@ -2022,8 +2023,8 @@
                 font-size: 34px;
             }
             .hero-slider-wrapper {
-                padding: 12px;
-                border-radius: 28px;
+                padding: 0;
+                border-radius: 24px;
             }
             .slider-btn {
                 width: 36px;
@@ -2050,10 +2051,6 @@
             }
             .hero-title .state {
                 font-size: 26px;
-            }
-            .hero-slider-wrapper {
-                padding: 8px;
-                border-radius: 20px;
             }
             .slider-btn {
                 width: 30px;
@@ -2324,7 +2321,9 @@
             <div style="max-width:1300px;margin:0 auto;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:12px;">
                     <h2 id="collectionPageTitle" style="font-family:var(--font-serif);font-size:28px;">YQ <span style="color:var(--gold);">Collection</span></h2>
-                    <a href="#" onclick="showPage('collections'); return false;" style="color:var(--gold);font-weight:600;">← العودة</a>
+                    <a href="#" onclick="showPage('collections'); return false;" style="display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--cream-dark);padding:8px 16px;border-radius:40px;color:var(--text-dark);font-weight:600;text-decoration:none;transition:var(--transition);box-shadow:var(--shadow-soft);" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--cream-dark)';this.style.color='var(--text-dark)'">
+                        <i class="fas fa-arrow-right"></i> رجوع للكوليكشنز
+                    </a>
                 </div>
                 <div class="search-filter-bar">
                     <div class="search-box"><i class="fas fa-search"></i><input type="text" id="collectionSearch" placeholder="ابحث عن منتج..."></div>
@@ -2475,13 +2474,12 @@
                 <div class="dashboard-form">
                     <h3 style="text-align:center;margin-bottom:20px;font-family:var(--font-serif);">➕ إضافة منتج جديد</h3>
                     <div class="form-group"><label>اسم المنتج *</label><input type="text" id="dashProductName" placeholder="مثال: YQ Black Tshirt"></div>
-                    <div class="form-group"><label>السعر (ج.م) *</label><input type="number" id="dashProductPrice" placeholder="500"></div>
+                    <div class="form-group"><label>السعر بعد الخصم (النهائي) *</label><input type="number" id="dashProductPrice" placeholder="500"></div>
                     <div class="form-group"><label>السعر قبل الخصم</label><input type="number" id="dashProductOldPrice" placeholder="650"></div>
                     <div class="form-group"><label>رابط الصورة *</label><input type="text" id="dashProductImg" placeholder="https://i.postimg.cc/..."></div>
                     <div class="form-group"><label>رابط الصورة الثانية (hover)</label><input type="text" id="dashProductHoverImg" placeholder="https://i.postimg.cc/..."></div>
                     <div class="form-group"><label>الوصف</label><textarea id="dashProductDesc" placeholder="وصف المنتج..."></textarea></div>
                     <div class="form-group"><label>المقاسات (مفصولة بفاصلة)</label><input type="text" id="dashProductSizes" placeholder="L, XL, XXL" value="L, XL, XXL"></div>
-                    <div class="form-group"><label>الألوان (مفصولة بفاصلة)</label><input type="text" id="dashProductColors" placeholder="أسود, أبيض, رمادي"></div>
                     <div class="form-group"><label>الكمية</label><input type="number" id="dashProductStock" placeholder="10" value="5"></div>
                     <div class="form-group"><label>حالة المنتج (الوسم)</label>
                         <select id="dashProductBadge">
@@ -2491,7 +2489,6 @@
                         </select>
                     </div>
                     <div class="form-group"><label>المجموعة *</label><select id="dashProductCollection"><option value="">اختر مجموعة...</option></select></div>
-                    <div class="form-group"><label>ترتيب العرض</label><input type="number" id="dashProductOrder" placeholder="1" value="0"></div>
                     <button class="submit-btn" onclick="addProductFromDash()">➕ إضافة المنتج</button>
                 </div>
             </div>
@@ -2684,12 +2681,11 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // اختصارات المسارات الجديدة (بعد الفصل)
-        const CATALOG_REF = db.collection('store').doc('catalog');   // عام: products + collections + coupons
-        const CONFIG_REF  = db.collection('store').doc('config');    // عام: announcement + settings + bestseller
-        const IMAGES_COL  = db.collection('images');                 // عام قراءة
-        const REVIEWS_COL = db.collection('reviews');                // عام قراءة + create
-        const ORDERS_COL  = db.collection('orders');                 // أدمن فقط
+        const CATALOG_REF = db.collection('store').doc('catalog');
+        const CONFIG_REF  = db.collection('store').doc('config');
+        const IMAGES_COL  = db.collection('images');
+        const REVIEWS_COL = db.collection('reviews');
+        const ORDERS_COL  = db.collection('orders');
 
         // ================================================================
         //  1. البيانات الافتراضية
@@ -3107,12 +3103,15 @@
         };
 
         // ================================================================
-        //  10. السلايدر
+        //  10. السلايدر (عشوائي 4 منتجات + أبسط)
         // ================================================================
         function initSlider() {
             const allProds = [];
             for (const cat in productsData) productsData[cat].forEach(p => allProds.push(p));
-            sliderImages = allProds.slice(0, 6);
+            
+            // عمل خلط عشوائي للمنتجات واختيار 4 منتجات مختلفة كل مرة
+            const shuffled = allProds.sort(() => 0.5 - Math.random());
+            sliderImages = shuffled.slice(0, 4);
 
             const track = document.getElementById('heroSliderTrack');
             const dots  = document.getElementById('sliderDots');
@@ -3274,6 +3273,8 @@
                     : `<button class="sold-out-btn" disabled>Sold Out</button>`;
                 const wishIcon  = isInWishlist(p.name) ? 'fas fa-heart' : 'far fa-heart';
                 const wishClass = isInWishlist(p.name) ? 'liked' : '';
+                
+                // عرض السعر القديم لو موجود
                 const oldPriceHtml = p.old_price ? `<span class="old-price">${p.old_price} ج.م</span>` : '';
 
                 return `<div class="product-card" data-product-name="${p.name}">
@@ -3288,7 +3289,7 @@
                     </button>
                     <button class="quick-view-btn" onclick="event.stopPropagation();openModalByName('${p.name}')">👁️ سريع</button>
                     <h3>${p.name}</h3>
-                    <div class="product-price">${p.price} ج.م ${oldPriceHtml}</div>
+                    <div class="product-price">${oldPriceHtml} ${p.price} ج.م</div>
                     <div class="stock-info ${stockClass}">${stockText}</div>
                     ${sizeHtml}
                     <input type="text" class="custom-size" placeholder="مقاس خاص">
@@ -3492,7 +3493,10 @@
 
             document.getElementById('modalImg').src   = p.img;
             document.getElementById('modalName').textContent  = p.name;
-            document.getElementById('modalPrice').textContent = p.price + ' ج.م';
+            
+            const oldP = p.old_price ? `<span class="old-price" style="font-size:18px;">${p.old_price} ج.م</span>` : '';
+            document.getElementById('modalPrice').innerHTML = `${oldP} ${p.price} ج.م`;
+            
             document.getElementById('modalStock').textContent = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد المخزون';
             document.getElementById('modalDesc').innerHTML    = p.description || 'خامة عالية الجودة';
 
@@ -3732,7 +3736,7 @@
         window.saveBestsellerSelection = saveBestsellerSelection;
 
         // ================================================================
-        //  18. المنتجات
+        //  18. المنتجات (لوحة التحكم)
         // ================================================================
         function renderDashProducts() {
             const container = document.getElementById('dashProductsList');
@@ -3743,18 +3747,24 @@
                 productsData[cat].forEach(p => {
                     totalCount++;
                     const c = collectionsData.find(col => col.id === p.collectionId);
+                    const oldP = p.old_price ? `<span style="text-decoration:line-through;color:var(--text-light);font-size:12px;margin-right:6px;">${p.old_price} ج.م</span>` : '';
+                    
                     html += `<div class="dash-product-item">
                         <div class="dash-product-info">
                             <img src="${p.img}" loading="lazy" onerror="this.style.opacity='0.3';">
-                            <div>
-                                <div class="dash-product-name">${p.name}</div>
-                                <div class="dash-product-price">${p.price} ج.م</div>
-                                <div style="font-size:13px;color:var(--text-light);">المخزون: ${p.stock} | المجموعة: ${c?.name || 'غير معروف'}</div>
+                            <div style="flex:1;">
+                                <div class="dash-product-name" style="font-size:16px; margin-bottom:4px;">${p.name}</div>
+                                <div class="dash-product-price" style="font-size:15px;">${oldP} ${p.price} ج.م</div>
+                                <div style="font-size:13px;color:var(--text-light);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;">
+                                    <span>📦 المخزون: ${p.stock}</span>
+                                    <span>📏 المقاسات: ${(p.sizes||[]).join(' , ') || 'لا يوجد'}</span>
+                                    <span>📁 ${c?.name || 'بدون مجموعة'}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="dash-product-actions">
-                            <button class="edit-btn" onclick="editProductFromDash('${p.id}')">✏️</button>
-                            <button class="delete-btn" onclick="deleteProductFromDash('${p.id}')">🗑️</button>
+                            <button class="edit-btn" onclick="editProductFromDash('${p.id}')"><i class="fas fa-edit"></i> تعديل</button>
+                            <button class="delete-btn" onclick="deleteProductFromDash('${p.id}')"><i class="fas fa-trash"></i> حذف</button>
                         </div>
                     </div>`;
                 });
@@ -3803,6 +3813,10 @@
                 renderAll(); updateDashStats(); renderDashProducts();
                 renderBestsellerManager(); initSlider();
                 showToast('✅ تمت إضافة المنتج');
+                document.getElementById('dashProductName').value = '';
+                document.getElementById('dashProductPrice').value = '';
+                document.getElementById('dashProductOldPrice').value = '';
+                document.getElementById('dashProductImg').value = '';
             }
         }
         window.addProductFromDash = addProductFromDash;
@@ -3837,41 +3851,48 @@
 
             const newName = prompt('✏️ اسم المنتج:', found.name);
             if (newName === null) return;
-            if (!newName.trim()) { showToast('⚠️ الاسم فارغ'); return; }
 
-            const newPrice = prompt('💰 السعر (ج.م):', found.price);
+            const newPrice = prompt('💰 السعر بعد الخصم (النهائي):', found.price);
             if (newPrice === null) return;
-            const parsedPrice = parseFloat(newPrice);
-            if (isNaN(parsedPrice) || parsedPrice <= 0) { showToast('⚠️ السعر غير صحيح'); return; }
+
+            const newOldPrice = prompt('🏷️ السعر قبل الخصم (لو مفيش خصم اكتب 0):', found.old_price || 0);
+            if (newOldPrice === null) return;
 
             const newStock = prompt('📦 المخزون:', found.stock);
             if (newStock === null) return;
-            const parsedStock = parseInt(newStock);
-            if (isNaN(parsedStock) || parsedStock < 0) { showToast('⚠️ المخزون غير صحيح'); return; }
+
+            const newSizes = prompt('📏 المقاسات (مفصولة بفاصلة، مثال: S, M, L):', (found.sizes || []).join(', '));
+            if (newSizes === null) return;
 
             const colOptions = collectionsData.map(c => `${c.id} - ${c.name}`).join('\n');
             const newColId = prompt(`🏷️ معرف المجموعة:\n${colOptions}`, found.collectionId);
             if (newColId === null) return;
-            if (!collectionsData.some(c => c.id === newColId.trim())) { showToast('⚠️ معرف المجموعة غير صحيح'); return; }
 
-            const newImg = prompt('🖼️ رابط الصورة (فارغ = احتفاظ):', found.img);
-            const finalImg = (newImg !== null && newImg.trim()) ? newImg.trim() : found.img;
+            const newImg = prompt('🖼️ رابط الصورة (اتركه فارغاً للاحتفاظ بالحالية):', found.img);
+            if (newImg === null) return;
 
-            const newDesc = prompt('📝 الوصف (فارغ = احتفاظ):', found.description || '');
-            const finalDesc = (newDesc !== null && newDesc.trim()) ? newDesc.trim() : (found.description || '');
+            // تحديث البيانات
+            if (newName.trim()) found.name = newName.trim();
+            
+            const pPrice = parseFloat(newPrice);
+            if (!isNaN(pPrice) && pPrice >= 0) found.price = pPrice;
+            
+            const pOldPrice = parseFloat(newOldPrice);
+            if (!isNaN(pOldPrice)) found.old_price = pOldPrice;
 
-            found.name = newName.trim();
-            found.price = parsedPrice;
-            found.stock = parsedStock;
-            found.collectionId = newColId.trim();
-            found.img = finalImg;
-            found.description = finalDesc;
+            const pStock = parseInt(newStock);
+            if (!isNaN(pStock) && pStock >= 0) found.stock = pStock;
+
+            found.sizes = newSizes.split(',').map(s => s.trim()).filter(Boolean);
+            
+            if (collectionsData.some(c => c.id === newColId.trim())) found.collectionId = newColId.trim();
+            if (newImg.trim()) found.img = newImg.trim();
 
             const ok = await saveAllData();
             if (ok) {
                 renderAll(); updateDashStats(); renderDashProducts();
                 renderBestsellerManager(); initSlider();
-                showToast('✅ تم تعديل المنتج');
+                showToast('✅ تم تعديل المنتج بنجاح');
             }
         }
 
@@ -3904,7 +3925,7 @@
                 return;
             }
             container.innerHTML = collectionsData.map(c => `
-                <div class="dash-product-item" style="margin-bottom:10px;">
+                <div class="dash-product-item" style="margin-bottom:10px; flex-direction:row; align-items:center;">
                     <div class="dash-product-info">
                         <img src="${c.image || 'https://i.postimg.cc/c4brqmLB/Final-Logo.png'}" style="width:50px;height:50px;object-fit:cover;border-radius:12px;" onerror="this.style.opacity='0.3';">
                         <div>
@@ -3912,7 +3933,7 @@
                             <div style="font-size:13px;color:var(--text-light);">${c.description || 'بدون وصف'}</div>
                         </div>
                     </div>
-                    <div class="dash-product-actions">
+                    <div class="dash-product-actions" style="border:none; padding:0; width:auto;">
                         <button class="edit-btn" onclick="editCollectionFromDash('${c.id}')">✏️ تعديل</button>
                         <button class="delete-btn" onclick="deleteCollectionFromDash('${c.id}')">🗑️ حذف</button>
                     </div>
