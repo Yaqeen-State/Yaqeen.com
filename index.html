@@ -692,14 +692,13 @@
             opacity: 0;
         }
 
+        /* تنسيق الشارات فوق السعر */
         .card-badges {
-            position: absolute;
-            top: 12px;
-            right: 12px;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             gap: 6px;
-            z-index: 3;
+            margin: 4px 0 8px 0;
+            min-height: 24px;
         }
         .badge {
             padding: 4px 14px;
@@ -714,22 +713,11 @@
         .badge-best { background: #e8a838; }
         .badge-limited { background: #e45858; }
         .badge-sale { background: #6b6560; }
-        .low-stock-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: var(--error);
-            color: white;
-            padding: 2px 12px;
-            border-radius: 40px;
-            font-size: 11px;
-            font-weight: 700;
-            z-index: 3;
-        }
+
         .wishlist-btn {
             position: absolute;
-            top: 12px;
-            left: 12px;
+            top: 24px;
+            left: 24px;
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(4px);
             border: none;
@@ -759,7 +747,7 @@
 
         .quick-view-btn {
             position: absolute;
-            bottom: 12px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0, 0, 0, 0.6);
@@ -784,7 +772,7 @@
         }
 
         .product-card h3 {
-            margin-top: 12px;
+            margin-top: 4px;
             font-size: 16px;
             font-weight: 600;
         }
@@ -808,14 +796,15 @@
         }
         .stock-info.in-stock { color: var(--success); }
         .stock-info.out-of-stock { color: var(--error); }
-        .size-options {
+        
+        .size-options, .color-options {
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
             justify-content: center;
             margin: 8px 0;
         }
-        .size-option {
+        .size-option, .color-option {
             padding: 4px 12px;
             border: 1px solid var(--cream-dark);
             border-radius: 30px;
@@ -824,6 +813,13 @@
             transition: var(--transition);
             font-weight: 500;
             background: var(--white);
+        }
+        .color-option {
+            font-size: 11px;
+            padding: 2px 8px;
+            background: var(--cream-light);
+            color: var(--text-muted);
+            cursor: default;
         }
         .size-option:hover {
             border-color: var(--gold);
@@ -837,21 +833,6 @@
         .size-option.one-size {
             background: var(--cream-dark);
             font-weight: 600;
-        }
-        .custom-size {
-            width: 100%;
-            padding: 8px 12px;
-            border-radius: 30px;
-            border: 1px solid var(--cream-dark);
-            background: var(--white);
-            margin-top: 6px;
-            font-family: var(--font-arabic);
-            text-align: center;
-            transition: var(--transition);
-        }
-        .custom-size:focus {
-            border-color: var(--gold);
-            outline: none;
         }
 
         .add-btn {
@@ -1321,41 +1302,6 @@
         }
         .modal-size-guide:hover {
             text-decoration: underline;
-        }
-        .modal-reviews {
-            margin-top: 20px;
-            border-top: 1px solid var(--cream-dark);
-            padding-top: 16px;
-        }
-        .review-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
-        }
-        .review-form select,
-        .review-form textarea {
-            padding: 10px 14px;
-            border-radius: 16px;
-            border: 1px solid var(--cream-dark);
-            font-family: var(--font-arabic);
-            background: var(--cream-light);
-            width: 100%;
-        }
-        .review-submit {
-            background: var(--gold);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 40px;
-            font-weight: 700;
-            color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            align-self: flex-start;
-        }
-        .review-submit:hover {
-            background: var(--gold-dark);
-            transform: scale(1.02);
         }
 
         /* ===== جدول المقاسات ===== */
@@ -2185,6 +2131,7 @@
             <li><a href="#" onclick="showPage('hero'); return false;">الرئيسية</a></li>
             <li><a href="#" onclick="showPage('philosophy'); return false;">القواعد</a></li>
             <li><a href="#" onclick="showPage('collections'); return false;">الكوليكشنز</a></li>
+            <li><a href="#" onclick="showPage('reviews-page'); return false;">تقييم المنتجات</a></li>
             <li><a href="#" onclick="showPage('about'); return false;">الهوية</a></li>
             <li><a href="#" onclick="showPage('contact'); return false;">تواصل</a></li>
             <li id="dashboardNavLink" style="display:none;"><a href="#" onclick="showPage('dashboard'); return false;">📊 لوحة التحكم</a></li>
@@ -2222,6 +2169,7 @@
             <li><a href="#" onclick="showPage('hero'); return false;">الرئيسية</a></li>
             <li><a href="#" onclick="showPage('philosophy'); return false;">القواعد</a></li>
             <li><a href="#" onclick="showPage('collections'); return false;">الكوليكشنز</a></li>
+            <li><a href="#" onclick="showPage('reviews-page'); return false;">⭐ تقييم المنتجات</a></li>
             <li><a href="#" onclick="showPage('about'); return false;">الهوية</a></li>
             <li><a href="#" onclick="showPage('contact'); return false;">تواصل</a></li>
             <li id="mobileDashboardLink" style="display:none;"><a href="#" onclick="showPage('dashboard'); return false;">📊 لوحة التحكم</a></li>
@@ -2338,6 +2286,43 @@
                     </div>
                 </div>
                 <div class="products-grid" id="collectionProducts"></div>
+            </div>
+        </div>
+        <footer>© 2026 يقين</footer>
+    </div>
+
+    <!-- صفحة تقييمات المنتجات الجديدة -->
+    <div class="page" id="reviews-page">
+        <div style="padding:110px 20px 60px;background:var(--cream-light);min-height:100vh;">
+            <div style="max-width:900px;margin:0 auto;">
+                <h2 style="font-family:var(--font-serif);text-align:center;margin-bottom:40px;">⭐ <span style="color:var(--gold);">تقييمات المنتجات</span></h2>
+                
+                <!-- Add Review Form -->
+                <div style="background:var(--white);padding:24px;border-radius:20px;border:1px solid var(--cream-dark);margin-bottom:30px;box-shadow:var(--shadow-soft);">
+                    <h3 style="margin-bottom:16px;font-family:var(--font-serif);">أضف تقييمك</h3>
+                    <div class="form-group">
+                        <label>اختر المنتج</label>
+                        <select id="reviewProductSelect" style="padding:12px 16px;border-radius:16px;border:1px solid var(--cream-dark);background:var(--cream-light);font-family:var(--font-arabic);width:100%;"></select>
+                    </div>
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>التقييم</label>
+                        <select id="reviewStarsPage" style="padding:12px 16px;border-radius:16px;border:1px solid var(--cream-dark);background:var(--cream-light);font-family:var(--font-arabic);width:100%;">
+                            <option value="5">⭐⭐⭐⭐⭐ (ممتاز)</option>
+                            <option value="4">⭐⭐⭐⭐ (جيد جداً)</option>
+                            <option value="3">⭐⭐⭐ (جيد)</option>
+                            <option value="2">⭐⭐ (مقبول)</option>
+                            <option value="1">⭐ (سيء)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top:12px;">
+                        <label>رأيك</label>
+                        <textarea id="reviewTextPage" placeholder="اكتب تجربتك مع المنتج..." rows="3" style="padding:12px 16px;border-radius:16px;border:1px solid var(--cream-dark);background:var(--cream-light);font-family:var(--font-arabic);width:100%;"></textarea>
+                    </div>
+                    <button class="submit-btn" onclick="submitReviewFromPage()" style="margin-top:16px;">إرسال التقييم</button>
+                </div>
+
+                <!-- Reviews List -->
+                <div id="allReviewsList"></div>
             </div>
         </div>
         <footer>© 2026 يقين</footer>
@@ -2466,6 +2451,7 @@
                 <button class="tab-btn" data-tab="tab-orders">📋 الطلبات</button>
                 <button class="tab-btn" data-tab="tab-tracking">🚚 التتبع</button>
                 <button class="tab-btn" data-tab="tab-bestseller">⭐ الأكثر مبيعاً</button>
+                <button class="tab-btn" data-tab="tab-slider">🖼️ السلايدر</button>
             </div>
             <div class="dashboard-tab-content active" id="tab-products">
                 <div class="dashboard-products-list" id="dashProductsList"></div>
@@ -2480,6 +2466,7 @@
                     <div class="form-group"><label>رابط الصورة الثانية (hover)</label><input type="text" id="dashProductHoverImg" placeholder="https://i.postimg.cc/..."></div>
                     <div class="form-group"><label>الوصف</label><textarea id="dashProductDesc" placeholder="وصف المنتج..."></textarea></div>
                     <div class="form-group"><label>المقاسات (مفصولة بفاصلة)</label><input type="text" id="dashProductSizes" placeholder="L, XL, XXL" value="L, XL, XXL"></div>
+                    <div class="form-group"><label>الألوان (مفصولة بفاصلة)</label><input type="text" id="dashProductColors" placeholder="أسود, أبيض, رمادي"></div>
                     <div class="form-group"><label>الكمية</label><input type="number" id="dashProductStock" placeholder="10" value="5"></div>
                     <div class="form-group"><label>حالة المنتج (الوسم)</label>
                         <select id="dashProductBadge">
@@ -2594,6 +2581,14 @@
                     <button class="submit-btn" onclick="saveBestsellerSelection()">💾 حفظ التحديد</button>
                 </div>
             </div>
+            <div class="dashboard-tab-content" id="tab-slider">
+                <div style="background:var(--white);border-radius:24px;padding:24px;border:1px solid var(--cream-dark);box-shadow:var(--shadow-soft);">
+                    <h3 style="margin-bottom:16px;font-family:var(--font-serif);">🖼️ إدارة السلايدر الرئيسي</h3>
+                    <p style="color:var(--text-muted);margin-bottom:12px;">اختر المنتجات التي تريد ظهورها في السلايدر بالصفحة الرئيسية (يفضل اختيار 4 منتجات).</p>
+                    <div id="sliderSelection" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;"></div>
+                    <button class="submit-btn" onclick="saveSliderSelection()">💾 حفظ التحديد</button>
+                </div>
+            </div>
         </div>
         <footer>© 2026 يقين — لوحة التحكم</footer>
     </div>
@@ -2622,21 +2617,12 @@
             <div class="modal-product-desc" id="modalDesc"></div>
             <div class="modal-size-guide" onclick="openSizeGuide()">📏 جدول المقاسات</div>
             <div id="modalSizesContainer"></div>
-            <button id="modalAddToCartBtn" class="add-btn">إضافة للسلة</button>
-            <div class="modal-reviews">
-                <h4 style="color:var(--gold);margin-bottom:8px;font-family:var(--font-serif);">⭐ التقييمات</h4>
-                <div id="modalReviewsList"></div>
-                <div class="review-form">
-                    <select id="reviewStars">
-                        <option value="5">⭐⭐⭐⭐⭐</option>
-                        <option value="4">⭐⭐⭐⭐</option>
-                        <option value="3">⭐⭐⭐</option>
-                        <option value="2">⭐⭐</option>
-                        <option value="1">⭐</option>
-                    </select>
-                    <textarea id="reviewText" placeholder="اكتب رأيك عن المنتج..." rows="2"></textarea>
-                    <button class="review-submit" onclick="submitReview()">إرسال التقييم</button>
-                </div>
+            <div id="modalColorsContainer" style="margin-bottom:10px;"></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+                <button id="modalAddToCartBtn" class="add-btn" style="flex:1;">إضافة للسلة</button>
+                <button onclick="toggleWishlist(document.getElementById('modalName').textContent)" style="width:50px; height:50px; border-radius:50%; border:1px solid var(--cream-dark); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--error)'" onmouseout="this.style.borderColor='var(--cream-dark)';this.style.color='var(--text-muted)'">
+                    <i class="far fa-heart"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -2693,126 +2679,126 @@
         const defaultProductsData = {
             streetwear: [
                 { id: 'p1', name: 'YQ Falling Man Tshirt', price: 500, img: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg',
-                  hoverImg: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg', sizes: ['L', 'XL', 'XXL'], stock: 3,
+                  hoverImg: 'https://i.postimg.cc/zGr9chL4/IMG-9502.jpg', sizes: ['L', 'XL', 'XXL'], colors: ['أسود', 'أبيض'], stock: 3,
                   badge: 'new', description: 'تي شيرت Falling Man بتصميم مميز، خامة قطن فاخر.', collectionId: 'c1' },
                 { id: 'p2', name: 'YQ Graphite White Tshirt', price: 500,
                   img: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg', hoverImg: 'https://i.postimg.cc/hj5sWk21/IMG-9499.jpg',
-                  sizes: ['XL', 'XXL'], stock: 2, description: 'تي شيرت جرافيت أبيض أنيق.', collectionId: 'c1' },
+                  sizes: ['XL', 'XXL'], colors: ['أبيض'], stock: 2, description: 'تي شيرت جرافيت أبيض أنيق.', collectionId: 'c1' },
                 { id: 'p3', name: 'YQ Graphite Gray Tshirt', price: 500,
                   img: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png', hoverImg: 'https://i.postimg.cc/Z5zQnPWP/IMG-8940.png',
-                  sizes: [], stock: 0, badge: 'soldout', description: 'تي شيرت جرافيت رمادي — نفد المخزون.', collectionId: 'c1' },
+                  sizes: [], colors: ['رمادي'], stock: 0, badge: 'soldout', description: 'تي شيرت جرافيت رمادي — نفد المخزون.', collectionId: 'c1' },
                 { id: 'p4', name: 'YQ Graphite Black Tshirt', price: 500,
                   img: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg', hoverImg: 'https://i.postimg.cc/HLTBQ4J4/IMG-9494.jpg',
-                  sizes: ['L', 'XL', 'XXL'], stock: 5, badge: 'best', description: 'تي شيرت جرافيت أسود، الأكثر مبيعاً.', collectionId: 'c1' },
+                  sizes: ['L', 'XL', 'XXL'], colors: ['أسود'], stock: 5, badge: 'best', description: 'تي شيرت جرافيت أسود، الأكثر مبيعاً.', collectionId: 'c1' },
                 { id: 'p5', name: 'YQ Black Blue Tshirt', price: 500,
                   img: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg', hoverImg: 'https://i.postimg.cc/DzCH0YCv/IMG-9504.jpg',
-                  sizes: ['L', 'XXL'], stock: 2, description: 'تي شيرت أزرق غامق أنيق.', collectionId: 'c1' },
+                  sizes: ['L', 'XXL'], colors: ['أزرق غامق'], stock: 2, description: 'تي شيرت أزرق غامق أنيق.', collectionId: 'c1' },
                 { id: 'p6', name: 'YQ White Egale Tshirt', price: 500,
                   img: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg', hoverImg: 'https://i.postimg.cc/0yCt5w9M/IMG-9168.jpg',
-                  sizes: [], stock: 0, badge: 'soldout', description: 'تي شيرت أبيض بنسر.', collectionId: 'c1' },
+                  sizes: [], colors: ['أبيض'], stock: 0, badge: 'soldout', description: 'تي شيرت أبيض بنسر.', collectionId: 'c1' },
                 { id: 'p7', name: 'YQ White Eye Tshirt', price: 400, img: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg',
-                  hoverImg: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg', sizes: ['XXL'], stock: 1, badge: 'limited',
+                  hoverImg: 'https://i.postimg.cc/pV9bhRMP/IMG-9501.jpg', sizes: ['XXL'], colors: ['أبيض'], stock: 1, badge: 'limited',
                   description: 'تي شيرت عين — إصدار محدود.', collectionId: 'c1' },
                 { id: 'p8', name: 'YQ Black Shadows Tshirt', price: 400,
                   img: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg', hoverImg: 'https://i.postimg.cc/Y0FsX2t2/IMG-9505.jpg',
-                  sizes: ['XL', 'XXL'], stock: 2, badge: 'limited', description: 'تي شيرت الظل — إصدار محدود.', collectionId: 'c1' }
+                  sizes: ['XL', 'XXL'], colors: ['أسود'], stock: 2, badge: 'limited', description: 'تي شيرت الظل — إصدار محدود.', collectionId: 'c1' }
             ],
             essentials: [
                 { id: 'p9', name: 'YQ More Self Love Hoodie', price: 650,
                   img: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png', hoverImg: 'https://i.postimg.cc/C1w7pJ6R/IMG-7748.png',
-                  sizes: ['XXL'], stock: 1, description: 'هودي More Self Love، رسالة حب للذات.', collectionId: 'c2' },
+                  sizes: ['XXL'], colors: ['أبيض'], stock: 1, description: 'هودي More Self Love، رسالة حب للذات.', collectionId: 'c2' },
                 { id: 'p10', name: 'YQ Welcome To World', price: 650,
                   img: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png', hoverImg: 'https://i.postimg.cc/KcqNCP7G/IMG-7469.png',
-                  sizes: ['XL'], stock: 1, description: 'هودي Welcome To World.', collectionId: 'c2' },
+                  sizes: ['XL'], colors: ['بني'], stock: 1, description: 'هودي Welcome To World.', collectionId: 'c2' },
                 { id: 'p11', name: 'YQ Time Is Money', price: 650,
                   img: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png', hoverImg: 'https://i.postimg.cc/Ls3kDL6H/IMG-7640.png',
-                  sizes: ['L'], stock: 1, description: 'هودي Time Is Money.', collectionId: 'c2' },
+                  sizes: ['L'], colors: ['بيج'], stock: 1, description: 'هودي Time Is Money.', collectionId: 'c2' },
                 { id: 'p12', name: 'YQ Protect Your Peace', price: 650,
                   img: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png', hoverImg: 'https://i.postimg.cc/kMpQTn9x/IMG-7750.png',
-                  sizes: ['M'], stock: 1, description: 'هودي Protect Your Peace.', collectionId: 'c2' },
+                  sizes: ['M'], colors: ['أزرق فاتح'], stock: 1, description: 'هودي Protect Your Peace.', collectionId: 'c2' },
                 { id: 'p13', name: 'YQ Love Hoodie', price: 650, img: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png',
-                  hoverImg: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', sizes: ['L'], stock: 1,
+                  hoverImg: 'https://i.postimg.cc/pd8J33W5/IMG-7629.png', sizes: ['L'], colors: ['وردي'], stock: 1,
                   description: 'هودي Love.', collectionId: 'c2' },
                 { id: 'p14', name: 'YQ Pink Edition', price: 650,
                   img: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png', hoverImg: 'https://i.postimg.cc/8s8V1jf1/IMG-7744.png',
-                  sizes: ['L'], stock: 1, description: 'هودي Pink Edition.', collectionId: 'c2' },
+                  sizes: ['L'], colors: ['وردي'], stock: 1, description: 'هودي Pink Edition.', collectionId: 'c2' },
                 { id: 'p15', name: 'YQ All Eyes On Me', price: 650,
                   img: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png', hoverImg: 'https://i.postimg.cc/c4Yvf3mY/IMG-8024.png',
-                  sizes: ['XXL'], stock: 1, description: 'هودي All Eyes On Me.', collectionId: 'c2' },
+                  sizes: ['XXL'], colors: ['أسود'], stock: 1, description: 'هودي All Eyes On Me.', collectionId: 'c2' },
                 { id: 'p16', name: 'YQ Show Me Your Feelings', price: 650,
                   img: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg', hoverImg: 'https://i.postimg.cc/d0SsbQ6Y/IMG-8022.jpg',
-                  sizes: ['L'], stock: 1, description: 'هودي Show Me Your Feelings.', collectionId: 'c2' },
+                  sizes: ['L'], colors: ['أبيض'], stock: 1, description: 'هودي Show Me Your Feelings.', collectionId: 'c2' },
                 { id: 'p17', name: 'YQ YQ EDITION', price: 650, img: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png',
-                  hoverImg: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', sizes: ['XXL'], stock: 1, badge: 'limited',
+                  hoverImg: 'https://i.postimg.cc/G2FzTV68/IMG-7471.png', sizes: ['XXL'], colors: ['بني'], stock: 1, badge: 'limited',
                   description: 'هودي YQ EDITION — إصدار خاص.', collectionId: 'c2' },
                 { id: 'p18', name: 'YQ Black SweetShirt', price: 350,
                   img: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg', hoverImg: 'https://i.postimg.cc/yxW5ZrZB/IMG-7507.jpg',
-                  sizes: ['L', 'XL', 'XXL'], stock: 4, description: 'سويت شيرت أسود.', collectionId: 'c2' },
+                  sizes: ['L', 'XL', 'XXL'], colors: ['أسود'], stock: 4, description: 'سويت شيرت أسود.', collectionId: 'c2' },
                 { id: 'p19', name: 'YQ Brown SweetShirt', price: 350,
                   img: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg', hoverImg: 'https://i.postimg.cc/Fz2PJFvd/IMG-7506.jpg',
-                  sizes: ['L', 'XXL'], stock: 2, description: 'سويت شيرت بني.', collectionId: 'c2' },
+                  sizes: ['L', 'XXL'], colors: ['بني'], stock: 2, description: 'سويت شيرت بني.', collectionId: 'c2' },
                 { id: 'p20', name: 'YQ Baby Blue SweetShirt', price: 350,
                   img: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg', hoverImg: 'https://i.postimg.cc/zXTmS6QD/IMG-7505.jpg',
-                  sizes: ['L', 'XL', 'XXL'], stock: 4, badge: 'new', description: 'سويت شيرت بيبي بلو.', collectionId: 'c2' }
+                  sizes: ['L', 'XL', 'XXL'], colors: ['أزرق فاتح'], stock: 4, badge: 'new', description: 'سويت شيرت بيبي بلو.', collectionId: 'c2' }
             ],
             signature: [
                 { id: 'p21', name: 'YQ W Birgandi Basic Shirt', price: 350,
                   img: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg', hoverImg: 'https://i.postimg.cc/R0YKVBd3/IMG-8911.jpg',
-                  sizes: ['One Size'], stock: 2, description: 'قميص بيرغندي أساسي.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['نبيتي'], stock: 2, description: 'قميص بيرغندي أساسي.', collectionId: 'c3' },
                 { id: 'p22', name: 'YQ W Brown Basic Shirt', price: 350,
                   img: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg', hoverImg: 'https://i.postimg.cc/6qJZnfD6/IMG-8910.jpg',
-                  sizes: ['One Size'], stock: 2, description: 'قميص بني أساسي.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['بني'], stock: 2, description: 'قميص بني أساسي.', collectionId: 'c3' },
                 { id: 'p23', name: 'YQ W Pink Basic Shirt', price: 350,
                   img: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg', hoverImg: 'https://i.postimg.cc/g0Lrs6yM/IMG-8909.jpg',
-                  sizes: ['One Size'], stock: 1, description: 'قميص وردي أساسي.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['وردي'], stock: 1, description: 'قميص وردي أساسي.', collectionId: 'c3' },
                 { id: 'p24', name: 'YQ W Black Basic Shirt', price: 350,
                   img: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg', hoverImg: 'https://i.postimg.cc/1XstyCkX/IMG-8907.jpg',
-                  sizes: ['One Size'], stock: 2, description: 'قميص أسود أساسي.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['أسود'], stock: 2, description: 'قميص أسود أساسي.', collectionId: 'c3' },
                 { id: 'p25', name: 'YQ W Birgandi Shirt', price: 450,
                   img: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg', hoverImg: 'https://i.postimg.cc/J029pt50/IMG-8912.jpg',
-                  sizes: ['One Size'], stock: 0, badge: 'soldout', description: 'قميص بيرغندي — نفد المخزون.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['نبيتي'], stock: 0, badge: 'soldout', description: 'قميص بيرغندي — نفد المخزون.', collectionId: 'c3' },
                 { id: 'p26', name: 'YQ W Pink Shirt', price: 450, img: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg',
-                  hoverImg: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], stock: 0, badge: 'soldout',
+                  hoverImg: 'https://i.postimg.cc/XJVSJRvZ/IMG-8823.jpg', sizes: ['One Size'], colors: ['وردي'], stock: 0, badge: 'soldout',
                   description: 'قميص وردي — نفد المخزون.', collectionId: 'c3' },
                 { id: 'p27', name: 'YQ W Olive Shirt', price: 450,
                   img: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg', hoverImg: 'https://i.postimg.cc/BvBkdmBy/IMG-8881.jpg',
-                  sizes: ['One Size'], stock: 1, description: 'قميص زيتوني.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['زيتوني'], stock: 1, description: 'قميص زيتوني.', collectionId: 'c3' },
                 { id: 'p28', name: 'YQ W Pink Shimis', price: 470,
                   img: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg', hoverImg: 'https://i.postimg.cc/GhW5NtvL/IMG-8984.jpg',
-                  sizes: ['One Size'], stock: 1, description: 'شيميز وردي.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['وردي'], stock: 1, description: 'شيميز وردي.', collectionId: 'c3' },
                 { id: 'p29', name: 'YQ W White Shimis', price: 470,
                   img: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg', hoverImg: 'https://i.postimg.cc/1zH7fK2V/IMG-8983.jpg',
-                  sizes: ['One Size'], stock: 2, description: 'شيميز أبيض.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['أبيض'], stock: 2, description: 'شيميز أبيض.', collectionId: 'c3' },
                 { id: 'p30', name: 'YQ W Black Shimis', price: 470,
                   img: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg', hoverImg: 'https://i.postimg.cc/pLQq6Z20/IMG-8985.jpg',
-                  sizes: ['One Size'], stock: 2, description: 'شيميز أسود.', collectionId: 'c3' },
+                  sizes: ['One Size'], colors: ['أسود'], stock: 2, description: 'شيميز أسود.', collectionId: 'c3' },
                 { id: 'p31', name: 'YQ W Birgandi Shirt New', price: 470,
                   img: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg', hoverImg: 'https://i.postimg.cc/pVhN1g3q/IMG-8982.jpg',
-                  sizes: ['One Size'], stock: 2, badge: 'new', description: 'قميص بيرغندي جديد.', collectionId: 'c3' }
+                  sizes: ['One Size'], colors: ['نبيتي'], stock: 2, badge: 'new', description: 'قميص بيرغندي جديد.', collectionId: 'c3' }
             ],
             pants: [
                 { id: 'p32', name: 'Mint SweetPants', price: 500,
                   img: 'https://i.postimg.cc/763RwV96/IMG-8971.png', hoverImg: 'https://i.postimg.cc/763RwV96/IMG-8971.png',
-                  sizes: ['M', 'L', 'XL'], stock: 3, description: 'بنطلون SweetPants نعناعي.', collectionId: 'c4' },
+                  sizes: ['M', 'L', 'XL'], colors: ['نعناعي'], stock: 3, description: 'بنطلون SweetPants نعناعي.', collectionId: 'c4' },
                 { id: 'p33', name: 'Gray SweetPants', price: 500,
                   img: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png', hoverImg: 'https://i.postimg.cc/fTfMB7Q1/IMG-8974.png',
-                  sizes: ['XL'], stock: 1, description: 'بنطلون SweetPants رمادي.', collectionId: 'c4' },
+                  sizes: ['XL'], colors: ['رمادي'], stock: 1, description: 'بنطلون SweetPants رمادي.', collectionId: 'c4' },
                 { id: 'p34', name: 'Brown SweetPants', price: 500,
                   img: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png', hoverImg: 'https://i.postimg.cc/TPGYTkjZ/IMG-8973.png',
-                  sizes: ['M', 'L', 'XL', 'XXL'], stock: 3, description: 'بنطلون SweetPants بني.', collectionId: 'c4' },
+                  sizes: ['M', 'L', 'XL', 'XXL'], colors: ['بني'], stock: 3, description: 'بنطلون SweetPants بني.', collectionId: 'c4' },
                 { id: 'p35', name: 'Silver SweetPants', price: 500,
                   img: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png', hoverImg: 'https://i.postimg.cc/7Z4fLYqq/IMG-8972.png',
-                  sizes: ['M', 'L', 'XL', 'XXL'], stock: 8, badge: 'best',
+                  sizes: ['M', 'L', 'XL', 'XXL'], colors: ['فضي'], stock: 8, badge: 'best',
                   description: 'بنطلون SweetPants فضي — الأكثر مبيعاً.', collectionId: 'c4' },
                 { id: 'p36', name: 'Black Sherwal', price: 350,
                   img: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg', hoverImg: 'https://i.postimg.cc/brY6x2cX/IMG-8978.jpg',
-                  sizes: ['XL'], stock: 1, description: 'شروال أسود.', collectionId: 'c4' },
+                  sizes: ['XL'], colors: ['أسود'], stock: 1, description: 'شروال أسود.', collectionId: 'c4' },
                 { id: 'p37', name: 'White Sherwal', price: 350,
                   img: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg', hoverImg: 'https://i.postimg.cc/gkTMhJgv/IMG-8980.jpg',
-                  sizes: ['L', 'XL', 'XXL'], stock: 3, description: 'شروال أبيض.', collectionId: 'c4' },
+                  sizes: ['L', 'XL', 'XXL'], colors: ['أبيض'], stock: 3, description: 'شروال أبيض.', collectionId: 'c4' },
                 { id: 'p38', name: 'Beige Sherwal', price: 350,
                   img: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg', hoverImg: 'https://i.postimg.cc/rmMgTtpT/IMG-8979.jpg',
-                  sizes: ['L', 'XXL'], stock: 2, description: 'شروال بيج.', collectionId: 'c4' }
+                  sizes: ['L', 'XXL'], colors: ['بيج'], stock: 2, description: 'شروال بيج.', collectionId: 'c4' }
             ]
         };
 
@@ -2843,6 +2829,7 @@
         let recentProducts = [];
         let currentModalProduct = null;
         let currentModalSelectedSize = null;
+        let currentModalSelectedColor = null;
         let reviews = {};
         let orders = [];
         let isAdmin = false;
@@ -2853,6 +2840,7 @@
         let chartInstance = null;
         let currentCollectionId = null;
         let bestsellerIds = [];
+        let sliderProductIds = [];
         let sliderImages = [];
         let sliderCurrent = 0;
         let sliderInterval = null;
@@ -2905,7 +2893,7 @@
             try {
                 await Promise.all([
                     CATALOG_REF.set({ productsData, collectionsData, coupons }),
-                    CONFIG_REF.set({ announcement, settings, bestsellerIds })
+                    CONFIG_REF.set({ announcement, settings, bestsellerIds, sliderProductIds })
                 ]);
                 console.log('✅ Public data saved to Firestore');
                 return true;
@@ -2956,10 +2944,12 @@
                     announcement = d.announcement || { ...defaultAnnouncement };
                     settings     = d.settings     || { ...defaultSettings };
                     bestsellerIds = d.bestsellerIds || [];
+                    sliderProductIds = d.sliderProductIds || [];
                 } else {
                     announcement = { ...defaultAnnouncement };
                     settings     = { ...defaultSettings };
                     bestsellerIds = [];
+                    sliderProductIds = [];
                 }
 
                 allImages = imagesSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -2983,6 +2973,7 @@
                 announcement    = { ...defaultAnnouncement };
                 settings        = { ...defaultSettings };
                 bestsellerIds   = [];
+                sliderProductIds= [];
                 allImages       = [];
                 reviews         = {};
             }
@@ -3086,6 +3077,7 @@
             if (id === 'cart-page')     renderCartPage();
             if (id === 'wishlist-page') renderWishlistPage();
             if (id === 'collections')   renderCollections();
+            if (id === 'reviews-page')  renderReviewsPage();
             if (id === 'hero')          { renderBestsellers(); initSlider(); }
             if (id === 'dashboard') {
                 updateDashStats();
@@ -3103,19 +3095,35 @@
         };
 
         // ================================================================
-        //  10. السلايدر (عشوائي 4 منتجات + أبسط)
+        //  10. السلايدر
         // ================================================================
         function initSlider() {
-            const allProds = [];
-            for (const cat in productsData) productsData[cat].forEach(p => allProds.push(p));
+            let products = [];
             
-            // عمل خلط عشوائي للمنتجات واختيار 4 منتجات مختلفة كل مرة
-            const shuffled = allProds.sort(() => 0.5 - Math.random());
-            sliderImages = shuffled.slice(0, 4);
+            if (sliderProductIds && sliderProductIds.length > 0) {
+                sliderProductIds.forEach(id => {
+                    const p = findProductById(id);
+                    if (p) products.push(p);
+                });
+            }
+            
+            if (products.length === 0) {
+                for (const cat in productsData) {
+                    productsData[cat].forEach(p => { if (products.length < 4) products.push(p); });
+                }
+            }
+
+            sliderImages = products;
 
             const track = document.getElementById('heroSliderTrack');
             const dots  = document.getElementById('sliderDots');
             if (!track || !dots) return;
+
+            if (sliderImages.length === 0) {
+                track.innerHTML = `<div class="hero-slider-slide"><div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-light);">لا توجد منتجات لعرضها</div></div>`;
+                dots.innerHTML = '';
+                return;
+            }
 
             track.innerHTML = sliderImages.map(p =>
                 `<div class="hero-slider-slide">
@@ -3179,7 +3187,7 @@
         function isInWishlist(name) { return wishlist.includes(name); }
 
         // ================================================================
-        //  12. الكوليكشنز
+        //  12. الكوليكشنز والمنتجات
         // ================================================================
         function renderCollections() {
             const grid = document.getElementById('collectionsGrid');
@@ -3252,13 +3260,15 @@
         function renderProductCards(products) {
             return products.map(p => {
                 let badgeHtml = '';
-                if (p.badge === 'new')      badgeHtml = `<span class="badge badge-new">جديد</span>`;
-                else if (p.badge === 'best')    badgeHtml = `<span class="badge badge-best">الأكثر مبيعاً</span>`;
-                else if (p.badge === 'limited') badgeHtml = `<span class="badge badge-limited">محدود</span>`;
-                else if (p.badge === 'soldout') badgeHtml = `<span class="badge badge-sale">نفد</span>`;
+                if (p.badge === 'new')      badgeHtml += `<span class="badge badge-new">جديد</span>`;
+                else if (p.badge === 'best')    badgeHtml += `<span class="badge badge-best">الأكثر مبيعاً</span>`;
+                else if (p.badge === 'limited') badgeHtml += `<span class="badge badge-limited">محدود</span>`;
+                else if (p.badge === 'soldout') badgeHtml += `<span class="badge badge-sale">نفد</span>`;
+                
+                if (p.stock <= 0 && p.badge !== 'soldout') {
+                    badgeHtml += `<span class="badge badge-sale">نفد</span>`;
+                }
 
-                const lowStock = (p.stock > 0 && p.stock <= 2)
-                    ? `<div class="low-stock-badge">🔥 محدود</div>` : '';
                 const stockClass = p.stock > 0 ? 'in-stock' : 'out-of-stock';
                 const stockText  = p.stock > 0 ? `✅ متبقي: ${p.stock}` : '❌ نفد المخزون';
 
@@ -3268,13 +3278,20 @@
                         p.sizes.map(s => `<div class="size-option ${s === 'One Size' ? 'one-size' : ''}" data-size="${s}">${s}</div>`).join('') +
                         '</div>';
                 }
+                
+                let colorHtml = '';
+                if (p.colors && p.colors.length) {
+                    colorHtml = '<div class="color-options">' +
+                        p.colors.map(c => `<span class="color-option">${c}</span>`).join('') +
+                        '</div>';
+                }
+
                 const btnHtml = p.stock > 0
                     ? `<button class="add-btn" data-name="${p.name}" data-price="${p.price}" data-img="${p.img}">إضافة للسلة</button>`
                     : `<button class="sold-out-btn" disabled>Sold Out</button>`;
                 const wishIcon  = isInWishlist(p.name) ? 'fas fa-heart' : 'far fa-heart';
                 const wishClass = isInWishlist(p.name) ? 'liked' : '';
                 
-                // عرض السعر القديم لو موجود
                 const oldPriceHtml = p.old_price ? `<span class="old-price">${p.old_price} ج.م</span>` : '';
 
                 return `<div class="product-card" data-product-name="${p.name}">
@@ -3282,17 +3299,20 @@
                         <img src="${p.img}" loading="lazy" onerror="this.style.background='var(--cream-dark)';this.style.opacity='0.3';">
                         ${p.hoverImg && p.hoverImg !== p.img ? `<img src="${p.hoverImg}" class="hover-img" loading="lazy" onerror="this.style.display='none';">` : ''}
                     </div>
-                    <div class="card-badges">${badgeHtml}</div>
-                    ${lowStock}
+                    
                     <button class="wishlist-btn ${wishClass}" onclick="event.stopPropagation();toggleWishlist('${p.name}')">
                         <i class="${wishIcon}"></i>
                     </button>
                     <button class="quick-view-btn" onclick="event.stopPropagation();openModalByName('${p.name}')">👁️ سريع</button>
+                    
                     <h3>${p.name}</h3>
+                    
+                    ${badgeHtml ? `<div class="card-badges">${badgeHtml}</div>` : '<div style="height:28px"></div>'}
+                    
                     <div class="product-price">${oldPriceHtml} ${p.price} ج.م</div>
                     <div class="stock-info ${stockClass}">${stockText}</div>
                     ${sizeHtml}
-                    <input type="text" class="custom-size" placeholder="مقاس خاص">
+                    ${colorHtml}
                     ${btnHtml}
                 </div>`;
             }).join('');
@@ -3305,9 +3325,15 @@
                     const card = this.closest('.product-card');
                     const p = findProductByName(card.dataset.productName);
                     if (!p) return;
-                    const size = card.dataset.selectedSize || card.querySelector('.custom-size')?.value.trim();
-                    if (!size) { showToast('⚠️ اختر المقاس'); return; }
-                    addToCart(p, size);
+                    
+                    if (p.colors && p.colors.length > 0) {
+                        openModalByName(p.name);
+                        return;
+                    }
+
+                    const size = card.dataset.selectedSize;
+                    if (!size && p.sizes && p.sizes.length > 0) { showToast('⚠️ اختر المقاس'); return; }
+                    addToCart(p, size || 'One Size', null);
                 };
             });
             container.querySelectorAll('.size-option').forEach(opt => {
@@ -3317,24 +3343,12 @@
                     this.classList.add('selected');
                     const card = this.closest('.product-card');
                     card.dataset.selectedSize = this.dataset.size;
-                    const custom = card.querySelector('.custom-size');
-                    if (custom) custom.value = '';
-                };
-            });
-            container.querySelectorAll('.custom-size').forEach(inp => {
-                inp.onchange = function() {
-                    const card = this.closest('.product-card');
-                    if (this.value.trim()) {
-                        card.dataset.selectedSize = this.value.trim();
-                        card.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
-                    } else delete card.dataset.selectedSize;
                 };
             });
             container.querySelectorAll('.product-card').forEach(card => {
                 card.onclick = function(e) {
                     if (e.target.closest('.add-btn') || e.target.closest('.size-option') ||
-                        e.target.closest('.custom-size') || e.target.closest('.wishlist-btn') ||
-                        e.target.closest('.quick-view-btn')) return;
+                        e.target.closest('.wishlist-btn') || e.target.closest('.quick-view-btn') || e.target.closest('.color-option')) return;
                     openModalByName(this.dataset.productName);
                     addToRecent(this.dataset.productName);
                 };
@@ -3354,15 +3368,15 @@
             saveLocalCart();
         }
 
-        function addToCart(product, size) {
+        function addToCart(product, size, color = null) {
             if (product.stock <= 0) { showToast('⚠️ نفد المخزون'); return false; }
-            const existing = cart.find(i => i.name === product.name && i.size === size);
+            const existing = cart.find(i => i.name === product.name && i.size === size && i.color === color);
             if (existing) {
                 if (existing.quantity >= product.stock) { showToast('⚠️ الكمية المتاحة أقل'); return false; }
                 existing.quantity++;
                 total += product.price;
             } else {
-                cart.push({ name: product.name, price: product.price, img: product.img, size, quantity: 1 });
+                cart.push({ name: product.name, price: product.price, img: product.img, size, color, quantity: 1 });
                 total += product.price;
             }
             showToast('✅ تمت الإضافة إلى السلة');
@@ -3393,7 +3407,7 @@
                     <img src="${item.img}" onclick="openModalByName('${item.name}')" loading="lazy" onerror="this.style.opacity='0.3';">
                     <div class="cart-item-details">
                         <h4>${item.name}</h4>
-                        <div class="item-size">المقاس: ${item.size}</div>
+                        <div class="item-size">المقاس: ${item.size} ${item.color ? `| اللون: ${item.color}` : ''}</div>
                         <div class="product-price">${item.price} ج.م</div>
                         <div class="cart-item-quantity">
                             <button onclick="updateCartItemQuantity(${idx},-1)">−</button>
@@ -3490,6 +3504,7 @@
             if (!p) return;
             currentModalProduct = p;
             currentModalSelectedSize = null;
+            currentModalSelectedColor = null;
 
             document.getElementById('modalImg').src   = p.img;
             document.getElementById('modalName').textContent  = p.name;
@@ -3511,41 +3526,61 @@
 
             let sizesHtml = '';
             if (p.sizes && p.sizes.length) {
-                sizesHtml = '<div class="size-options" id="modalSizeOptions">' +
+                sizesHtml = '<div style="font-weight:600;margin-bottom:6px;font-size:14px;color:var(--text-muted);">المقاس:</div><div class="size-options" id="modalSizeOptions" style="justify-content:flex-start;">' +
                     p.sizes.map(s => `<div class="size-option ${s === 'One Size' ? 'one-size' : ''}" data-size="${s}">${s}</div>`).join('') +
-                    '</div><input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
-            } else {
-                sizesHtml = '<input type="text" id="modalCustomSize" class="custom-size" placeholder="مقاس خاص">';
+                    '</div>';
             }
             document.getElementById('modalSizesContainer').innerHTML = sizesHtml;
 
+            let colorsHtml = '';
+            if (p.colors && p.colors.length) {
+                colorsHtml = '<div style="font-weight:600;margin-bottom:6px;font-size:14px;color:var(--text-muted);">اللون:</div><div class="color-options" id="modalColorOptions" style="justify-content:flex-start;margin-top:0;">' +
+                    p.colors.map(c => `<span class="color-option" style="font-size:13px; padding:6px 16px; background:var(--white); border-color:var(--cream-dark); cursor:pointer;" data-color="${c}">${c}</span>`).join('') +
+                    '</div>';
+            }
+            document.getElementById('modalColorsContainer').innerHTML = colorsHtml;
+
+            // Events for Size
             document.querySelectorAll('#modalSizeOptions .size-option').forEach(opt => {
                 opt.onclick = function(e) {
                     e.stopPropagation();
                     document.querySelectorAll('#modalSizeOptions .size-option').forEach(o => o.classList.remove('selected'));
                     this.classList.add('selected');
                     currentModalSelectedSize = this.dataset.size;
-                    document.getElementById('modalCustomSize').value = '';
                 };
             });
-            const customInput = document.getElementById('modalCustomSize');
-            if (customInput) {
-                customInput.oninput = function() {
-                    if (this.value.trim()) {
-                        document.querySelectorAll('#modalSizeOptions .size-option').forEach(o => o.classList.remove('selected'));
-                        currentModalSelectedSize = this.value.trim();
-                    } else currentModalSelectedSize = null;
+
+            // Events for Color
+            document.querySelectorAll('#modalColorOptions .color-option').forEach(opt => {
+                opt.onclick = function(e) {
+                    e.stopPropagation();
+                    document.querySelectorAll('#modalColorOptions .color-option').forEach(o => {
+                        o.classList.remove('selected');
+                        o.style.background = 'var(--white)';
+                        o.style.color = 'var(--text-dark)';
+                        o.style.borderColor = 'var(--cream-dark)';
+                    });
+                    this.classList.add('selected');
+                    this.style.background = 'var(--gold)';
+                    this.style.color = 'white';
+                    this.style.borderColor = 'var(--gold)';
+                    currentModalSelectedColor = this.dataset.color;
                 };
-            }
+            });
 
             document.getElementById('modalAddToCartBtn').onclick = function() {
                 if (p.stock <= 0) { showToast('⚠️ نفد المخزون'); return; }
-                const size = currentModalSelectedSize || document.getElementById('modalCustomSize').value.trim();
+                const size = currentModalSelectedSize || (p.sizes && p.sizes.length === 0 ? 'One Size' : null);
                 if (!size) { showToast('⚠️ اختر المقاس'); return; }
-                if (addToCart(p, size)) closeModal();
+                
+                if (p.colors && p.colors.length > 0 && !currentModalSelectedColor) {
+                    showToast('⚠️ اختر اللون');
+                    return;
+                }
+
+                if (addToCart(p, size, currentModalSelectedColor)) closeModal();
             };
 
-            renderReviews(p.name);
             document.getElementById('productModal').style.display = 'flex';
             addToRecent(p.name);
         }
@@ -3564,14 +3599,57 @@
         // ================================================================
         //  15. التقييمات
         // ================================================================
-        async function submitReview() {
-            if (!currentModalProduct) { showToast('⚠️ اختر منتجاً'); return; }
-            const stars = parseInt(document.getElementById('reviewStars').value);
-            const text  = document.getElementById('reviewText').value.trim();
+        function renderReviewsPage() {
+            const select = document.getElementById('reviewProductSelect');
+            const list = document.getElementById('allReviewsList');
+            if (!select || !list) return;
+
+            // Populate Select
+            const allProducts = [];
+            for (const cat in productsData) productsData[cat].forEach(p => allProducts.push(p));
+            
+            select.innerHTML = '<option value="">-- اختر منتجاً --</option>' + 
+                allProducts.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+
+            // Render List
+            const allRevs = [];
+            for (const prodName in reviews) {
+                reviews[prodName].forEach(r => allRevs.push(r));
+            }
+            
+            // Sort by newest (assuming date is stored or just array order reversed)
+            allRevs.reverse();
+
+            if (!allRevs.length) {
+                list.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:40px;background:var(--white);border-radius:20px;">لا توجد تقييمات حتى الآن</p>';
+                return;
+            }
+
+            list.innerHTML = allRevs.map(r => `
+                <div style="background:var(--white);padding:20px;border-radius:16px;border:1px solid var(--cream-dark);margin-bottom:12px;box-shadow:var(--shadow-soft);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                        <h4 style="font-family:var(--font-serif);color:var(--text-dark);margin:0;">${r.productName}</h4>
+                        <div style="color:var(--gold);">${'⭐'.repeat(r.stars)}</div>
+                    </div>
+                    <p style="color:var(--text-muted);margin-bottom:8px;font-size:15px;">${r.text}</p>
+                    <div style="font-size:12px;color:var(--text-light);display:flex;justify-content:space-between;">
+                        <span>${r.author}</span>
+                        <span>${r.date || ''}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function submitReviewFromPage() {
+            const productName = document.getElementById('reviewProductSelect').value;
+            const stars = parseInt(document.getElementById('reviewStarsPage').value);
+            const text = document.getElementById('reviewTextPage').value.trim();
+
+            if (!productName) { showToast('⚠️ اختر المنتج'); return; }
             if (!text) { showToast('⚠️ اكتب رأيك'); return; }
 
             const review = {
-                productName: currentModalProduct.name,
+                productName,
                 stars,
                 text,
                 author: 'عميل',
@@ -3581,33 +3659,18 @@
 
             try {
                 await REVIEWS_COL.add(review);
-                if (!reviews[currentModalProduct.name]) reviews[currentModalProduct.name] = [];
-                reviews[currentModalProduct.name].push(review);
-                document.getElementById('reviewText').value = '';
-                renderReviews(currentModalProduct.name);
-                showToast('✅ تم إرسال التقييم', 'fa-star');
+                if (!reviews[productName]) reviews[productName] = [];
+                reviews[productName].push(review);
+                
+                document.getElementById('reviewTextPage').value = '';
+                renderReviewsPage();
+                showToast('✅ تم إرسال التقييم بنجاح', 'fa-star');
             } catch (e) {
                 console.error('Review failed:', e);
-                showToast('❌ فشل إرسال التقييم، حاول لاحقاً', 'fa-times-circle');
+                showToast('❌ فشل إرسال التقييم', 'fa-times-circle');
             }
         }
-        window.submitReview = submitReview;
-
-        function renderReviews(productName) {
-            const container = document.getElementById('modalReviewsList');
-            if (!container) return;
-            const revs = reviews[productName] || [];
-            if (!revs.length) {
-                container.innerHTML = '<p style="color:var(--text-light);font-size:14px;">لا توجد تقييمات حتى الآن</p>';
-                return;
-            }
-            container.innerHTML = revs.slice().reverse().map(r => `
-                <div style="border-bottom:1px solid var(--cream-dark);padding:8px 0;">
-                    <div style="font-weight:600;">${'⭐'.repeat(r.stars)}</div>
-                    <div style="font-size:14px;color:var(--text-muted);">${r.text}</div>
-                    <div style="font-size:12px;color:var(--text-light);">${r.author} - ${r.date || ''}</div>
-                </div>`).join('');
-        }
+        window.submitReviewFromPage = submitReviewFromPage;
 
         function addToRecent(productName) {
             const p = findProductByName(productName);
@@ -3640,7 +3703,7 @@
             if (!cart.length) { showToast('⚠️ السلة فارغة'); return; }
 
             let msg = '🛍️ طلب جديد من يقين:\n';
-            cart.forEach(i => msg += `${i.name} (${i.size}) x${i.quantity} = ${i.price * i.quantity} ج.م\n`);
+            cart.forEach(i => msg += `${i.name} (${i.size}${i.color ? ' / ' + i.color : ''}) x${i.quantity} = ${i.price * i.quantity} ج.م\n`);
 
             const subtotal = total;
             const shipping = document.querySelector('input[name="delivery"]:checked')?.value === 'pickup' ? 0 : 60;
@@ -3656,7 +3719,7 @@
             const orderId = '#YQ-' + Date.now().toString(36).toUpperCase();
             const order = {
                 id: orderId,
-                items: cart.map(i => ({ name: i.name, size: i.size, quantity: i.quantity })),
+                items: cart.map(i => ({ name: i.name, size: i.size, color: i.color, quantity: i.quantity })),
                 total: Math.round(finalTotal),
                 date: new Date().toISOString(),
                 status: 'pending',
@@ -3736,7 +3799,37 @@
         window.saveBestsellerSelection = saveBestsellerSelection;
 
         // ================================================================
-        //  18. المنتجات (لوحة التحكم)
+        //  18. إدارة السلايدر
+        // ================================================================
+        function renderSliderManager() {
+            const container = document.getElementById('sliderSelection');
+            if (!container) return;
+            const all = [];
+            for (const cat in productsData) productsData[cat].forEach(p => all.push(p));
+            container.innerHTML = all.map(p => `
+                <label style="display:flex;align-items:center;gap:8px;background:var(--cream);padding:6px 14px;border-radius:40px;cursor:pointer;border:1px solid var(--cream-dark);">
+                    <input type="checkbox" value="${p.id}" ${sliderProductIds.includes(p.id) ? 'checked' : ''} class="slider-checkbox">
+                    <span>${p.name}</span>
+                </label>`).join('');
+        }
+
+        async function saveSliderSelection() {
+            if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
+            const newIds = [];
+            document.querySelectorAll('.slider-checkbox').forEach(cb => { if (cb.checked) newIds.push(cb.value); });
+            sliderProductIds = newIds;
+            const ok = await saveAllData();
+            if (ok) { 
+                initSlider(); 
+                showToast('✅ تم تحديث السلايدر'); 
+            } else {
+                showToast('❌ فشل الحفظ', 'fa-times-circle');
+            }
+        }
+        window.saveSliderSelection = saveSliderSelection;
+
+        // ================================================================
+        //  19. المنتجات (لوحة التحكم)
         // ================================================================
         function renderDashProducts() {
             const container = document.getElementById('dashProductsList');
@@ -3758,7 +3851,9 @@
                                 <div style="font-size:13px;color:var(--text-light);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap;">
                                     <span>📦 المخزون: ${p.stock}</span>
                                     <span>📏 المقاسات: ${(p.sizes||[]).join(' , ') || 'لا يوجد'}</span>
+                                    <span>🎨 الألوان: ${(p.colors||[]).join(' , ') || 'لا يوجد'}</span>
                                     <span>📁 ${c?.name || 'بدون مجموعة'}</span>
+                                    ${p.badge ? `<span>🏷️ ${p.badge}</span>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -3800,6 +3895,7 @@
             const p = {
                 id: generateId(), name, price, img, stock, collectionId,
                 sizes: document.getElementById('dashProductSizes').value.split(',').map(s => s.trim()).filter(Boolean),
+                colors: document.getElementById('dashProductColors').value.split(',').map(c => c.trim()).filter(Boolean),
                 badge: document.getElementById('dashProductBadge').value || '',
                 description: document.getElementById('dashProductDesc').value.trim(),
                 hoverImg: document.getElementById('dashProductHoverImg').value.trim(),
@@ -3811,12 +3907,13 @@
             const ok = await saveAllData();
             if (ok) {
                 renderAll(); updateDashStats(); renderDashProducts();
-                renderBestsellerManager(); initSlider();
+                renderBestsellerManager(); renderSliderManager(); initSlider();
                 showToast('✅ تمت إضافة المنتج');
                 document.getElementById('dashProductName').value = '';
                 document.getElementById('dashProductPrice').value = '';
                 document.getElementById('dashProductOldPrice').value = '';
                 document.getElementById('dashProductImg').value = '';
+                document.getElementById('dashProductColors').value = '';
             }
         }
         window.addProductFromDash = addProductFromDash;
@@ -3828,10 +3925,11 @@
                 if (idx > -1) {
                     productsData[cat].splice(idx, 1);
                     bestsellerIds = bestsellerIds.filter(id => id !== productId);
+                    sliderProductIds = sliderProductIds.filter(id => id !== productId);
                     const ok = await saveAllData();
                     if (ok) {
                         renderAll(); updateDashStats(); renderDashProducts();
-                        renderBestsellerManager(); initSlider();
+                        renderBestsellerManager(); renderSliderManager(); initSlider();
                         showToast('🗑️ تم حذف المنتج');
                     }
                     return;
@@ -3863,6 +3961,13 @@
 
             const newSizes = prompt('📏 المقاسات (مفصولة بفاصلة، مثال: S, M, L):', (found.sizes || []).join(', '));
             if (newSizes === null) return;
+            
+            const newColors = prompt('🎨 الألوان المتاحة (مفصولة بفاصلة، مثال: أسود, أبيض):', (found.colors || []).join(', '));
+            if (newColors === null) return;
+            
+            const badgeMsg = '🏷️ حالة المنتج (اكتب واحدة من دول:\nnew = جديد\nbest = الأكثر مبيعاً\nlimited = محدود\nsoldout = نفد\nأو اتركه فارغ للمسح):';
+            const newBadge = prompt(badgeMsg, found.badge || '');
+            if (newBadge === null) return;
 
             const colOptions = collectionsData.map(c => `${c.id} - ${c.name}`).join('\n');
             const newColId = prompt(`🏷️ معرف المجموعة:\n${colOptions}`, found.collectionId);
@@ -3871,7 +3976,6 @@
             const newImg = prompt('🖼️ رابط الصورة (اتركه فارغاً للاحتفاظ بالحالية):', found.img);
             if (newImg === null) return;
 
-            // تحديث البيانات
             if (newName.trim()) found.name = newName.trim();
             
             const pPrice = parseFloat(newPrice);
@@ -3884,6 +3988,8 @@
             if (!isNaN(pStock) && pStock >= 0) found.stock = pStock;
 
             found.sizes = newSizes.split(',').map(s => s.trim()).filter(Boolean);
+            found.colors = newColors.split(',').map(c => c.trim()).filter(Boolean);
+            found.badge = newBadge.trim();
             
             if (collectionsData.some(c => c.id === newColId.trim())) found.collectionId = newColId.trim();
             if (newImg.trim()) found.img = newImg.trim();
@@ -3891,13 +3997,13 @@
             const ok = await saveAllData();
             if (ok) {
                 renderAll(); updateDashStats(); renderDashProducts();
-                renderBestsellerManager(); initSlider();
+                renderBestsellerManager(); renderSliderManager(); initSlider();
                 showToast('✅ تم تعديل المنتج بنجاح');
             }
         }
 
         // ================================================================
-        //  19. المجموعات
+        //  20. المجموعات
         // ================================================================
         async function addCollectionFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
@@ -3964,14 +4070,14 @@
             const ok = await saveAllData();
             if (ok) {
                 renderAll(); renderDashCollections(); renderDashProducts();
-                renderBestsellerManager(); initSlider();
+                renderBestsellerManager(); renderSliderManager(); initSlider();
                 showToast('🗑️ تم حذف المجموعة');
             }
         }
         window.deleteCollectionFromDash = deleteCollectionFromDash;
 
         // ================================================================
-        //  20. الكوبونات
+        //  21. الكوبونات
         // ================================================================
         async function addCouponFromDash() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
@@ -4011,7 +4117,7 @@
         }
 
         // ================================================================
-        //  21. الإعلانات والإعدادات
+        //  22. الإعلانات والإعدادات
         // ================================================================
         async function saveAnnouncement() {
             if (!isAdmin) { showToast('⚠️ يجب تسجيل الدخول كمدير'); return; }
@@ -4053,7 +4159,7 @@
         }
 
         // ================================================================
-        //  22. الإحصائيات والطلبات
+        //  23. الإحصائيات والطلبات
         // ================================================================
         function updateDashStats() {
             let tot = 0, low = 0;
@@ -4083,7 +4189,7 @@
                     <div style="font-weight:600;">${o.id} — ${o.total || 0} ج.م</div>
                     <div style="font-size:13px;color:var(--text-light);">${o.date ? new Date(o.date).toLocaleDateString() : ''}</div>
                     <div style="font-size:13px;color:var(--text-muted);margin-top:6px;">
-                        ${(o.items || []).map(i => `• ${i.name} (${i.size}) × ${i.quantity}`).join('<br>')}
+                        ${(o.items || []).map(i => `• ${i.name} (${i.size}${i.color ? ' / ' + i.color : ''}) × ${i.quantity}`).join('<br>')}
                     </div>
                 </div>`).join('');
         }
@@ -4113,7 +4219,7 @@
         window.trackOrder = trackOrder;
 
         // ================================================================
-        //  23. مكتبة الصور
+        //  24. مكتبة الصور
         // ================================================================
         function renderImageLibrary() {
             const container = document.getElementById('imageLibrary');
@@ -4216,7 +4322,7 @@
         window.deleteImage = deleteImage;
 
         // ================================================================
-        //  24. المصادقة
+        //  25. المصادقة
         // ================================================================
         function toggleAdminLogin() {
             if (isAdmin) adminLogout();
@@ -4327,7 +4433,7 @@
         }
 
         // ================================================================
-        //  25. كوبونات السلة
+        //  26. كوبونات السلة
         // ================================================================
         document.getElementById('applyCouponBtn')?.addEventListener('click', function() {
             const code = document.getElementById('couponCodeInput').value.trim().toUpperCase();
@@ -4347,7 +4453,7 @@
         });
 
         // ================================================================
-        //  26. التهيئة النهائية
+        //  27. التهيئة النهائية
         // ================================================================
         checkAdminSession();
         loadAllData();
@@ -4373,6 +4479,7 @@
                 if (tab === 'tab-orders')       updateDashOrders();
                 if (tab === 'tab-products')     renderDashProducts();
                 if (tab === 'tab-bestseller')   renderBestsellerManager();
+                if (tab === 'tab-slider')       renderSliderManager();
             };
         });
 
@@ -4401,9 +4508,9 @@
             addCouponFromDash, deleteCouponFromDash,
             saveAnnouncement, saveSettings, manualSave,
             handleImageUpload, copyImageUrl, replaceImage, deleteImage,
-            renderBestsellerManager, saveBestsellerSelection,
+            renderBestsellerManager, saveBestsellerSelection, renderSliderManager, saveSliderSelection,
             toggleAdminLogin, openAdminLogin, closeAdminLogin, adminLogin, adminLogout,
-            showToast, initSlider
+            showToast, initSlider, submitReviewFromPage
         });
 
         console.log('✅ YQ STATE — Public/Private data separation active');
