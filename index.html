@@ -3824,14 +3824,19 @@ DROP 01</h1>
             renderCheckoutStep3();
         }
 
-        window.placeOrder = function() {
+                        window.placeOrder = function() {
             const name = document.getElementById('shipName').value;
             const phone = document.getElementById('shipPhone').value;
             const address = document.getElementById('shipAddress').value;
             const city = document.getElementById('shipCity').value;
-            if (!name || !phone || !address || !city) return showToast('Please fill all required fields', 'fa-exclamation-circle', 'warning');
+            
+            if (!name || !phone || !address || !city) {
+                return showToast('Please fill all required fields', 'fa-exclamation-circle', 'warning');
+            }
+            
             const orderId = '#YQ-' + Date.now().toString().slice(-6);
             const payment = document.querySelector('input[name="payment"]:checked').value;
+            
             const order = {
                 id: orderId,
                 items: cart,
@@ -3841,9 +3846,54 @@ DROP 01</h1>
                 payment,
                 status: 'Processing'
             };
+
+            // 1. حفظ الأوردر في الداتا بيز (لوحة التحكم)
             ORDERS_COL.add(order).catch(e => console.error(e));
+            
+            // 2. خصم الكميات من الاستوك
+            let stockUpdated = false;
+            cart.forEach(cartItem => {
+                for(let colKey in productsData) {
+                    if(Array.isArray(productsData[colKey])) {
+                        const prod = productsData[colKey].find(p => p.name === cartItem.name);
+                        if(prod) {
+                            // خصم الكمية مع ضمان إنها متبقاش أقل من صفر
+                            prod.stock = Math.max(0, (prod.stock || 0) - cartItem.quantity);
+                            stockUpdated = true;
+                        }
+                    }
+                }
+            });
+
+            // تحديث الداتا بيز بالاستوك الجديد في الخلفية
+            if(stockUpdated) {
+                CATALOG_REF.set({ productsData, collectionsData, coupons }).catch(e => {
+                    console.error("Error updating stock: ", e);
+                });
+            }
+
+            // 3. تجهيز رسالة الواتساب
+            const wpNumber = settings.contactWhatsApp || '201027515725';
+            let wpMsg = `🚨 *طلب جديد من YQ STATE* 🚨\n\n`;
+            wpMsg += `*رقم الطلب:* ${orderId}\n`;
+            wpMsg += `*الاسم:* ${name}\n`;
+            wpMsg += `*الموبايل:* ${phone}\n`;
+            wpMsg += `*العنوان:* ${city} - ${address}\n`;
+            wpMsg += `*طريقة الدفع:* ${payment === 'cod' ? 'كاش عند الاستلام' : 'واتساب'}\n\n`;
+            wpMsg += `*المنتجات:*\n`;
+            cart.forEach(i => {
+                wpMsg += `- ${i.name} (مقاس: ${i.size}) x${i.quantity} = ${i.price * i.quantity} EGP\n`;
+            });
+            wpMsg += `\n*الإجمالي:* ${order.total} EGP`;
+
+            // 4. فتح واتساب عشان العميل يبعتلك الرسالة
+            window.open(`https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMsg)}`, '_blank');
+
+            // 5. تفريغ السلة وإظهار صفحة النجاح
             document.getElementById('successOrderId').innerText = orderId;
-            cart = []; total = 0; checkoutDiscount = 0;
+            cart = [];
+            total = 0;
+            checkoutDiscount = 0;
             saveLocal();
             updateCartCount();
             showPage('order-success');
