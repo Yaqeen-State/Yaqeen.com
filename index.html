@@ -62,6 +62,40 @@
         button { font-family: inherit; }
 
         /* ============================================================
+           Loading Splash
+           ============================================================ */
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 24px;
+            transition: opacity 0.4s ease;
+        }
+        body.dark-mode #loadingScreen { background: #0d0d0d; }
+        #loadingScreen .ls-logo {
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 6px;
+            color: #000;
+        }
+        body.dark-mode #loadingScreen .ls-logo { color: #f0f0f0; }
+        #loadingScreen .ls-spinner {
+            width: 34px;
+            height: 34px;
+            border: 3px solid #eeeeee;
+            border-top-color: #000000;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        body.dark-mode #loadingScreen .ls-spinner { border-color: #2a2a2a; border-top-color: #f0f0f0; }
+
+        /* ============================================================
            2. Maintenance Banner
            ============================================================ */
         .maintenance-banner {
@@ -1543,7 +1577,7 @@
            ============================================================ */
         @media print {
             .main-nav, .top-bar, .mobile-bottom-nav, .whatsapp-float,
-            .back-to-top, .compare-bar, .cookie-banner, .notif-panel { display: none !important; }
+            .back-to-top, .compare-bar, .cookie-banner, .notif-panel, #loadingScreen { display: none !important; }
             .page { padding-top: 0; }
             body { background: white; color: black; }
         }
@@ -1756,6 +1790,12 @@
 </head>
 <body>
 
+    <!-- ========== Loading Splash ========== -->
+    <div id="loadingScreen">
+        <div class="ls-logo">YQ STATE</div>
+        <div class="ls-spinner"></div>
+    </div>
+
     <!-- ========== Maintenance Banner ========== -->
     <div class="maintenance-banner" id="maintenanceBanner">
         <i class="fas fa-tools"></i> الموقع تحت الصيانة والتحديث حالياً. يمكنك تصفح المنتجات، ولكن لا يمكن إتمام الطلبات في الوقت الحالي.
@@ -1802,7 +1842,7 @@
 
     <!-- ========== Announcement Bar ========== -->
     <div class="top-bar" id="announcementBar">
-        <span id="announcementText">Loading Announcement...</span>
+        <span id="announcementText"></span>
     </div>
 
     <!-- ========== Toast ========== -->
@@ -1888,7 +1928,7 @@ DROP 01</h1>
                 <p class="hero-desc" id="heroDesc">Same vision. New pieces.</p>
                 <a href="#" class="btn-primary" id="heroBtn" onclick="showPage('collections'); return false;">Shop Now &rarr;</a>
             </div>
-            <div class="hero-image" id="heroImage" style="background-image: url('https://i.postimg.cc/wBz49DW1/IMG-8950.png');"></div>
+            <div class="hero-image" id="heroImage"></div>
         </div>
 
         <!-- Countdown Banner -->
@@ -2777,12 +2817,24 @@ DROP 01</h1>
                 productsData = defaultProductsData;
                 collectionsData = defaultCollectionsData;
                 coupons = defaultCoupons;
-                document.getElementById('announcementText').innerText = "Welcome to YQ STATE";
                 applySettingsToUI();
                 startCountdown();
                 updateUI();
             }
+
+            hideLoadingScreen();
         }
+
+        // ✅ شاشة التحميل - إخفاء
+        function hideLoadingScreen() {
+            const ls = document.getElementById('loadingScreen');
+            if (!ls) return;
+            ls.style.opacity = '0';
+            setTimeout(() => { ls.style.display = 'none'; }, 400);
+        }
+
+        // ✅ Safety: لو Firebase اتأخر، نخفي الشاشة بعد 5 ثواني برضه
+        setTimeout(hideLoadingScreen, 5000);
 
         function loadLocalData() {
             try {
@@ -2930,7 +2982,7 @@ DROP 01</h1>
             else if (p.stock > 0 && p.stock <= 3) badgeHtml = `<span class="product-badge lowstock">Low Stock</span>`;
 
             return `
-                <div class="product-card" onclick="openProductPage('${p.name.replace(/'/g, "\\'")}')">
+                <div class="product-card" onclick="openProductPage('${p.id}')">
                     <div class="product-img-wrapper">
                         <img src="${p.img}" class="main-img" alt="${p.name}">
                         ${p.hoverImg ? `<img src="${p.hoverImg}" class="hover-img" alt="${p.name}">` : ''}
@@ -2938,7 +2990,7 @@ DROP 01</h1>
                         <button class="wishlist-btn ${isLiked?'liked':''}" onclick="event.stopPropagation(); toggleWishlist('${p.name.replace(/'/g, "\\'")}')">
                             <i class="${isLiked?'fas':'far'} fa-heart"></i>
                         </button>
-                        <button class="quick-add-btn" onclick="event.stopPropagation(); openProductPage('${p.name.replace(/'/g, "\\'")}')">
+                        <button class="quick-add-btn" onclick="event.stopPropagation(); openProductPage('${p.id}')">
                             <i class="fas fa-shopping-bag"></i>
                         </button>
                     </div>
@@ -2986,11 +3038,11 @@ DROP 01</h1>
         // ================================================================
         // 8. Product Page & Cart Logic
         // ================================================================
-        window.openProductPage = function(name) {
+        window.openProductPage = function(id) {
             let p = null;
             for(let c in productsData) {
                 if(Array.isArray(productsData[c])) {
-                    const found = productsData[c].find(x => x.name === name);
+                    const found = productsData[c].find(x => x.id === id);
                     if(found) { p = found; break; }
                 }
             }
@@ -3143,7 +3195,7 @@ DROP 01</h1>
             renderCartPage();
             addNotification(`Added ${product.name} to cart`);
             showToast('Added to cart successfully', 'fa-check-circle', 'success');
-            showPage('cart'); // Redirect to cart after adding
+            showPage('cart');
         }
 
         function updateCartCount() {
@@ -3938,7 +3990,7 @@ DROP 01</h1>
             );
             if (matched.length === 0) { results.innerHTML = `<div class="search-empty">No products found for "${val}"</div>`; return; }
             results.innerHTML = matched.slice(0, 8).map(p => `
-                <a class="search-result-item" onclick="openProductPage('${p.name.replace(/'/g, "\\'")}'); closeSearch();">
+                <a class="search-result-item" onclick="openProductPage('${p.id}'); closeSearch();">
                     <img src="${p.img}" alt="${p.name}">
                     <div class="info"><h4>${p.name}</h4><p>${p.price} EGP</p></div>
                 </a>
@@ -4003,7 +4055,7 @@ DROP 01</h1>
                     <tr><th>Sizes</th>${prods.map(p => `<td>${(p.sizes || []).join(', ')}</td>`).join('')}</tr>
                     <tr><th>Colors</th>${prods.map(p => `<td>${(p.colors || []).join(', ')}</td>`).join('')}</tr>
                     <tr><th>Stock</th>${prods.map(p => `<td>${p.stock > 0 ? p.stock + ' in stock' : 'Out of stock'}</td>`).join('')}</tr>
-                    <tr><th>Action</th>${prods.map(p => `<td><button class="submit-btn" style="padding:8px 15px;" onclick="openProductPage('${p.name.replace(/'/g, "\\'")}')">View</button></td>`).join('')}</tr>
+                    <tr><th>Action</th>${prods.map(p => `<td><button class="submit-btn" style="padding:8px 15px;" onclick="openProductPage('${p.id}')">View</button></td>`).join('')}</tr>
                 </table>
             `;
         }
@@ -4166,10 +4218,8 @@ DROP 01</h1>
                 status: 'Processing'
             };
 
-            // 1. حفظ الأوردر في الداتا بيز (لوحة التحكم)
             ORDERS_COL.add(order).catch(e => console.error(e));
             
-            // 2. خصم الكميات من الاستوك
             let stockUpdated = false;
             cart.forEach(cartItem => {
                 for(let colKey in productsData) {
@@ -4183,14 +4233,12 @@ DROP 01</h1>
                 }
             });
 
-            // تحديث الداتا بيز بالاستوك الجديد في الخلفية
             if(stockUpdated) {
                 CATALOG_REF.set({ productsData, collectionsData, coupons }).catch(e => {
                     console.error("Error updating stock: ", e);
                 });
             }
 
-            // 3. تجهيز رسالة الواتساب
             const wpNumber = settings.contactWhatsApp || '201027515725';
             let wpMsg = `🚨 *طلب جديد من YQ STATE* 🚨\n\n`;
             wpMsg += `*رقم الطلب:* ${orderId}\n`;
@@ -4204,10 +4252,8 @@ DROP 01</h1>
             });
             wpMsg += `\n*الإجمالي:* ${order.total} EGP`;
 
-            // 4. فتح واتساب عشان العميل يبعتلك الرسالة
             window.open(`https://wa.me/${wpNumber}?text=${encodeURIComponent(wpMsg)}`, '_blank');
 
-            // 5. تفريغ السلة وإظهار صفحة النجاح
             document.getElementById('successOrderId').innerText = orderId;
             cart = [];
             total = 0;
